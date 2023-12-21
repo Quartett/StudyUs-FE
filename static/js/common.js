@@ -1,4 +1,4 @@
-const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'http://13.115.106.99';
 
 function getAccessToken() {
     return localStorage.getItem('access_token');
