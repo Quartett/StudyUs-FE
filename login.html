@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Join</title>
+        <link rel="stylesheet" href="./static/css/font.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar border-bottom border-2A" style="background-color: white;">
+                <div class="container-fluid">
+                <a href="/index.html" class="navbar-brand" style="font-family: 'Inter-Regular'; font-size: 30px; margin:auto">StudyUs</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="d-flex align-items-center" style="height: 90vh;">
+            <section class="container border border-2 rounded" style="width: 450px; height: 420px; background-color:#F0EFEF;">
+                <form action="#" method="post">
+                    <div class="text-center fw-bold" style="font-size: 30px; margin-top:20px; margin-bottom: 50px">로그인</div>
+                    <div class="row" style="margin:0">
+<!-- 이메일 입력 -->
+                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px;">
+                            이메일
+                        </div>
+                        <input type="text" name="email" id="email" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+<!-- 비밀번호 입력 -->
+                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
+                            비밀번호
+                        </div>
+                        <input type="password" name="password" id="password" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+<!-- 회원가입 페이지 이동 링크 -->
+                        <div class="d-flex justify-content-end" style="margin-right: 20px; margin-top: 10px;">
+                            <a href="/join.html" class="text-end" style="font-size: 18px; color: #84C19C;">계정이 없으신가요?<br>여기를 클릭해서 회원가입</a>
+                        </div>
+                    </div>
+
+<!-- 로그인 버튼 -->
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="로그인" class="rounded" style="width: 120px; height: 40px; background-color:#84C19C; color: white; border:none; font-size: 20px; margin-top:40px;" name="login" id="loginbtn">
+                    </div>
+                </form>
+            </section>
+        </main>
+
+<!-- javascript import -->
+        <script src="./static/js/common.js"></script>
+        <script>
+            // 로그인 버튼 클릭 시
+            // 1. 이메일, 비밀번호 입력 확인
+            // 2. 입력 확인 후 로그인 요청
+            // 3. 로그인 성공 시 메인 페이지로 이동
+            // 4. 로그인 실패 시 실패 메시지 출력
+            const loginBtn = document.querySelector('#loginbtn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = document.querySelector('#email').value;
+                const password = document.querySelector('#password').value;
+                if (email === '' || password === '') {
+                    alert('이메일과 비밀번호를 입력해주세요.');
+                    return;
+                }
+                const data = {
+                    email: email,
+                    password: password
+                };
+
+                // 로그인 요청
+                fetch(`${baseUrl}/accounts/login/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Invalid email or password');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setAccessToken(data.access);
+                    setRefreshToken(data.refresh)
+                    // window.location.href = '/index.html';
+                    // 추후 주석 해제 필요
+                })
+                .catch((error) => {
+                    console.error('Error: ', error);
+                    alert('이메일 또는 비밀번호가 일치하지 않습니다.');
+                });
+            });
+        </script>
+    </body>
+</html>
