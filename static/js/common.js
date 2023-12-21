@@ -22,8 +22,8 @@ function removeToken() {
 }
 
 function isLogin() {
-    const accessToken = accountManager.getAccessToken();
-    const refreshToken = accountManager.getRefreshToken();
+    const accessToken = getAccessToken();
+    const refreshToken = getRefreshToken();
 
     if (accessToken && refreshToken) {
         return true;
@@ -33,7 +33,8 @@ function isLogin() {
 }
 
 async function checkTokenExpired(redirect, callback) {
-    const accessToken = accountManager.getAccessToken();
+    const accessToken = getAccessToken();
+    console.log("checkTokenExpired() 실행됨 :: ")
     if (accessToken) {
         const url = `${baseUrl}/accounts/token/verify/`;
         try {
@@ -52,7 +53,8 @@ async function checkTokenExpired(redirect, callback) {
             }
             callback(accessToken);
         } catch (error) {
-            if (error.message === 401) {
+            console.log(error.message)
+            if (error.message == 401) {
                 this.refreshToken(redirect, (accessToken) => {
                     callback(accessToken);
                 });
@@ -60,12 +62,13 @@ async function checkTokenExpired(redirect, callback) {
         }            
     } else {
         alert('로그인된 상태가 아닙니다. 로그인 해주세요');
-        window.location.href = '/login?redirect=' + redirect;
+        window.location.href = '/login.html?redirect=' + redirect;
     }
 }
 
 async function refreshToken(redirect, callback) {
-    const refreshToken = accountManager.getRefreshToken();
+    const refreshToken = getRefreshToken();
+    console.log("refreshToken() 실행됨 :: ")
     if (refreshToken) {
         const url = `${baseUrl}/accounts/token/refresh/`;
         try {
@@ -75,7 +78,7 @@ async function refreshToken(redirect, callback) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    'token': refreshToken
+                    'refresh': refreshToken
                 })
             });
             
@@ -85,17 +88,16 @@ async function refreshToken(redirect, callback) {
             
             const json = await res.json();
             localStorage.setItem('access_token', json.access);
-            localStorage.setItem('refresh_token', json.refresh);
             callback(json.access);
         } catch (error) {
-            if (error.message === 401) {
+            if (error.message == 401) {
                 alert('세션이 만료되었습니다. 재로그인해주세요');
                 this.removeToken();
-                window.location.href = '/login?redirect=' + redirect;
+                window.location.href = '/login.html?redirect=' + redirect;
             }
         }
     } else {
         alert('로그인된 상태가 아닙니다. 로그인 해주세요');
-        window.location.href = '/login?redirect=' + redirect;
+        window.location.href = '/login.html?redirect=' + redirect;
     }
 }
