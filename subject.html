@@ -15,17 +15,18 @@
     <style>
         body {
             font-family: 'Inter-Regular';
+            padding: 0 0 30px 0;
         }
 
         a {
             text-decoration: none;
         }
         
-        .memorycard {
+        .subject {
             cursor: pointer;
         }
 
-        .memorycard:hover {
+        .subject:hover {
             background-color: #f8f9fa;
         }
 
@@ -73,7 +74,7 @@
                     <div id="noData" class="alert alert-danger" role="alert" style="display: none;">
                         생성한 주제가 없습니다
                     </div>
-                    <div id="memorycardSection" class="row row-cols-1 row-cols-md-3 g-4">
+                    <div id="subjectSection" class="row row-cols-1 row-cols-md-3 g-4">
                         
                 </div>
             </div>
@@ -97,6 +98,15 @@
         `
     }
 </script>
+
+<script>
+    // 모달이 닫힐 때
+    const createSubjectModal = new bootstrap.Modal(document.getElementById('createSubjectModal'));
+
+    createSubjectModal._element.addEventListener('hidden.bs.modal', function () {
+        document.querySelector("#createSubjectInput").value = '';
+    });
+</script>    
 
 <script>
     checkTokenExpired('memorycard.html', (accessToken) => {
@@ -143,10 +153,10 @@
         .then((json) => {
             if(json.length > 0) {
                 json.map((subject) => {
-                document.querySelector("#memorycardSection").innerHTML += `
-                    <a href="#">
+                document.querySelector("#subjectSection").innerHTML += `
+                    <a href="/memorycard.html?subject=${subject.id}">
                             <div class="col">
-                                <div class="card memorycard" style="height: 100px;">
+                                <div class="card subject" style="height: 100px;">
                                     <div class="card-body d-flex align-items-center mx-auto">
                                         <p class="card-text fs-5">${subject.title}</p>
                                     </div>
