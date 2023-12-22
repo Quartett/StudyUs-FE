@@ -21,12 +21,10 @@
         <section class="left">
             <div class="user_profile">
                 <div class="profile_image">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" viewBox="0 0 130 130" fill="none">
-                        <circle cx="65" cy="65" r="65" fill="#D9D9D9"/>
-                    </svg>
+                    <img src="./static/img/profile.svg" width="130" height="130">
                 </div>
                 <div class="user_name">사용자 닉네임</div>
-                <button class="btn btn-secondary">스터디 생성</button>
+                <input class="btn btn-secondary" type="submit" value="스터디 생성">
             </div>
         </section>
         <!-- 게시물 생성 -->
@@ -34,7 +32,8 @@
             <div class="a">
                 <!-- 썸네일 -->
                 <div class="thumbnail">
-                    <p>썸네일</p>
+                        <input type="file" id="imageinput" name="file"/>
+                        <img id="thumbnailimg">
                 </div>
                 <!-- 스터디명, 난이도, 인원수 -->
                 <div class="a_container_top">
@@ -44,13 +43,17 @@
                     </div>
                     <!-- 난이도, 인원수 -->
                     <div class="a_container_bottom">
-                        <div class="difficulty_container">
-                            <div class="difficulty">난이도</div>
-                            <input class="difficulty_select"></input>
+                        <div class="level_container">
+                            <div class="level">난이도</div>
+                            <div class="level_list">
+                                <div class="level_detail" data-level=1>EASY</div>
+                                <div class="level_detail" data-level=2>NORMAL</div>
+                                <div class="level_detail" data-level=3>HARD</div>
+                            </div>
                         </div>
                         <div class="member_container">
                             <div class="member">인원수</div>
-                            <input class="max_member"></input>
+                            <select class="max_member"></select>
                         </div>
                     </div>
                     
@@ -60,13 +63,13 @@
             <div class="category_container">
                 <div class="category">카테고리</div>
                 <div class="category_list">
-                    <div class="category_detail">1</div>
-                    <div class="category_detail">2</div>
-                    <div class="category_detail">3</div>
-                    <div class="category_detail">4</div>
-                    <div class="category_detail">5</div>
-                    <div class="category_detail">6</div>
-                    <div class="category_detail">7</div>
+                    <div class="category_detail" data-category=1>1</div>
+                    <div class="category_detail" data-category=2>2</div>
+                    <div class="category_detail" data-category=3>3</div>
+                    <div class="category_detail" data-category=4>4</div>
+                    <div class="category_detail" data-category=5>5</div>
+                    <div class="category_detail" data-category=6>6</div>
+                    <div class="category_detail" data-category=7>7</div>
                 </div>
             </div>
             <!-- 일정, 요일 -->
@@ -75,23 +78,23 @@
                     <div class="schedule">일정</div>
                     <div class="start_day_container">
                         <div class="start_day">시작일</div>
-                        <input class="input_start_day" type="text">
+                        <input class="input_start_day" type="date">
                     </div>
                     <div class="end_day_container">
                         <div class="end_day">종료일</div>
-                        <input class="input_end_day" type="text">
+                        <input class="input_end_day" type="date">
                     </div>
                 </div>
-                <div class="day_container">
-                    <div class="day">요일</div>
-                    <div class="day_list">
-                        <div class="day_detail">월</div>
-                        <div class="day_detail">화</div>
-                        <div class="day_detail">수</div>
-                        <div class="day_detail">목</div>
-                        <div class="day_detail">금</div>
-                        <div class="day_detail">토</div>
-                        <div class="day_detail">일</div>
+                <div class="week_days_container">
+                    <div class="week_days">요일</div>
+                    <div class="week_days_list">
+                        <div class="week_days_detail" data-day=1>월</div>
+                        <div class="week_days_detail" data-day=2>화</div>
+                        <div class="week_days_detail" data-day=3>수</div>
+                        <div class="week_days_detail" data-day=4>목</div>
+                        <div class="week_days_detail" data-day=5>금</div>
+                        <div class="week_days_detail" data-day=6>토</div>
+                        <div class="week_days_detail" data-day=7>일</div>
                     </div>
                 </div>
             </div>
@@ -100,6 +103,8 @@
                 <input class="input_content" type="text">
             </div>
         </section>
+    <script src="./static/js/common.js"></script>
+    <script src="./static/js/create_studygroup.js"></script>
     </main>
 </body>
 
