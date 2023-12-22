@@ -15,6 +15,7 @@
     <style>
         body {
             font-family: 'Inter-Regular';
+            padding: 0 0 30px 0;
         }
 
         a {
@@ -27,6 +28,18 @@
 
         .memorycard:hover {
             background-color: #f8f9fa;
+        }
+
+        #inputQuestion {
+            resize: none;
+            height: 5rem;
+            overflow: auto;
+        }
+
+        #inputAnswer {
+            resize: none;
+            height: 8rem;
+            overflow: auto;
         }
 
     </style>
@@ -45,35 +58,51 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 mt-2 col-8 mx-auto">
-                        <button type="button" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;" data-bs-toggle="modal" data-bs-target="#createSubjectModal">
-                            주제 생성
+                        <button type="button" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;" data-bs-toggle="modal" data-bs-target="#createCardModal">
+                            암기카드 생성
                         </a>
                     </div>
                     <!-- Modal -->
-                    <div class="modal fade" id="createSubjectModal" tabindex="-1" aria-labelledby="createSubjectModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="createCardModal" tabindex="-1" aria-labelledby="createCardModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                            <h5 class="modal-title" id="createSubjectModalLabel">주제 생성</h5>
+                            <h5 class="modal-title" id="createCardModalLabel">암기카드 생성</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input id="createSubjectInput" type="text" class="form-control" placeholder="주제명을 입력하세요...">
+                                <div class="btn-group mb-3" role="group" aria-label="난이도 선택 그룹">
+                                    <input type="radio" class="btn-check" name="level" id="easy" autocomplete="off" checked>
+                                    <label class="btn btn-outline-secondary" for="easy">Easy</label>
+                                
+                                    <input type="radio" class="btn-check" name="level" id="normal" autocomplete="off">
+                                    <label class="btn btn-outline-warning" for="normal">Normal</label>
+                                
+                                    <input type="radio" class="btn-check" name="level" id="hard" autocomplete="off">
+                                    <label class="btn btn-outline-danger" for="hard">Hard</label>
+                                </div>
+                                <textarea id="inputQuestion" type="text" class="form-control mb-2" placeholder="질문을 입력하세요"></textarea>
+                                <textarea id="inputAnswer" type="text" class="form-control" placeholder="답을 입력하세요"></textarea>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                            <button type="button" class="btn btn-primary" style="background-color: #84C19C; border-color: #84C19C;" onclick="saveSubject()">저장하기</button>
+                            <button type="button" class="btn btn-primary" style="background-color: #84C19C; border-color: #84C19C;" onclick="saveMemorycard()">저장하기</button>
                             </div>
                         </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <p class="text-start mb-5" style="font-size: 30px; font-weight: bold;">암기카드 주제 선택</p>
-                    <div id="noData" class="alert alert-danger" role="alert" style="display: none;">
-                        생성한 주제가 없습니다
+                    <div class="text-start mb-3" style="font-size: 30px; font-weight: bold;">암기카드 목록</div>
+                    <div id="subjectTitle" class="text-start" style="font-size: 25px; font-weight: 500;"></div>
+                    <div class="text-end">
+                        <input type="checkbox" class="btn-check" id="onlyBookmark" autocomplete="off">
+                        <label class="btn btn-outline-warning mb-3" for="onlyBookmark">북마크만 보기</label>
                     </div>
-                    <div id="memorycardSection" class="row row-cols-1 row-cols-md-3 g-4">
+                    <div id="noData" class="alert alert-danger" role="alert" style="display: none;">
+                        생성한 암기카드가 없습니다
+                    </div>
+                    <div id="memorycardSection" class="row row-cols-1 g-4">
                         
                 </div>
             </div>
@@ -85,7 +114,7 @@
 <script>
     if (isLogin()) {
         document.querySelector("#profileSection").innerHTML += `
-            <a id="createStudyBtn" href="/study_create.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+            <a id="createStudyBtn" href="/create_studygroup.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
                 스터디 생성
             </a>  
         `
@@ -99,9 +128,36 @@
 </script>
 
 <script>
+    bookmarkCheckbox = document.getElementById("onlyBookmark");
+
+    bookmarkCheckbox.addEventListener('change', function() {
+        if(bookmarkCheckbox.checked) {
+            document.querySelector("#memorycardSection").innerHTML = '';
+            getMemorycard(getAccessToken(), true);
+        } else {
+            document.querySelector("#memorycardSection").innerHTML = '';
+            getMemorycard(getAccessToken(), false);
+            
+        }
+    })
+</script>
+
+<script>
+    // 모달이 닫힐 때
+    const createCardModal = new bootstrap.Modal(document.getElementById('createCardModal'));
+
+    createCardModal._element.addEventListener('hidden.bs.modal', function () {
+        document.querySelector("#inputQuestion").value = '';
+        document.querySelector("#inputAnswer").value = '';
+        document.querySelector("#easy").checked = true;
+    });
+</script>    
+
+<script>
     checkTokenExpired('memorycard.html', (accessToken) => {
         getUserInfo(accessToken);
-        getMemorycardSubject(accessToken);
+        getSubjectInfo(accessToken);
+        getMemorycard(accessToken, false);
     })
     
     function getUserInfo(accessToken) {
@@ -122,12 +178,48 @@
             document.querySelector("#nickname").innerHTML = json.nickname
         })
         .catch((err) => {
-            console.log(err.message)
+            alert("사용자 정보 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
         });    
     }
+    
+    function getSubjectInfo(accessToken) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+    
+        fetch(`${baseUrl}/memorycard/subject/${subject_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+        })
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error(response.status)
+            }
+            return response.json()
+        })
+        .then((json) => {
+            document.querySelector("#subjectTitle").innerHTML = json.title
+            
+        })
+        .catch((err) => {
+            alert("암기카드 주제 확인중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+        });
+    }
 
-    function getMemorycardSubject(accessToken) {
-        fetch(`${baseUrl}/memorycard/subject/`, {
+    function getMemorycard(accessToken, bookmark) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+
+        let url = '';
+        if (bookmark == true) {
+            url = `${baseUrl}/memorycard/?subject=${subject_id}&bookmark=on`;
+        } else {
+            url = `${baseUrl}/memorycard/?subject=${subject_id}`;
+        }
+    
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -142,13 +234,16 @@
         })
         .then((json) => {
             if(json.length > 0) {
-                json.map((subject) => {
+                document.querySelector('#noData').style.display = 'none';
+                json.map((memorycard) => {
                 document.querySelector("#memorycardSection").innerHTML += `
                     <a href="#">
                             <div class="col">
-                                <div class="card memorycard" style="height: 100px;">
-                                    <div class="card-body d-flex align-items-center mx-auto">
-                                        <p class="card-text fs-5">${subject.title}</p>
+                                <div class="card memorycard">
+                                    <div class="card-body d-flex align-items-center">
+                                        <img id="bookmark_${memorycard.id}" src="${memorycard.bookmark ? './static/img/bookmark_on.svg' : './static/img/bookmark_off.svg'}" class="card-text fs-5" width="25px" height="25px" onclick="setBookmark(${memorycard.id}, ${memorycard.bookmark ? false : true})">
+                                        <div class="card-text ms-3 me-auto fs-5">${memorycard.memory_question}</div>
+                                        <button type="button" class="btn btn-danger card-text ms-3" onclick="deleteCard(${memorycard.id})">삭제</div>
                                     </div>
                                 </div>
                             </div>
@@ -160,49 +255,132 @@
             }
         })
         .catch((err) => {
-            console.log(err.message)
+            alert("암기카드 조회중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
         });
     }
 
-    function saveSubject() {
-        const subject = document.querySelector("#createSubjectInput").value;
-        if (subject) {
-            checkTokenExpired('memorycard.html', (accessToken) => {
-                fetch(`${baseUrl}/memorycard/subject/`, {
+    function saveMemorycard() {
+        const question = document.querySelector("#inputQuestion").value;
+        const answer = document.querySelector("#inputAnswer").value;
+        const level = getLevel();
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+
+        if (question && answer && level) {
+            checkTokenExpired(`memorycard.html?subject=${subject_id}`, (accessToken) => {
+                fetch(`${baseUrl}/memorycard/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${accessToken}`
                     },
                     body: JSON.stringify({
-                        title: subject
+                        subject: subject_id,
+                        memory_question: question,
+                        memory_answer: answer,
+                        bookmark: false,
+                        difficulty: level
                     })
                 })
                 .then((response) => {
                     if(!response.ok) {
                         throw new Error(response.status)
                     }
-                    document.querySelector("#createSubjectInput").value = '';
                     closeModal();
                     window.location.reload();
                     return
                 })
                 .catch((err) => {
-                    alert("주제 생성중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
-                    document.querySelector("#createSubjectInput").value = '';
+                    alert("암기카드 생성중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
                     closeModal();
                 })
             });
         } else {
-            alert('주제를 입력해주세요')
+            alert('모든 값을 입력해야합니다')
+        }
+    }
+
+    function setBookmark(memorycard_id, isBookmark) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+
+        checkTokenExpired(`memorycard.html?subject=${subject_id}`, (accessToken) => {
+            fetch(`${baseUrl}/memorycard/${memorycard_id}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    bookmark: isBookmark
+                })
+            })
+            .then((response) => {
+                if(!response.ok) {
+                    throw new Error(response.status)
+                }
+                return response.json()
+            })
+            .then((json) => {
+                const bookmarkImg = document.getElementById(`bookmark_${memorycard_id}`);
+                bookmarkImg.src = json.bookmark ? './static/img/bookmark_on.svg' : './static/img/bookmark_off.svg';
+                bookmarkImg.onclick = () => setBookmark(memorycard_id, !json.bookmark);
+            })
+            .catch((err) => {
+                alert("북마크 표시중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+            })
+        })
+    }
+    
+    function deleteCard(memorycard_id) {
+        const result = confirm("정말 암기카드를 삭제하시겠습니까?");
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+        if(result) {
+            checkTokenExpired(`memorycard.html?subject=${subject_id}`, (accessToken) => {
+                fetch(`${baseUrl}/memorycard/${memorycard_id}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                })
+                .then((response) => {
+                    if(!response.ok) {
+                        throw new Error(response.status)
+                    }
+                    window.location.reload();
+                })
+                .catch((err) => {
+                    alert("암기카드 삭제중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+                })
+            })
+        } else {
+            return;
+        }
+    }
+
+    function getLevel() {
+        const level = document.querySelector('input[name="level"]:checked').value;
+        if(level == "easy") {
+            return 1;
+        } else if(level == "normal") {
+            return 2;
+        } else {
+            return 3;
         }
     }
 
     // 주제 생성 모달창 닫는 함수
     function closeModal() {
-        const createSubjectModal = new bootstrap.Modal(document.getElementById('createSubjectModal'));
-        createSubjectModal.hide();
+        const createCardModal = new bootstrap.Modal(document.getElementById('createCardModal'));
+        document.querySelector("#inputQuestion").value = '';
+        document.querySelector("#inputAnswer").value = '';
+        document.querySelector("#easy").checked = true;
+        createCardModal.hide();
     }
+
+
 
 
 </script>

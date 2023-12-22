@@ -1,4 +1,4 @@
-const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'http://13.115.106.99';
 
 function getAccessToken() {
     return localStorage.getItem('access_token');
@@ -53,9 +53,8 @@ async function checkTokenExpired(redirect, callback) {
             }
             callback(accessToken);
         } catch (error) {
-            console.log(error.message)
             if (error.message == 401) {
-                this.refreshToken(redirect, (accessToken) => {
+                refreshToken(redirect, (accessToken) => {
                     callback(accessToken);
                 });
             }
@@ -92,7 +91,7 @@ async function refreshToken(redirect, callback) {
         } catch (error) {
             if (error.message == 401) {
                 alert('세션이 만료되었습니다. 재로그인해주세요');
-                this.removeToken();
+                removeToken();
                 window.location.href = '/login.html?redirect=' + redirect;
             }
         }

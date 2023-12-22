@@ -14,7 +14,7 @@ window.addEventListener('load', function() {
                     
                     if(accessToken && refreshToken) {
                         navbarMenu.innerHTML += `
-                            <a class="navbar-brand" href="/memorycard.html">
+                            <a class="navbar-brand" href="/subject.html">
                             <img src="./static/img/memory_card.svg" width="40" height="40">
                             </a>
                             <a class="navbar-brand" href="/chat.html">
