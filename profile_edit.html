@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>StudyUs</title>
+        <link rel="stylesheet" href="./static/css/font.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar border-bottom border-2A" style="background-color: white;">
+                <div class="container-fluid">
+                <a href="/index.html" class="navbar-brand" style="font-family: 'Inter-Regular'; font-size: 30px; margin:auto">StudyUs</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="d-flex align-items-center" style="height: 90vh;">
+            <section class="container border border-2 rounded" style="width: 450px; background-color:#F0EFEF;">
+                <form action="#" method="post">
+<!-- 프로필 이미지 출력 -->
+                    <div class="d-flex justify-content-center mb-5 mt-4" style="height:180px;" id="profilearea">
+                        
+                    </div>
+                    <div class="row" style="margin:0">
+<!-- 이메일 출력 -->
+                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px;">
+                            이메일
+                        </div>
+                        <input type="text" name="email" id="email" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px; outline:none" readonly>
+<!-- 닉네임 출력 -->
+                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
+                            닉네임
+                        </div>
+                        <input type="text" name="nickname" id="nickname" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px; outline:none">
+                    </div>
+<!-- 프로필 수정 페이지 이동 버튼 -->
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="수정 완료" class="rounded" style="width: 120px; height: 40px; background-color:#84C19C; color: white; border:none; font-size: 20px; margin-top:40px; margin-bottom:20px; text-decoration:none; padding-top:5px;" name="editcomplete" id="editcompletebtn">
+                    </div>
+                </form>
+            </section>
+        </main>
+
+<!-- javascript import -->
+        <script src="./static/js/common.js"></script>
+        <script>
+            window.onload = function() {
+                const accesstoken = getAccessToken()
+                fetch(`${baseUrl}/accounts/user/`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${accesstoken}`
+                    }
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Invalid token');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    document.getElementById('email').value = data.email
+                    document.getElementById('nickname').value = data.nickname
+                    document.getElementById('profilearea').innerHTML = `<label for="fileInput"><img src="${data.profile_image}" style="width: 180px; height: 180px; border-radius: 50%; margin-top: 20px; margin-bottom: 20px;" id="profileimg"></label><input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="handleFileSelect(event)">
+                    `
+                    
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // 토큰이 유효하지 않으면 로그인 페이지로 이동
+                    alert('로그인이 필요합니다.');
+                    window.location.href = '/login.html';
+                });
+            }
+
+            function handleFileSelect(event) {
+                const fileInput = event.target;
+                const files = fileInput.files;
+            
+                // 선택된 파일들을 처리하거나 원하는 동작 수행
+                if (files.length > 0) {
+                    const selectedFile = files[0];
+            
+                  // FileReader 객체 생성
+                    const reader = new FileReader();
+            
+                  // 파일 읽기 완료 시 동작하는 이벤트 리스너
+                    reader.onload = function (e) {
+                        const imageData = e.target.result;
+                
+                        // 선택된 이미지를 프로필 영역에 표시
+                        document.getElementById('profilearea').innerHTML = `<label for="fileInput"><img src="${imageData}" style="width: 180px; height: 180px; border-radius: 50%; margin-top: 20px; margin-bottom: 20px; object-fit: cover;" id="profileimg"></label><input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="handleFileSelect(event)">`;
+                        };
+                  // 파일을 읽어오기
+                    reader.readAsDataURL(selectedFile);
+                }
+            }
+            
+            // 231222 계획! - 프로필 이미지 담아서 보내기 
+            const profile_edit_btn = document.getElementById("editcompletebtn")
+            profile_edit_btn.addEventListener("click", function(e) {
+                e.preventDefault()
+                const accesstoken = getAccessToken()
+                const nickname = document.getElementById("nickname").value
+                const imageInput = document.getElementById('fileInput');
+                const imageFile = imageInput.files[0];
+
+                const formData = new FormData();
+                formData.append('profile_image', imageFile);
+                formData.append('nickname', nickname);
+
+                fetch(`${baseUrl}/accounts/user/`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${accesstoken}`,
+                    },
+                    body: formData,
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Invalid token');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    alert("프로필 수정이 완료되었습니다.")
+                    //window.location.href = '/profile.html';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // 토큰이 유효하지 않으면 로그인 페이지로 이동
+                    //alert('로그인이 필요합니다.');
+                    //window.location.href = '/login.html';
+                });
+            })
+
+        </script>
+    </body>
+</html>
