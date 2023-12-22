@@ -89,7 +89,7 @@ async function refreshToken(redirect, callback) {
             localStorage.setItem('access_token', json.access);
             callback(json.access);
         } catch (error) {
-            if (error.message === 401) {
+            if (error.message == 401) {
                 alert('세션이 만료되었습니다. 재로그인해주세요');
                 removeToken();
                 window.location.href = '/login.html?redirect=' + redirect;
