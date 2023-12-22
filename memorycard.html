@@ -93,8 +93,12 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <p class="text-start mb-3" style="font-size: 30px; font-weight: bold;">암기카드 목록</p>
-                    <p id="subjectTitle" class="text-start mb-5" style="font-size: 25px; font-weight: 500;"></p>
+                    <div class="text-start mb-3" style="font-size: 30px; font-weight: bold;">암기카드 목록</div>
+                    <div id="subjectTitle" class="text-start" style="font-size: 25px; font-weight: 500;"></div>
+                    <div class="text-end">
+                        <input type="checkbox" class="btn-check" id="onlyBookmark" autocomplete="off">
+                        <label class="btn btn-outline-warning mb-3" for="onlyBookmark">북마크만 보기</label>
+                    </div>
                     <div id="noData" class="alert alert-danger" role="alert" style="display: none;">
                         생성한 암기카드가 없습니다
                     </div>
@@ -110,7 +114,7 @@
 <script>
     if (isLogin()) {
         document.querySelector("#profileSection").innerHTML += `
-            <a id="createStudyBtn" href="/study_create.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+            <a id="createStudyBtn" href="/create_studygroup.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
                 스터디 생성
             </a>  
         `
@@ -121,6 +125,21 @@
             </a>
         `
     }
+</script>
+
+<script>
+    bookmarkCheckbox = document.getElementById("onlyBookmark");
+
+    bookmarkCheckbox.addEventListener('change', function() {
+        if(bookmarkCheckbox.checked) {
+            document.querySelector("#memorycardSection").innerHTML = '';
+            getMemorycard(getAccessToken(), true);
+        } else {
+            document.querySelector("#memorycardSection").innerHTML = '';
+            getMemorycard(getAccessToken(), false);
+            
+        }
+    })
 </script>
 
 <script>
@@ -138,7 +157,7 @@
     checkTokenExpired('memorycard.html', (accessToken) => {
         getUserInfo(accessToken);
         getSubjectInfo(accessToken);
-        getMemorycard(accessToken);
+        getMemorycard(accessToken, false);
     })
     
     function getUserInfo(accessToken) {
@@ -189,11 +208,18 @@
         });
     }
 
-    function getMemorycard(accessToken) {
+    function getMemorycard(accessToken, bookmark) {
         const urlParams = new URLSearchParams(window.location.search);
         const subject_id = urlParams.get('subject');
+
+        let url = '';
+        if (bookmark == true) {
+            url = `${baseUrl}/memorycard/?subject=${subject_id}&bookmark=on`;
+        } else {
+            url = `${baseUrl}/memorycard/?subject=${subject_id}`;
+        }
     
-        fetch(`${baseUrl}/memorycard/?subject=${subject_id}`, {
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -208,6 +234,7 @@
         })
         .then((json) => {
             if(json.length > 0) {
+                document.querySelector('#noData').style.display = 'none';
                 json.map((memorycard) => {
                 document.querySelector("#memorycardSection").innerHTML += `
                     <a href="#">
@@ -215,8 +242,8 @@
                                 <div class="card memorycard">
                                     <div class="card-body d-flex align-items-center">
                                         <img id="bookmark_${memorycard.id}" src="${memorycard.bookmark ? './static/img/bookmark_on.svg' : './static/img/bookmark_off.svg'}" class="card-text fs-5" width="25px" height="25px" onclick="setBookmark(${memorycard.id}, ${memorycard.bookmark ? false : true})">
-                                        <div class="card-text ms-3 fs-5">${memorycard.memory_question}</div>
-                                        <button type="button" class="btn btn-danger card-text ms-auto" onclick="deleteCard(${memorycard.id})">삭제</div>
+                                        <div class="card-text ms-3 me-auto fs-5">${memorycard.memory_question}</div>
+                                        <button type="button" class="btn btn-danger card-text ms-3" onclick="deleteCard(${memorycard.id})">삭제</div>
                                     </div>
                                 </div>
                             </div>
@@ -352,6 +379,8 @@
         document.querySelector("#easy").checked = true;
         createCardModal.hide();
     }
+
+
 
 
 </script>
