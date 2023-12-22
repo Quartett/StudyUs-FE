@@ -92,21 +92,21 @@
     flex: 1;
 }
 
-.difficulty_container{
+.level_container{
     display: flex;
     flex-direction: column;
     flex: 1;
     margin: 5px;
 }
 
-.difficulty{
+.level{
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 1;
 }
 
-.difficulty_select{
+.level_select{
     flex: 1;
     border-radius: 10px;
     border: none;
@@ -145,13 +145,13 @@
     align-items: center;
 }
 
-.category_list{
+.category_list, .level_list{
     display: flex;
     flex: 2;
     gap: 10px;
 }
 
-.category_detail{
+.category_detail, .level_detail{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -214,27 +214,27 @@
     border: 1px solid #F0EFEF;
 }
 
-.day_container{
+.week_days_container{
     display: flex;
     flex-direction: column;
     flex: 2;
 }
 
-.day{
+.week_days{
     flex: 1;
     display: flex;
     align-items: center;
     margin-left: 5px;
 }
 
-.day_list{
+.week_days_list{
     display: flex;
     flex: 2;
     gap: 1rem;
     margin: 5px;
 }
 
-.day_detail{
+.week_days_detail{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -251,5 +251,16 @@
 .input_content{
     width: 100%;
     height: 100%;
+    border-radius: 10px;
+}
+
+.week_days_detail.selected, .category_detail.selected, .level_detail.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+#thumbnailimg{
+    width: 100%;
+    height: 92%;
     border-radius: 10px;
 }
