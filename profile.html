@@ -9,36 +9,71 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="./static/js/include.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+        
+        main {
+            height: 90%;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 1rem;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="nickname"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+    </style>
     </head>
     <body>
         <header data-include-path="./header.html"></header>
 
-        <main class="d-flex align-items-center" style="height: 90vh;">
-            <section class="container border border-2 rounded" style="width: 450px; background-color:#F0EFEF;">
-                <div class="d-flex justify-content-end mt-2"><button type="button" class="btn-close" aria-label="Close" onclick="location.href = '/index.html'"></button></div>
-                <form action="#" method="post">
+        <main class="d-flex align-items-center py-4">
+            <section class="form-signin w-100 m-auto rounded-4" style="background-color:#F0EFEF;">
+                <form>
+                    <div class="d-flex justify-content-end mt-2"><button type="button" class="btn-close" aria-label="Close" onclick="location.href = '/index.html'"></button></div>
 <!-- 프로필 이미지 출력 -->
-                    <div class="d-flex justify-content-center mb-5 mt-4" style="height:180px;" id="profilearea">
-                        <img src="#" style="width: 180px; height: 180px; border-radius: 50%; margin-bottom: 20px; object-fit: cover;" id="profileimg">
+                    <div class="d-flex justify-content-center mb-4 mt-4" id="profilearea">
+                        <img src="#" style="width: 150px; height: 150px; border-radius: 50%; margin-bottom: 20px; object-fit: cover;" id="profileimg">
                     </div>
-                    <div class="row" style="margin:0">
 <!-- 이메일 출력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px;">
-                            이메일
-                        </div>
-                        <input type="text" name="email" id="email" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px; outline:none" readonly>
+                    <div class="form-floating">
+                        <input type="email" class="form-control" style="outline: none;" name="email" id="email" placeholder="name@example.com" readonly>
+                        <label for="email">이메일</label>
+                    </div>
 <!-- 닉네임 출력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
-                            닉네임
-                        </div>
-                        <input type="text" name="nickname" id="nickname" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px; outline:none" readonly>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" style="outline: none;" name="nickname" id="nickname" placeholder="Nickname" readonly>
+                        <label for="nickname">닉네임</label>
                     </div>
 <!-- 프로필 수정 페이지 이동 버튼 -->
-                    <div class="d-flex justify-content-center">
-                        <a href="profile_edit.html" class="rounded text-center" style="width: 120px; height: 40px; background-color:#84C19C; color: white; border:none; font-size: 20px; margin-top:40px; margin-bottom:20px; text-decoration:none; padding-top:5px;" name="profileedit" id="profileeditbtn">프로필 수정</a>
-                    </div>
+                    <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="profileedit" id="profileeditbtn" onclick="location.href = 'profile_edit.html'; return false">프로필 수정</button>
                 </form>
-            </section>
+                </section>
         </main>
 
 <!-- javascript import -->

@@ -8,6 +8,63 @@
         <link rel="stylesheet" href="./static/css/font.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+        
+        main {
+            height: 90%;
+        }
+
+        .form-signin {
+            max-width: 330px;
+            padding: 1rem;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .sign-in-page {
+            font-family: 'Inter-Regular';
+            font-size: 14px;
+            color: #84C19C;
+            padding: 4px;
+        }
+
+        .sign-in-page:hover {
+            font-family: 'Inter-Regular';
+            font-size: 14px;
+            background-color: #84C19C;
+            color: white;
+            padding: 4px;
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+    </style>
     </head>
     <body>
         <header>
@@ -17,39 +74,47 @@
                 </div>
             </nav>
         </header>
-
-        <main class="d-flex align-items-center" style="height: 90vh;">
-            <section class="container border border-2 rounded" style="width: 450px; height: 420px; background-color:#F0EFEF;">
-                <form action="#" method="post">
-                    <div class="text-center fw-bold" style="font-size: 30px; margin-top:20px; margin-bottom: 50px">로그인</div>
-                    <div class="row" style="margin:0">
+        <main class="d-flex align-items-center py-4">
+            <section class="form-signin w-100 m-auto rounded-4" style="background-color:#F0EFEF;">
+                <form>
+                    <h1 class="h3 mb-4 fw-normal text-center">로그인</h1>
 <!-- 이메일 입력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px;">
-                            이메일
-                        </div>
-                        <input type="text" name="email" id="email" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+                    <div class="form-floating">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                        <label for="email">이메일</label>
+                    </div>
 <!-- 비밀번호 입력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
-                            비밀번호
-                        </div>
-                        <input type="password" name="password" id="password" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        <label for="password">비밀번호</label>
+                    </div>
+<!-- 이메일 저장 여부 확인 -->
+                    <div class="form-check text-start my-3">
+                        <input class="form-check-input" type="checkbox" value="remember-me" id="emailsavecheck">
+                        <label class="form-check-label" for="emailsavecheck">
+                            이메일 저장
+                        </label>
+                    </div>
 <!-- 회원가입 페이지 이동 링크 -->
-                        <div class="d-flex justify-content-end" style="margin-right: 20px; margin-top: 10px;">
-                            <a href="/join.html" class="text-end" style="font-size: 18px; color: #84C19C;">계정이 없으신가요?<br>여기를 클릭해서 회원가입</a>
-                        </div>
+                    <div class="d-flex justify-content-end mb-4">
+                        <a href="/join.html" class="text-end sign-in-page">계정이 없으신가요?</a>
                     </div>
-
 <!-- 로그인 버튼 -->
-                    <div class="d-flex justify-content-center">
-                        <input type="submit" value="로그인" class="rounded" style="width: 120px; height: 40px; background-color:#84C19C; color: white; border:none; font-size: 20px; margin-top:40px;" name="login" id="loginbtn">
-                    </div>
+                    <button class="btn btn-primary w-100 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="login" id="loginbtn">로그인</button>
                 </form>
-            </section>
+                </section>
         </main>
-
-<!-- javascript import -->
+<!-- javascripsectionport -->
         <script src="./static/js/common.js"></script>
         <script>
+
+            // 이메일 저장 체크 시 로컬스토리지에서 이메일 가져오기
+            const email = localStorage.getItem('email');
+            if (email) {
+                document.querySelector('#email').value = email;
+                document.querySelector('#emailsavecheck').checked = true;
+            }
+
             // 로그인 버튼 클릭 시
             // 1. 이메일, 비밀번호 입력 확인
             // 2. 입력 확인 후 로그인 요청
@@ -95,6 +160,18 @@
                     console.error('Error: ', error);
                     alert('이메일 또는 비밀번호가 일치하지 않습니다.');
                 });
+            });
+
+            // 이메일 저장 체크 시 로컬스토리지에 저장
+            // 이메일 저장 체크 해제 시 로컬스토리지에서 삭제
+            const emailsavecheck = document.querySelector('#emailsavecheck');
+            emailsavecheck.addEventListener('change', function(e) {
+                const email = document.querySelector('#email').value;
+                if (emailsavecheck.checked) {
+                    localStorage.setItem('email', email);
+                } else {
+                    localStorage.removeItem('email');
+                }
             });
         </script>
     </body>
