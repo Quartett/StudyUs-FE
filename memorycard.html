@@ -66,6 +66,11 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2 mt-2 col-8 mx-auto">
+                        <button id="playBtn" type="button" class="btn btn-outline-secondary mt-3" style="border-color: #84C19C;" onclick="playBtnTapped()">
+                            Play
+                        </a>
+                    </div>
+                    <div class="d-grid gap-2 col-8 mx-auto">
                         <button type="button" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;" data-bs-toggle="modal" data-bs-target="#createCardModal">
                             암기카드 생성
                         </a>
@@ -256,7 +261,7 @@
                 document.querySelector('#noData').style.display = 'none';
                 json.map((memorycard) => {
                 document.querySelector("#memorycardSection").innerHTML += `
-                    <a href="#">
+                    <a href='/memorycard_detail.html?memorycard=${memorycard.id}'>
                             <div class="col">
                                 <div class="card memorycard">
                                     <div class="card-body d-flex align-items-center">
@@ -271,6 +276,7 @@
             })
             } else {
                 document.querySelector('#noData').style.display = 'block';
+                document.querySelector('#playBtn').style.display = 'none';
             }
         })
         .catch((err) => {
@@ -426,6 +432,12 @@
         document.querySelector("#inputAnswer").value = '';
         document.querySelector("#easy").checked = true;
         createCardModal.hide();
+    }
+
+    function playBtnTapped() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+        window.location.href = '/memorycard_play.html?subject=' + subject_id;
     }
 </script>
 
