@@ -28,11 +28,28 @@
         </section>
         <section class="join_section" style="border: 1px solid gray;">
             <div class="" style="border: 1px solid gray;">스터디소개</div>
-            <div style="border: 1px solid gray;">가입</div>
+            <div class="change_button" style="border: 1px solid gray;">가입</div>
         </section>
         <section class="content_section" style="border: 1px solid gray;">
             <div class="content" style="border: 1px solid gray;">스터디설명</div>
-            <div class="comment" style="border: 1px solid gray;">댓글</div>
+            <div class="schedule">
+                <div class="study_date">
+                    날짜
+                </div>
+                <div class="week_days">요일</div>
+                <div class="week_days_list">
+                    <div class="week_days_detail" data-day=월>월</div>
+                    <div class="week_days_detail" data-day=화>화</div>
+                    <div class="week_days_detail" data-day=수>수</div>
+                    <div class="week_days_detail" data-day=목>목</div>
+                    <div class="week_days_detail" data-day=금>금</div>
+                    <div class="week_days_detail" data-day=토>토</div>
+                    <div class="week_days_detail" data-day=일>일</div>
+                </div>
+                <div class="number_of_people">모집 인원
+                    <div class="member"style="border: 1px solid gray;">인원</div>
+                </div>
+            </div>
         </section>
         <section class="leader_section" style="border: 1px solid gray;">
             <div class="leader_profile" style="border: 1px solid gray;">
@@ -41,6 +58,9 @@
                 </div>
             </div>
             <div class="leader_comment" style="border: 1px solid gray;">소개말</div>
+        </section>
+        <section class="comment_section">
+            <div class="comments" id="comments_container" style="border: 1px solid gray;">댓글</div>
         </section>
     </main>
 <script src="./static/js/common.js"></script>
