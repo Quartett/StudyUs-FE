@@ -6,8 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>StudyUs</title>
         <link rel="stylesheet" href="./static/css/font.css">
+        <link rel="stylesheet" href="./static/css/accounts.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     </head>
     <body>
         <header>
@@ -18,38 +19,35 @@
             </nav>
         </header>
 
-        <main class="d-flex align-items-center" style="height: 90vh;">
-            <section class="container border border-2 rounded" style="width: 450px; height: 500px; background-color:#F0EFEF;">
+
+        <main class="d-flex align-items-center py-4">
+            <section class="form-signin w-100 m-auto rounded-4" style="background-color:#F0EFEF;">
                 <form>
-                    <div class="text-center fw-bold" style="font-size: 30px; margin-top:20px; margin-bottom: 50px">회원가입</div>
-                    <div class="row" style="margin:0">
+                    <h1 class="h3 mb-4 fw-normal text-center">회원가입</h1>
 <!-- 이메일 입력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px;">
-                            이메일
-                        </div>
-                        <input type="text" name="email" id="email" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+                    <div class="form-floating">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                        <label for="email">이메일</label>
+                    </div>
 <!-- 닉네임 입력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
-                            닉네임
-                        </div>
-                        <input type="text" name="nickname" id="nickname" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="join-nickname" id="join-nickname" placeholder="name@example.com">
+                        <label for="join-nickname">닉네임</label>
+                    </div>
 <!-- 비밀번호 입력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
-                            비밀번호
-                        </div>
-                        <input type="password" name="password1" id="password1" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" name="password1" id="password1" placeholder="Password1">
+                        <label for="password1">비밀번호</label>
+                    </div>
 <!-- 비밀번호 확인 입력 -->
-                        <div class="col-4 fw-bold" style="font-size: 18px; margin-left:10px">
-                            비밀번호 확인
-                        </div>
-                        <input type="password" name="password2" id="password2" class="col-8" style="width: 240px; height: 50px; margin-bottom: 20px; margin-right: 20px; border:none; border-radius: 10px;">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" name="password2" id="password2" placeholder="Password2">
+                        <label for="password2">비밀번호</label>
                     </div>
 <!-- 회원가입 버튼 -->
-                    <div class="d-flex justify-content-center">
-                        <input type="submit" value="회원가입" class="rounded" style="width: 120px; height: 40px; background-color:#84C19C; color: white; border:none; font-size: 20px; margin-top:40px;" name="join" id="joinbtn">
-                    </div>
+                    <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="join" id="joinbtn">회원가입</button>
                 </form>
-            </section>
+                </section>
         </main>
 
 <!-- javascript import -->

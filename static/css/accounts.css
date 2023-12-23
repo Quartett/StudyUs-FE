@@ -1,0 +1,100 @@
+html,
+body {
+    height: 100%;
+}
+
+main {
+    height: 90%;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-signin input[type="text"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-signin #join-nickname {
+    margin-bottom: -1px;
+    border-radius:0;
+}
+
+.form-signin #password1 {
+    margin-bottom: -1px;
+    border-radius:0;
+}
+
+.form-signin #password2 {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.sign-in-page {
+    font-family: 'Inter-Regular';
+    font-size: 14px;
+    color: #84C19C;
+    padding: 4px;
+}
+
+.sign-in-page:hover {
+    font-family: 'Inter-Regular';
+    font-size: 14px;
+    background-color: #84C19C;
+    color: white;
+    padding: 4px;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+#profile-img-edit:hover {
+    cursor: pointer;
+    border: #84C19C solid 5px;
+    transition: 0.1s;
+}
+
+#profile-img-edit {
+    width: 150px; 
+    height: 150px; 
+    border:2px solid #84C19C; 
+    border-radius: 50%; 
+    margin-bottom: 20px; 
+    object-fit: cover;
+}
+
+#profile-img {
+    width: 150px; 
+    height: 150px; 
+    border:2px solid #84C19C; 
+    border-radius: 50%; 
+    margin-bottom: 20px; 
+    object-fit: cover; 
+}
