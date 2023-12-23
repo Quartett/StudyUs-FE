@@ -59,58 +59,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-let selectedDay = null; // 선택된 요일을 저장할 변수
-
+let selectedDay = []; // 선택된 요일을 저장할 배열
 document.addEventListener('DOMContentLoaded', () => {
-    const weekdaysDetails = document.querySelectorAll('.week_days_detail');
+    const weekdaysdetails = document.querySelectorAll('.week_days_detail');
+    
 
-    weekdaysDetails.forEach(weekday => {
+    weekdaysdetails.forEach(weekday => {
         weekday.addEventListener('click', function() {
-            const dayValue = this.getAttribute('data-day');
-
-            // 이미 선택된 요일을 클릭한 경우 선택을 해제합니다.
-            if (selectedDay === dayValue) {
-                selectedDay = null;
-                this.classList.remove('selected');
-            } else {
-                // 이전에 선택된 요일이 있었다면, 그 요일의 선택을 해제합니다.
-                if (selectedDay) {
-                    const prevSelected = document.querySelector(`.week_days_detail[data-day="${selectedDay}"]`);
-                    prevSelected.classList.remove('selected');
-                }
-
-                // 새로운 요일을 선택합니다.
-                selectedDay = dayValue;
-                this.classList.add('selected');
-            }
-            console.log(selectedDay); // 현재 선택된 요일을 콘솔에 출력합니다.
+        const dayvalue = this.getAttribute('data-day');
+        const dayindex = selectedDay.indexOf(dayvalue);
+        
+        if (dayindex > -1) {
+            // 이미 선택된 요일을 다시 클릭한 경우, 배열에서 제거합니다.
+            selectedDay.splice(dayindex, 1);
+            this.classList.remove('selected'); // 선택 해제 스타일을 위한 클래스 제거
+        } else {
+            // 새로운 요일을 클릭한 경우, 배열에 추가합니다.
+            selectedDay.push(dayvalue);
+            this.classList.add('selected'); // 선택 스타일을 위한 클래스 추가
+        }
+        console.log(selectedDay); // 현재 선택된 모든 요일을 콘솔에 출력합니다.
         });
     });
 });
-
-// let selectedDay = []; // 선택된 요일을 저장할 배열
-// document.addEventListener('DOMContentLoaded', () => {
-//     const weekdaysdetails = document.querySelectorAll('.week_days_detail');
-    
-
-//     weekdaysdetails.forEach(weekday => {
-//         weekday.addEventListener('click', function() {
-//         const dayvalue = this.getAttribute('data-day');
-//         const dayindex = selectedDay.indexOf(dayvalue);
-        
-//         if (dayindex > -1) {
-//             // 이미 선택된 요일을 다시 클릭한 경우, 배열에서 제거합니다.
-//             selectedDay.splice(dayindex, 1);
-//             this.classList.remove('selected'); // 선택 해제 스타일을 위한 클래스 제거
-//         } else {
-//             // 새로운 요일을 클릭한 경우, 배열에 추가합니다.
-//             selectedDay.push(dayvalue);
-//             this.classList.add('selected'); // 선택 스타일을 위한 클래스 추가
-//         }
-//         console.log(selectedDay); // 현재 선택된 모든 요일을 콘솔에 출력합니다.
-//         });
-//     });
-// });
 
 let selectedCategory = null; // 선택된 카테고리를 저장할 변수
 document.addEventListener('DOMContentLoaded', () => {
@@ -160,7 +131,7 @@ createStudyButton.addEventListener('click', function(e) {
     formData.append('category', parseInt(selectedCategory, 10));
     formData.append('study_start_at', StartDay);
     formData.append('study_end_at', EndDay);
-    formData.append('week_days', parseInt(selectedDay, 10));
+    formData.append('week_days', selectedDay);
     formData.append('content', content);
     console.log(formData)
 
