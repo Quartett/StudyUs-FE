@@ -46,7 +46,7 @@
     flex: 2;
 }
 
-.comment{
+.member{
     flex: 1;
 }
 
@@ -66,4 +66,32 @@
 .profile_image{
     display: flex;
     justify-content: center;
+}
+
+.comments{
+    display: flex;
+    flex-direction: column;
+}
+
+.comment_section{
+    flex: 2;
+}
+
+.comment{
+    display: flex;
+}
+
+.schedule{
+    flex: 1;
+}
+
+.week_days_list{
+    display: flex;
+    flex: 2;
+    gap: 1rem;
+    margin: 5px;
+}
+
+.week_days_detail{
+    border: 1px solid black;
 }
