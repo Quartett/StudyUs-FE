@@ -16,56 +16,102 @@
 <body>
     <header data-include-path="./header.html"></header>
 
-    <main class="main_container" style="border: 1px solid gray;">
-        <section class="edit_studygroup">
-            <div class="edit" style="border: 1px solid gray;">스터디관리</div>
-        </section>
-        <section class="head_section">
-            <div class="head">
-                <div class="thumbnail" style="border: 1px solid gray;">썸네일</div>
-                <div class="title" style="border: 1px solid gray;">타이틀</div>
-            </div>
-        </section>
-        <section class="join_section" style="border: 1px solid gray;">
-            <div class="" style="border: 1px solid gray;">스터디소개</div>
-            <div class="change_button" style="border: 1px solid gray;">가입</div>
-        </section>
-        <section class="content_section" style="border: 1px solid gray;">
-            <div class="content" style="border: 1px solid gray;">스터디설명</div>
-            <div class="schedule">
-                <div class="study_date">
-                    날짜
-                </div>
-                <div class="week_days">요일</div>
-                <div class="week_days_list">
-                    <div class="week_days_detail" data-day=월>월</div>
-                    <div class="week_days_detail" data-day=화>화</div>
-                    <div class="week_days_detail" data-day=수>수</div>
-                    <div class="week_days_detail" data-day=목>목</div>
-                    <div class="week_days_detail" data-day=금>금</div>
-                    <div class="week_days_detail" data-day=토>토</div>
-                    <div class="week_days_detail" data-day=일>일</div>
-                </div>
-                <div class="number_of_people">모집 인원
-                    <div class="member"style="border: 1px solid gray;">인원</div>
-                </div>
-            </div>
-        </section>
-        <section class="leader_section" style="border: 1px solid gray;">
-            <div class="leader_profile" style="border: 1px solid gray;">
+    <main class="full">
+        <!-- 프로필 -->
+        <section class="left">
+            <div class="user_profile">
                 <div class="profile_image">
                     <img src="./static/img/profile.svg" width="130" height="130">
                 </div>
+                <div class="user_name">사용자 닉네임</div>
+                <input class="study_create_btn btn btn-secondary" type="submit" value="스터디 생성">
             </div>
-            <div class="leader_comment" style="border: 1px solid gray;">소개말</div>
         </section>
-        <section class="comment_section">
-            <div class="comments" id="comments_container" style="border: 1px solid gray;">댓글</div>
+        <!-- 게시물 생성 -->
+        <section class="right">
+            <div class="study_setting">
+                <!-- 썸네일 -->
+
+                <div class="thumbnail">
+                    <input type="file" class="imageinput" id="imageinput" name="file"/>
+                    <img src="./static/img/default_study_thumbnail.png" class="thumbnail_img" id="thumbnailimg">
+                    <label for="imageinput"></label>
+                </div>
+                <!-- 스터디명, 난이도, 인원수 -->
+                <div class="study_setting_top">
+                    <div class="title_container">
+                        <div class="study_title">스터디 명</div>
+                        <input class="input_title" type="text">
+                    </div>
+                    <!-- 난이도, 인원수 -->
+                    <div class="study_setting_bottom">
+                        <div class="level_container">
+                            <div class="level">난이도</div>
+                            <div class="level_list">
+                                <div class="level_detail" data-level=1>EASY</div>
+                                <div class="level_detail" data-level=2>NORMAL</div>
+                                <div class="level_detail" data-level=3>HARD</div>
+                            </div>
+                        </div>
+                        <div class="member_container">
+                            <div class="member">인원수</div>
+                            <select class="max_member"></select>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- 카테고리 -->
+            <div class="category_container">
+                <div class="category">카테고리</div>
+                <div class="category_list">
+                    <div class="category_detail" data-category=1>1</div>
+                    <div class="category_detail" data-category=2>2</div>
+                    <div class="category_detail" data-category=3>3</div>
+                    <div class="category_detail" data-category=4>4</div>
+                    <div class="category_detail" data-category=5>5</div>
+                    <div class="category_detail" data-category=6>6</div>
+                    <div class="category_detail" data-category=7>7</div>
+                </div>
+            </div>
+            <!-- 일정, 요일 -->
+            <div class="date_container">
+                <div class="schedule_container">
+                    <div class="schedule">일정</div>
+                    <div class="start_day_container">
+                        <div class="start_day">시작일</div>
+                        <input class="input_start_day" type="date">
+                    </div>
+                    <div class="end_day_container">
+                        <div class="end_day">종료일</div>
+                        <input class="input_end_day" type="date">
+                    </div>
+                </div>
+                <div class="week_days_container">
+                    <div class="week_days">요일</div>
+                    <div class="week_days_list">
+                        <div class="week_days_detail" data-day=월>월</div>
+                        <div class="week_days_detail" data-day=화>화</div>
+                        <div class="week_days_detail" data-day=수>수</div>
+                        <div class="week_days_detail" data-day=목>목</div>
+                        <div class="week_days_detail" data-day=금>금</div>
+                        <div class="week_days_detail" data-day=토>토</div>
+                        <div class="week_days_detail" data-day=일>일</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 스터디 설명 -->
+            <div class="content">
+                <input class="input_content" type="text">
+            </div>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-outline-secondary m-2" type="button">삭제</button>
+                <button class="btn btn-primary m-2" type="button">수정</button>
+            </div>
         </section>
+    <script src="./static/js/common.js"></script>
+    <script src="./static/js/studygroup_create.js"></script>
     </main>
-<script src="./static/js/common.js"></script>
-<script src="./static/js/studygroup_detail.js"></script>
-    
 </body>
 
 </html>
