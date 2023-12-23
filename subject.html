@@ -30,6 +30,14 @@
             background-color: #f8f9fa;
         }
 
+        #userProfile {
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            margin-bottom: 20px; 
+            object-fit: cover;
+        }
+
     </style>
 </head>
 <body>
@@ -40,7 +48,7 @@
             <div class="row g-5">
                 <div class="col-lg-3">
                     <div class="card text-bg-light mx-auto" style="max-width: 18rem;">
-                        <img src="./static/img/default_profile.svg" class="card-img-top mt-4" width="130" height="130">
+                        <img id="userProfile" src="./static/img/default_profile.svg" class="card-img-top mx-auto mt-4" width="130" height="130">
                         <div id="profileSection" class="card-body">
                             <h5 id="nickname" class="card-title"></h5>
                         </div>
@@ -135,6 +143,7 @@
         })
         .then((json) => {
             document.querySelector("#nickname").innerHTML = json.nickname
+            document.getElementById("userProfile").src = json.profile_image
         })
         .catch((err) => {
             console.log(err.message)

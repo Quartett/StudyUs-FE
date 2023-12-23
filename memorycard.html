@@ -42,6 +42,14 @@
             overflow: auto;
         }
 
+        #userProfile {
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            margin-bottom: 20px; 
+            object-fit: cover;
+        }
+
     </style>
 </head>
 <body>
@@ -52,12 +60,17 @@
             <div class="row g-5">
                 <div class="col-lg-3">
                     <div class="card text-bg-light mx-auto" style="max-width: 18rem;">
-                        <img src="./static/img/default_profile.svg" class="card-img-top mt-4" width="130" height="130">
+                        <img id="userProfile" src="./static/img/default_profile.svg" class="card-img-top mx-auto mt-4" width="130" height="130">
                         <div id="profileSection" class="card-body">
                             <h5 id="nickname" class="card-title"></h5>
                         </div>
                     </div>
                     <div class="d-grid gap-2 mt-2 col-8 mx-auto">
+                        <button id="playBtn" type="button" class="btn btn-outline-secondary mt-3" style="border-color: #84C19C;" onclick="playBtnTapped()">
+                            Play
+                        </a>
+                    </div>
+                    <div class="d-grid gap-2 col-8 mx-auto">
                         <button type="button" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;" data-bs-toggle="modal" data-bs-target="#createCardModal">
                             암기카드 생성
                         </a>
@@ -186,6 +199,7 @@
         })
         .then((json) => {
             document.querySelector("#nickname").innerHTML = json.nickname
+            document.getElementById("userProfile").src = json.profile_image
         })
         .catch((err) => {
             alert("사용자 정보 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
@@ -247,7 +261,7 @@
                 document.querySelector('#noData').style.display = 'none';
                 json.map((memorycard) => {
                 document.querySelector("#memorycardSection").innerHTML += `
-                    <a href="#">
+                    <a href='/memorycard_detail.html?memorycard=${memorycard.id}'>
                             <div class="col">
                                 <div class="card memorycard">
                                     <div class="card-body d-flex align-items-center">
@@ -262,6 +276,7 @@
             })
             } else {
                 document.querySelector('#noData').style.display = 'block';
+                document.querySelector('#playBtn').style.display = 'none';
             }
         })
         .catch((err) => {
@@ -417,6 +432,12 @@
         document.querySelector("#inputAnswer").value = '';
         document.querySelector("#easy").checked = true;
         createCardModal.hide();
+    }
+
+    function playBtnTapped() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const subject_id = urlParams.get('subject');
+        window.location.href = '/memorycard_play.html?subject=' + subject_id;
     }
 </script>
 
