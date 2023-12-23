@@ -9,7 +9,7 @@ if (isLogin()){
     const button = document.querySelector('.change_button');
     button.textContent = '가입하기';
     button.onclick = function() {
-        joinStudyGroup();
+        window.location.href = '/login.html?redirect=studygroup_detail.html?pk=' + pk;
     };
 }
 
@@ -43,8 +43,18 @@ function isMember(pk, accessToken){
             return response.json();
         })
         .then(members => {
+            console.log("닉네임", userNickname);
+            const leader = members
+                .filter(member => member.role === 1)
+                .map(memberWithRoleOne => memberWithRoleOne.user_nickname);
+            // 리더의 닉네임과 userNickname이 같은지 비교
+            const isLeader = leader.some(leaderNickname => leaderNickname == userNickname);
+            console.log('리더인지 아닌지:', isLeader)
+            groupeditButton(isLeader);
+
+            console.log('그룹장:', leader);
             const isMember = members.some(member => member.user_nickname == userNickname);
-            updateButton(isMember);
+            memberButton(isMember);
         });
     })
     .catch(error => {
@@ -52,7 +62,21 @@ function isMember(pk, accessToken){
     });
 }
 
-function updateButton(isMember) {
+function groupeditButton(isLeader) {
+    const button = document.querySelector('.edit');
+    if (isLeader) {
+        button.textContent = '수정';
+        console.log('수정');
+        button.onclick = function() {
+            // window.location.href = '/path/to/chat';
+        };
+    } else {
+        // 버튼이 보이지 않도록 처리
+        button.style.display = 'none';
+    }
+}
+
+function memberButton(isMember) {
     const button = document.querySelector('.change_button');
     if (isMember) {
         button.textContent = '채팅방 입장';
@@ -60,6 +84,15 @@ function updateButton(isMember) {
         button.onclick = function() {
             // window.location.href = '/path/to/chat';
         };
+
+        const leaveButton = document.createElement('button');
+        leaveButton.textContent = '탈퇴하기';
+        leaveButton.className = 'leave_button';
+        leaveButton.onclick = function() {
+            // 탈퇴 처리를 위한 함수 호출
+            leaveStudyGroup(pk);
+        };
+        button.parentNode.insertBefore(leaveButton, button.nextSibling);
     } else {
         button.textContent = '가입하기';
         console.log('가입하기');
@@ -69,8 +102,54 @@ function updateButton(isMember) {
     }
 }
 
+function leaveStudyGroup(pk) {
+    checkTokenExpired('studygorup_detail.html', (accessToken) => {
+        fetch(`${baseUrl}/study/${pk}/member/delete/`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Unable to leave study group');
+            }
+            return response;
+        })
+        .then(() => {
+            // 탈퇴 성공시 페이지 새로고침
+            window.location.reload();
+        })
+    });
+}
+
 function joinStudyGroup() {
-    console.log('Joining study group...');
+    if (isLogin()){
+        checkTokenExpired('studygorup_detail.html', (accessToken) => {
+            const data = {
+                "study_group": pk,
+                "role": 0
+            }
+            fetch(`${baseUrl}/study/join/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('가입실패');
+                }
+                return response;
+            })
+            .then(() => {
+                // 가입 성공시 페이지 새로고침
+                window.location.reload();
+            })
+        });
+    }
 }
 
 getStudyGroupInfo();
@@ -109,9 +188,9 @@ function getStudyGroupInfo(){
         console.log(data.max_members, pk)
         fetchCurrentMemberCount(pk, data.max_members);
 
-        // if(data.leader && data.leader.profile_image) {
-        //     document.querySelector('.profile_image img').src = data.leader.profile_image;
-        // }
+        if(data.leader && data.leader.profile_image) {
+            document.querySelector('.profile_image img').src = data.leader.profile_image;
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
