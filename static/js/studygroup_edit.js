@@ -1,4 +1,66 @@
+const urlParams = new URLSearchParams(window.location.search);
+const pk = urlParams.get('pk');
+
+let selectedDay = []; // 선택된 요일을 저장할 배열
 let selectedImageFile = null; // 선택된 이미지 파일
+let selectedLevel = null; // 선택된 레벨을 저장할 변수
+let selectedCategory = null; // 선택된 카테고리를 저장할 변수
+
+getStudyGroupInfo();
+
+function getStudyGroupInfo(){
+
+    // pk가 없다면 함수를 종료합니다.
+    if (!pk) {
+        console.error('pk를 입력해주세요');
+        return;
+    }
+    
+    fetch(`${baseUrl}/study/${pk}/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+        return response.json();
+    })
+    .then((data) => {
+        document.querySelector('.input_title').value = data.title;
+        document.getElementById('thumbnailimg').src = data.thumbnail;
+        document.querySelector('.input_content').value = data.content;
+        document.querySelector('.max_member').value = data.max_members;
+        document.querySelector('.input_start_day').value = data.study_start_at;
+        document.querySelector('.input_end_day').value = data.study_end_at;
+
+        if (data.category) {
+            selectedCategory = data.category;
+            document.querySelector(`.category_detail[data-category="${selectedCategory}"]`).classList.add('selected');
+        }
+
+        if (data.level) {
+            selectedLevel = data.level;
+            document.querySelector(`.level_detail[data-level="${selectedLevel}"]`).classList.add('selected');
+        }
+
+        if (data.week_days) {
+            selectedDay = data.week_days.split(',');
+
+            selectedDay.forEach(day => {
+                document.querySelector(`.week_days_detail[data-day="${day}"]`).classList.add('selected');
+            });
+        }
+
+        console.log(data);
+    })
+    .catch((err) => {
+        alert("글 정보를 받아오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }); 
+}
+
 
 document.getElementById('imageinput').addEventListener('change', function(event) {
     const file = event.target.files[0]; // 사용자가 선택한 파일 가져오기
@@ -26,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         selectElement.appendChild(option);
     }
 });
-
-let selectedLevel = null; 
 
 document.addEventListener('DOMContentLoaded', () => {
     const leveldetails = document.querySelectorAll('.level_detail');
@@ -57,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-let selectedDay = []; // 선택된 요일을 저장할 배열
 document.addEventListener('DOMContentLoaded', () => {
     const weekdaysdetails = document.querySelectorAll('.week_days_detail');
     
@@ -80,7 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-let selectedCategory = null; // 선택된 카테고리를 저장할 변수
 document.addEventListener('DOMContentLoaded', () => {
     const categorydetails = document.querySelectorAll('.category_detail');
 
@@ -106,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const createStudyButton = document.querySelector('#createbtn') // 스터디 생성 버튼 선택
+const createStudyButton = document.querySelector('#createbtn') // 저장 버튼 선택
 
 createStudyButton.addEventListener('click', function(e) {
     e.preventDefault();
@@ -156,8 +214,8 @@ createStudyButton.addEventListener('click', function(e) {
       // Fetch API를 사용하여 서버에 POST 요청
     if (formData) {
         checkTokenExpired('create_studygroup.html', (accessToken) => {
-            fetch(`${baseUrl}/study/create/`, {
-                method: 'POST',
+            fetch(`${baseUrl}/study/${pk}/update/`, {
+                method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 },
@@ -170,11 +228,11 @@ createStudyButton.addEventListener('click', function(e) {
                 return response.json();
             })
             .then((data) => {
-            console.log('글작성성공:', data);
-            window.location.href = '/index.html';
+            console.log('글수정성공:', data);
+            window.location.href = '/studygroup_detail.html?pk='+pk;
             })
             .catch((err) => {
-            console.error('글 작성 중 에러 발생했습니다. 잠시 후 다시 시도해주세요');
+            console.error('글 수정 중 에러 발생했습니다. 잠시 후 다시 시도해주세요');
             });
         })
     } else {

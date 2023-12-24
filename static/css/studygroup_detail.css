@@ -1,9 +1,43 @@
 @media (min-width: 820px) {
-    .full{
-        display: flex;
-        width: 100%;
-        height: 83%;
-    }
+.full{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* 왼쪽 부분 사용자 닉네임 및 스터디 생성 버튼 표시 */
+.left{
+    background: #F0EFEF;
+    border-radius: 10px;
+    width: 200px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.user_profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_image{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.user_name{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.study_create_btn{
+    margin-top: 10px;
+    width: 120px;
+    height: 40px;
+}
 
     /* 오른쪽 부분 스터디 설정 부분 */
     .right{
@@ -133,9 +167,7 @@
         flex: 1;
     }
 
-    .level_detail,
     .category,
-    .category_detail,
     .schedule,
     .start_day,
     .end_day,
@@ -144,6 +176,23 @@
         display: flex;
         align-items: center;
         flex: 1;
+    }
+
+    .category_detail, .level_detail{
+        width: 5vw;
+        height: 5vw;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
+    }
+
+    .right_side{
+        display: flex;
+        gap: 5px;
     }
 
     .category_list,
@@ -155,12 +204,8 @@
         margin-bottom: 20px;
     }
 
-    .category_detail,
-    .level_detail{
-        justify-content: center;
-        border: 2px solid #84C19C;
-        border-radius: 10px;
-        background-color: #F0EFEF;
+    .category_list{
+        justify-content: space-between;
     }
 
     .date_container,
@@ -216,9 +261,14 @@
         flex: 1;
     }
 
+    .content_container{
+        flex: 2;
+        border: 1px solid #F0EFEF;
+        border-radius: 5px;
+    }
+
     .input_content{
-        width: 100%;
-        height: 100%;
+        height: 30vh;
         border-radius: 10px;
         resize: none;
         padding: 5px;
@@ -231,6 +281,39 @@
         transition: 0.2s;
     }
 
+    .leader_container{
+        display: flex;
+    }
+
+    .leader_comment{
+        flex: 3;
+    }
+
+    .comments{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment_info{
+        display: flex;
+    }
+
+    .comment_input{
+        border-bottom: 1px solid #F0EFEF;
+        flex: 1;
+    }
+
+    .comment_input_container{
+        display: flex;
+    }
+
+    .toolbar{
+        margin-left: 50px;
+    }
+
+    .hidden {
+        display: none;
+    }
 }
 
 @media (max-width: 819px) {
