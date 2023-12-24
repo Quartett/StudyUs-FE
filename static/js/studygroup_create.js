@@ -123,6 +123,26 @@ createStudyButton.addEventListener('click', function(e) {
     const EndDay = document.querySelector('.input_end_day').value;
     const content = document.querySelector('.input_content').value;
 
+    let missingFieldsMsg = '';
+
+    if (!title) missingFieldsMsg += '제목, ';
+    if (isNaN(max_member)) missingFieldsMsg += '최대 인원수, ';
+    if (!StartDay) missingFieldsMsg += '시작일, ';
+    if (!EndDay) missingFieldsMsg += '종료일, ';
+    if (!content) missingFieldsMsg += '내용, ';
+    if (isNaN(parseInt(selectedLevel, 10))) missingFieldsMsg += '레벨, ';
+    if (isNaN(parseInt(selectedCategory, 10))) missingFieldsMsg += '카테고리, ';
+    if (!selectedDay) missingFieldsMsg += '요일, ';
+
+    // 누락된 필드가 있는지 확인합니다.
+    if (missingFieldsMsg) {
+        // 마지막 쉼표를 제거하고 메시지를 완성합니다.
+        console.log(missingFieldsMsg)
+        missingFieldsMsg = missingFieldsMsg.slice(0, -2);
+        alert('다음 필드를 채워주세요: ' + missingFieldsMsg);
+        return; // 필수 필드가 하나라도 빈 경우 함수를 종료합니다.
+    }
+
     // FormData 객체를 생성하고 폼 데이터를 추가합니다.
     const formData = new FormData();
     formData.append('title', title);
@@ -152,16 +172,16 @@ createStudyButton.addEventListener('click', function(e) {
             })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Invalid token');
+                    throw new Error(response.status);
                 }
                 return response.json();
             })
             .then((data) => {
             console.log('글작성성공:', data);
-            window.location.href = '/index.html';
+            // window.location.href = '/index.html';
             })
-            .catch((error) => {
-            console.error('Error:', error);
+            .catch((err) => {
+            console.error('글 작성 중 에러 발생했습니다. 잠시 후 다시 시도해주세요');
             });
         })
     } else {
