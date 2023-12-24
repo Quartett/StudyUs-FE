@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         option.value = i;
         option.textContent = i+"명";
         
-        // 생성된 option을 select 요소에 추가
         selectElement.appendChild(option);
     }
 });
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedLevel === levelValue) {
                 // 이미 선택된 level을 다시 클릭한 경우, 선택 해제합니다.
                 selectedLevel = null;
-                this.classList.remove('selected'); // 선택 해제 스타일을 위한 클래스 제거
+                this.classList.remove('selected');
             } else {
                 // 다른 level이 선택되었거나, 아직 아무것도 선택되지 않은 경우
                 
@@ -52,9 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 새로운 level을 선택합니다.
                 selectedLevel = levelValue;
-                this.classList.add('selected'); // 선택 스타일을 위한 클래스 추가
+                this.classList.add('selected');
             }
-            console.log(selectedLevel); // 현재 선택된 level 로깅
         });
     });
 });
@@ -72,13 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dayindex > -1) {
             // 이미 선택된 요일을 다시 클릭한 경우, 배열에서 제거합니다.
             selectedDay.splice(dayindex, 1);
-            this.classList.remove('selected'); // 선택 해제 스타일을 위한 클래스 제거
+            this.classList.remove('selected');
         } else {
             // 새로운 요일을 클릭한 경우, 배열에 추가합니다.
             selectedDay.push(dayvalue);
-            this.classList.add('selected'); // 선택 스타일을 위한 클래스 추가
+            this.classList.add('selected');
         }
-        console.log(selectedDay); // 현재 선택된 모든 요일을 콘솔에 출력합니다.
         });
     });
 });
@@ -102,11 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     prevSelected.classList.remove('selected');
                 }
 
-                // 새로운 카테고리를 선택합니다.
                 selectedCategory = categoryvalue;
                 this.classList.add('selected');
             }
-            console.log(selectedCategory); // 현재 선택된 카테고리를 콘솔에 출력합니다.
         });
     });
 });
@@ -136,10 +131,9 @@ createStudyButton.addEventListener('click', function(e) {
 
     // 누락된 필드가 있는지 확인합니다.
     if (missingFieldsMsg) {
-        // 마지막 쉼표를 제거하고 메시지를 완성합니다.
         console.log(missingFieldsMsg)
         missingFieldsMsg = missingFieldsMsg.slice(0, -2);
-        alert('다음 필드를 채워주세요: ' + missingFieldsMsg);
+        alert(missingFieldsMsg + '에 값을 입력해주세요.');
         return; // 필수 필드가 하나라도 빈 경우 함수를 종료합니다.
     }
 
@@ -178,7 +172,7 @@ createStudyButton.addEventListener('click', function(e) {
             })
             .then((data) => {
             console.log('글작성성공:', data);
-            // window.location.href = '/index.html';
+            window.location.href = '/index.html';
             })
             .catch((err) => {
             console.error('글 작성 중 에러 발생했습니다. 잠시 후 다시 시도해주세요');
