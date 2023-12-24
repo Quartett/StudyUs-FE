@@ -229,6 +229,8 @@
 </script>
 
 <script>
+    let current = 0;
+
     const user_id = getUserIdFromToken(getAccessToken());
     function setChatSocket(chatRoomId) {
         const chatSocket = new WebSocket(
@@ -262,7 +264,13 @@
         };
     
         chatSocket.onerror = function(e) {
-                console.error('Chat socket error');
+            if(current < 20) {
+                setChatSocket(chat_id);
+                current += 1;
+            } else {
+                alert("채팅방을 연결할 수 없습니다\n관리자에게 문의하세요")
+                window.location.href = '/index.html';
+            }
         };
 
         document.querySelector('#chat-message-input').focus();
