@@ -4,39 +4,6 @@
     height: 83%;
 }
 
-.left{
-    background: #F0EFEF;
-    border-radius: 10px;
-    width: 200px;
-    height: 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-}
-
-.user_profile{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile_image{
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.user_name{
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.btn{
-    margin-top: 10px;
-    width: 120px;
-    height: 40px;
-}
-
 .right{
     width: 88vw;
     height: 70vw;

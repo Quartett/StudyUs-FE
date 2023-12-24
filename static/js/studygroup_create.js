@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const prevSelected = document.querySelector(`.category_detail[data-category="${selectedCategory}"]`);
                     prevSelected.classList.remove('selected');
                 }
-
+                
                 selectedCategory = categoryvalue;
                 this.classList.add('selected');
             }
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-const createStudyButton = document.querySelector('.btn-secondary'); // 스터디 생성 버튼 선택
+const createStudyButton = document.querySelector('#createbtn') // 스터디 생성 버튼 선택
 
 createStudyButton.addEventListener('click', function(e) {
     e.preventDefault();
@@ -147,7 +147,6 @@ createStudyButton.addEventListener('click', function(e) {
     formData.append('study_end_at', EndDay);
     formData.append('week_days', selectedDay);
     formData.append('content', content);
-    console.log(formData)
 
     // 이미지 파일이 선택되었다면 FormData에 추가합니다.
     if (selectedImageFile) {
