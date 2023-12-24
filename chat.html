@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyUs</title>
+
+    <link rel="stylesheet" href="./static/css/font.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <script src="./static/js/include.js"></script>
+    <script src="./static/js/common.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter-Regular';
+            padding: 0 0 30px 0;
+        }
+
+        .group-thumbnail {
+            padding: 10px 10px 10px 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 70%; 
+            object-fit: cover;
+        }
+
+        a {
+            border-radius: 0.5rem;
+        }
+
+        a:link {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header data-include-path="./header.html"></header>
+
+    <main class="container">
+        <div class="text-center">
+            <div class="row g-5">
+                <div class="col-lg-3">
+                    <div id="groupList" class="card mx-auto" style="max-width: 15rem; background-color: white;">
+                        
+                        
+                    </div>
+                </div>
+                <div id="ChatSection" class="col-lg-6">
+                    
+                </div>
+                <div class="col-lg-3">
+                    <div id="memberList" class="card mx-auto" style="max-width: 15rem; background-color: white; display: none;">
+                        <div class="card-header">스터디 멤버</div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+<script>
+    // if (isLogin()) {
+    //     document.querySelector("#profileSection").innerHTML += `
+    //         <a id="createStudyBtn" href="/studygroup_create.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+    //             스터디 생성
+    //         </a>  
+    //     `
+    // } else {
+    //     document.querySelector("#profileSection").innerHTML += `
+    //         <a id="loginBtn" href="/login.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+    //             시작하기
+    //         </a>
+    //     `
+    // }
+</script>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const chat_id = urlParams.get('id') || 'none';
+    const group_id = urlParams.get('group') || 'none';
+
+    if(chat_id == 'none') {
+        document.querySelector("#ChatSection").innerHTML = `
+            <div id="noContent" class="form-control d-flex align-items-center justify-content-center" style="height: 500px;">
+                대화를 시작하려면 접속하려는 스터디 그룹을 선택하세요
+            </div>
+        `;
+    } else {
+        document.querySelector("#ChatSection").innerHTML = `
+            <div id="chat-log" class="form-control text-start" style="resize: none; height: 300px; overflow-y: scroll" readonly></div>
+            <br>
+            <input id="chat-message-input" type="text" size="100" class="form-control"><br>
+            <input id="chat-message-submit" type="button" value="전송" class="btn btn-primary" style="background-color: #84C19C; border-color: #84C19C;">
+        `;
+
+        document.querySelector("#memberList").setAttribute('style', 'display: flex;');
+    }
+
+</script>
+
+<script>
+    checkTokenExpired('memorycard.html', (accessToken) => {
+        getStudyList(accessToken);
+        if (chat_id != 'none' && group_id != 'none') {
+            getStudyMemberList(accessToken);
+            setChatSocket(chat_id);
+        }
+    })
+
+    function getStudyList(accessToken) {
+        fetch(`${baseUrl}/study/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error(response.status)
+            }
+            return response.json()
+        })
+        .then((json) => {
+            if(json.length > 0) {
+                json.map((group) => {
+                    if (group.chat_room_id == chat_id) {
+                        document.querySelector("#groupList").innerHTML += `
+                            <a href='/chat.html?id=${group.chat_room_id}&group=${group.id}' style="background-color: lightgray;">
+                                <div class="row g-0 rounded-3">
+                                        <div class="col-md-4">
+                                            <img src="${group.thumbnail}" class="img-fluid group-thumbnail" >
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body text-start">${group.title}</div>
+                                        </div>
+                                </div>
+                            </a>
+                        `;
+                    } else {
+                        document.querySelector("#groupList").innerHTML += `
+                            <a href='/chat.html?id=${group.chat_room_id}&group=${group.id}' style="text-decoration: none; background-color: white;">
+                                <div class="row g-0 rounded-3">
+                                        <div class="col-md-4">
+                                            <img src="${group.thumbnail}" class="img-fluid group-thumbnail" >
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body text-start">${group.title}</div>
+                                        </div>
+                                </div>
+                            </a>
+                        `;
+                    }
+                    
+                })
+            } else {
+                alert("가입된 스터디 그룹이 없습니다\n메인 페이지로 이동합니다");
+                window.location.href = '/index.html';
+            }
+        })
+        .catch((err) => {
+            alert("스터디 리스트 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+            window.location.href = '/index.html';
+        })
+    }
+
+    function getStudyMemberList(accessToken) {
+            fetch(`${baseUrl}/study/${group_id}/member/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            .then((response) => {
+                if(!response.ok) {
+                    throw new Error(response.status)
+                }
+                return response.json()
+            })
+            .then((json) => {
+                if(json.length > 0) {
+                    json.map((member) => {
+                        if(member.role == 1) {
+                            document.querySelector("#memberList").innerHTML += `
+                                <div class="row g-0 rounded-3">
+                                    <div class="col-md-4">
+                                        <img src="${baseUrl}${member.profile_image}" class="img-fluid group-thumbnail" >
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body text-start">${member.user_nickname}(방장)</div>
+                                    </div>
+                                </div>
+                            `
+                        } else {
+                            document.querySelector("#memberList").innerHTML += `
+                                <div class="row g-0 rounded-3">
+                                    <div class="col-md-4">
+                                        <img src="${baseUrl}${member.profile_image}" class="img-fluid group-thumbnail" >
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body text-start">${member.user_nickname}</div>
+                                    </div>
+                                </div>
+                            `
+                        }
+                    })
+                }
+            })
+        }
+</script>
+
+<script>
+    const user_id = getUserIdFromToken(getAccessToken());
+    function setChatSocket(chatRoomId) {
+        const chatSocket = new WebSocket(
+            'ws://'
+            // + '13.115.106.99:8001'
+            + '127.0.0.1:8000'
+            + '/ws/chat/'
+            + chatRoomId
+            + '/',
+        );
+    
+        chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                document.querySelector('#chat-log').innerHTML += `
+                    <div>
+                        <img src="http://13.115.106.99${data.profile_image}" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <strong>${data.nickname}</strong>
+                        <p>${data.message}</p>
+                    </div> 
+                `;
+                
+                document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+        };
+    
+        chatSocket.onclose = function(e) {
+                console.error('Chat socket closed unexpectedly');
+        };
+    
+        chatSocket.onopen = function(e) {
+                console.log('Chat socket open');
+        };
+    
+        chatSocket.onerror = function(e) {
+                console.error('Chat socket error');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.key === 'Enter') {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+    
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            e.preventDefault();
+            
+            if (document.querySelector('#chat-message-input').value === '') {
+                return;
+            }
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'room_id': chat_id,
+                'user_id': user_id
+            }));
+            messageInputDom.value = '';
+        };  
+    }
+
+    function getUserIdFromToken(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(atob(base64));
+            return payload.user_id;
+        } catch (error) {
+            return null;
+        }
+    }
+</script>
+
+</html>
