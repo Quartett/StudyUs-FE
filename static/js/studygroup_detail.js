@@ -63,14 +63,34 @@ function isMember(pk, accessToken){
 }
 
 function groupeditButton(isLeader) {
+    // 그룹장이라면 수정, 삭제 버튼이 보이도록 처리
+    // 수정에 대한 이벤트 작성필요
     const editbutton = document.querySelector('#edit');
     const deletebutton = document.querySelector('#delete');
     if (isLeader) {
         editbutton.onclick = function() {
-            // window.location.href = '/path/to/chat';
+            // 수정페이지로 이동
         };
         deletebutton.onclick = function() {
-            // window.location.href = '/path/to/chat';
+            checkTokenExpired('studygorup_detail.html', (accessToken) => {
+                fetch(`${baseUrl}/study/${pk}/delete/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Unable to delete study group');
+                    }
+                    return response;
+                })
+                .then(() => {
+                    // 삭제 성공시 페이지 이동
+                    window.location.href = '/index.html';
+                }
+                )
+            });
         };
     } else {
         // 버튼이 보이지 않도록 처리
@@ -85,6 +105,7 @@ function memberButton(isMember) {
         button.textContent = '채팅방 입장';
         console.log('채팅방 입장');
         button.onclick = function() {
+            // 채팅방 페이지 작성되면 채팅방으로 이동 필요
             // window.location.href = '/path/to/chat';
         };
 
@@ -191,6 +212,10 @@ function getStudyGroupInfo(){
 
         console.log(data.max_members, pk)
         fetchCurrentMemberCount(pk, data.max_members);
+
+        if(data.thumbnail) {
+            document.querySelector('.thumbnail img').src = data.thumbnail;
+        }
 
         if(data.leader && data.leader.profile_image) {
             console.log("이미지주소",data.leader.profile_image)
