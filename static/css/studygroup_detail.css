@@ -167,24 +167,29 @@
         flex: 1;
     }
 
-.category,
-.schedule,
-.start_day,
-.end_day,
-.week_days,
-.week_days_detail{
-    display: flex;
-    align-items: center;
-    flex: 1;
-}
+    .category,
+    .schedule,
+    .start_day,
+    .end_day,
+    .week_days,
+    .week_days_detail{
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
 
-.category_detail, .level_detail{
-    width: 5vw;
-    height: 5vw;
-    display: flex;
-    align-items: center;
-    margin: 5px;
-}
+    .category_detail, .level_detail{
+        width: 5vw;
+        height: 5vw;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+    }
+
+    .right_side{
+        display: flex;
+        gap: 5px;
+    }
 
     .category_list,
     .level_list{
@@ -193,6 +198,10 @@
         height: 5rem;
         gap: 10px;
         margin-bottom: 20px;
+    }
+
+    .category_list{
+        justify-content: space-between;
     }
 
     .category_detail,
@@ -256,15 +265,14 @@
         flex: 1;
     }
 
-.content_container{
-    flex: 2;
-    border: 1px solid #F0EFEF;
-    border-radius: 5px;
-}
+    .content_container{
+        flex: 2;
+        border: 1px solid #F0EFEF;
+        border-radius: 5px;
+    }
 
     .input_content{
-        width: 100%;
-        height: 100%;
+        height: 30vh;
         border-radius: 10px;
         resize: none;
         padding: 5px;
@@ -277,39 +285,39 @@
         transition: 0.2s;
     }
 
-.leader_container{
-    display: flex;
-}
+    .leader_container{
+        display: flex;
+    }
 
-.leader_comment{
-    flex: 3;
-}
+    .leader_comment{
+        flex: 3;
+    }
 
-.comments{
-    display: flex;
-    flex-direction: column;
-}
+    .comments{
+        display: flex;
+        flex-direction: column;
+    }
 
-.comment_info{
-    display: flex;
-}
+    .comment_info{
+        display: flex;
+    }
 
-.comment_input{
-    border-bottom: 1px solid #F0EFEF;
-    flex: 1;
-}
+    .comment_input{
+        border-bottom: 1px solid #F0EFEF;
+        flex: 1;
+    }
 
-.comment_input_container{
-    display: flex;
-}
+    .comment_input_container{
+        display: flex;
+    }
 
-.toolbar{
-    margin-left: 50px;
-}
+    .toolbar{
+        margin-left: 50px;
+    }
 
-.hidden {
-    display: none;
-}
+    .hidden {
+        display: none;
+    }
 }
 
 @media (max-width: 819px) {
