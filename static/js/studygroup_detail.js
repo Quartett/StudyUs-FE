@@ -69,7 +69,9 @@ function groupeditButton(isLeader) {
     const deletebutton = document.querySelector('#delete');
     if (isLeader) {
         editbutton.onclick = function() {
-            // 수정페이지로 이동
+            checkTokenExpired('studygorup_detail.html', (accessToken) => {
+                window.location.href = `/studygroup_edit.html?pk=${pk}`;
+            });
         };
         deletebutton.onclick = function() {
             checkTokenExpired('studygorup_detail.html', (accessToken) => {
@@ -221,6 +223,8 @@ function getStudyGroupInfo(){
 
         if(data.thumbnail) {
             document.querySelector('.thumbnail img').src = data.thumbnail;
+        } else {
+            document.querySelector('.thumbnail img').src = "http://127.0.0.1:8000/media/study_images/default_study_thumbnail.png";
         }
 
         if(data.leader && data.leader.profile_image) {
@@ -256,13 +260,13 @@ function createCommentElement(comment) {
     comment_element.classList.add('comment_element');
     element.appendChild(comment_element);
 
-    const comment_info = document.createElement('div');
-    comment_info.classList.add('comment_info');
-    comment_element.appendChild(comment_info);
-
     const header = document.createElement('div');
     header.classList.add('header');
     comment_element.appendChild(header);
+
+    const comment_info = document.createElement('div');
+    comment_info.classList.add('comment_info');
+    comment_element.appendChild(comment_info);
 
     const toolbar = document.createElement('div');
     toolbar.classList.add('toolbar');
@@ -284,8 +288,6 @@ function createCommentElement(comment) {
     input.classList.add('edit_input', 'hidden');
     comment_info.appendChild(input);
 
-    const menu = document.createElement('div');
-    menu.classList.add('comment_menu');
     const editButton = document.createElement('button');
     editButton.classList.add('edit_button');
     editButton.textContent = '수정';
@@ -326,7 +328,7 @@ function createCommentElement(comment) {
         }
     };
     
-    menu.appendChild(editButton);
+    toolbar.appendChild(editButton);
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete_button');
@@ -336,8 +338,7 @@ function createCommentElement(comment) {
             deleteComment(commentid, accessToken);
         })
     };
-    menu.appendChild(deleteButton);
-    element.appendChild(menu);
+    toolbar.appendChild(deleteButton);
 
     // const profileImage = document.createElement('div');
     // profileImage.classList.add('commnet_profile_image');

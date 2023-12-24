@@ -184,6 +184,10 @@
         display: flex;
         align-items: center;
         margin: 5px;
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
     }
 
     .right_side{
@@ -202,14 +206,6 @@
 
     .category_list{
         justify-content: space-between;
-    }
-
-    .category_detail,
-    .level_detail{
-        justify-content: center;
-        border: 2px solid #84C19C;
-        border-radius: 10px;
-        background-color: #F0EFEF;
     }
 
     .date_container,
