@@ -206,7 +206,7 @@ function getStudyGroupInfo(){
 
         displayStudyDates(data.study_start_at, data.study_end_at);
 
-        category(data.category)
+        category_level(data.category, data.level)
         
         highlightMeetingDays(data.week_days);
 
@@ -497,8 +497,19 @@ function highlightMeetingDays(weekDays) {
     });
 }
 
-function category(category) {
+function category_level(category, level) {
     const categories = document.querySelectorAll('.category_detail');
+    const levels = document.querySelectorAll('.level_detail');
+
+    levels.forEach(levelElement => {
+        const levelNumber = levelElement.getAttribute('data-level');
+
+        if (levelNumber == level) {
+            levelElement.classList.add('selected');
+        } else {
+            levelElement.style.display = 'none';
+        }
+    });
 
     categories.forEach(categoryElement => {
         const categoryNumber = categoryElement.getAttribute('data-category');

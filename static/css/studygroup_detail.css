@@ -159,7 +159,6 @@
     flex: 1;
 }
 
-.level_detail,
 .category,
 .schedule,
 .start_day,
@@ -171,7 +170,7 @@
     flex: 1;
 }
 
-.category_detail{
+.category_detail, .level_detail{
     width: 5vw;
     height: 5vw;
     display: flex;
