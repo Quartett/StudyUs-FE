@@ -189,7 +189,8 @@ function getStudyGroupInfo(){
         fetchCurrentMemberCount(pk, data.max_members);
 
         if(data.leader && data.leader.profile_image) {
-            document.querySelector('.profile_image img').src = data.leader.profile_image;
+            console.log("이미지주소",data.leader.profile_image)
+            document.querySelector('.profile_image img').src = "http://127.0.0.1:8000" + data.leader.profile_image;
         }
     })
     .catch((error) => {
