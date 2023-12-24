@@ -23,7 +23,7 @@ function isMember(pk, accessToken){
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Unable to fetch user details');
+            throw new Error(response.status);
         }
         return response.json();
     })
@@ -38,7 +38,7 @@ function isMember(pk, accessToken){
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Unable to fetch member list');
+                throw new Error(response.status);
             }
             return response.json();
         })
@@ -81,7 +81,7 @@ function groupeditButton(isLeader) {
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Unable to delete study group');
+                        throw new Error(response.status);
                     }
                     return response;
                 })
@@ -135,7 +135,7 @@ function leaveStudyGroup(pk) {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Unable to leave study group');
+                throw new Error(response.status);
             }
             return response;
         })
@@ -143,6 +143,9 @@ function leaveStudyGroup(pk) {
             // 탈퇴 성공시 페이지 새로고침
             window.location.reload();
         })
+        .catch((err) => {
+            alert("그룹 탈퇴 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+        }); 
     });
 }
 
@@ -163,7 +166,7 @@ function joinStudyGroup() {
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('가입실패');
+                    throw new Error(response.status);
                 }
                 return response;
             })
@@ -171,6 +174,9 @@ function joinStudyGroup() {
                 // 가입 성공시 페이지 새로고침
                 window.location.reload();
             })
+            .catch((err) => {
+                alert("그룹 참가 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+            }); 
         });
     }
 }
@@ -193,7 +199,7 @@ function getStudyGroupInfo(){
     })
     .then((response) => {
         if (!response.ok) {
-            throw new Error('Invalid token');
+            throw new Error(response.status);
         }
         return response.json();
     })
@@ -218,13 +224,12 @@ function getStudyGroupInfo(){
         }
 
         if(data.leader && data.leader.profile_image) {
-            console.log("이미지주소",data.leader.profile_image)
             document.querySelector('.leader_profile_image img').src = "http://127.0.0.1:8000" + data.leader.profile_image;
         }
     })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    .catch((err) => {
+        alert("글 정보를 받아오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }); 
 }
 
 function displayComments(comments) {
@@ -372,7 +377,7 @@ document.getElementById('comment_submit').addEventListener('click', function() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Unable to create comment');
+                throw new Error(response.status);
             }
             return response.json();
         })
@@ -380,9 +385,9 @@ document.getElementById('comment_submit').addEventListener('click', function() {
             // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
             getStudyGroupInfo();
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+        .catch((err) => {
+            alert("댓글 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+        }); 
     }
     )}
 );
@@ -403,7 +408,7 @@ function saveEditedComment(commentid, updatedText, accessToken, callback) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Unable to edit comment');
+            throw new Error(response.status);
         }
         return response
     })
@@ -414,9 +419,9 @@ function saveEditedComment(commentid, updatedText, accessToken, callback) {
             callback();
         }
     })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    .catch((err) => {
+        alert("댓글 수정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }); 
 }
 
 function deleteComment(commentid, accessToken) {
@@ -428,7 +433,7 @@ function deleteComment(commentid, accessToken) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Unable to delete comment');
+            throw new Error(response.status);
         }
         return response;
     })
@@ -436,9 +441,9 @@ function deleteComment(commentid, accessToken) {
         // 삭제가 성공적으로 완료된 후 댓글 목록을 fetch하여 다시 렌더링
         getStudyGroupInfo();
     })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    .catch((err) => {
+        alert("댓글 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }); 
 }
 
 function toggleReplies(commentElement, replies) {
@@ -468,7 +473,7 @@ function fetchCurrentMemberCount(pk, maxMembers) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('unable to fetch member list');
+            throw new Error(response.status);
         }
         return response.json();
     })
@@ -476,9 +481,9 @@ function fetchCurrentMemberCount(pk, maxMembers) {
         const currentMemberCount = memberData.length;
         document.querySelector('.max_member').textContent = `${currentMemberCount}/${maxMembers}`;
     })
-    .catch(error => {
-        console.error('Error fetching member', error);
-    });
+    .catch((err) => {
+        alert(" 현재인원 정보 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }); 
 }
 
 function displayStudyDates(startday, endday) {
