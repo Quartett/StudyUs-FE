@@ -33,15 +33,13 @@
                 <!-- 썸네일 -->
 
                 <div class="thumbnail">
-                    <input type="file" class="imageinput" id="imageinput" name="file"/>
                     <img src="./static/img/default_study_thumbnail.png" class="thumbnail_img" id="thumbnailimg">
-                    <label for="imageinput"></label>
                 </div>
                 <!-- 스터디명, 난이도, 인원수 -->
                 <div class="study_setting_top">
                     <div class="title_container">
                         <div class="study_title">스터디 명</div>
-                        <input class="input_title" type="text">
+                        <div class="input_title"></div>
                     </div>
                     <!-- 난이도, 인원수 -->
                     <div class="study_setting_bottom">
@@ -55,7 +53,7 @@
                         </div>
                         <div class="member_container">
                             <div class="member">인원수</div>
-                            <select class="max_member"></select>
+                            <div class="max_member"></div>
                         </div>
                     </div>
                     
@@ -72,6 +70,10 @@
                     <div class="category_detail" data-category=5>5</div>
                     <div class="category_detail" data-category=6>6</div>
                     <div class="category_detail" data-category=7>7</div>
+                    <div class="right_side">
+                        <button id="change_button" class="btn btn-outline-secondary m-2"></button>
+                        <button id="leave_button" class="btn btn-outline-secondary m-2"></button>
+                    </div>
                 </div>
             </div>
             <!-- 일정, 요일 -->
@@ -80,11 +82,6 @@
                     <div class="schedule">일정</div>
                     <div class="start_day_container">
                         <div class="start_day">시작일</div>
-                        <input class="input_start_day" type="date">
-                    </div>
-                    <div class="end_day_container">
-                        <div class="end_day">종료일</div>
-                        <input class="input_end_day" type="date">
                     </div>
                 </div>
                 <div class="week_days_container">
@@ -101,16 +98,32 @@
                 </div>
             </div>
             <!-- 스터디 설명 -->
-            <div class="content">
-                <input class="input_content" type="text">
+            <div class="content_container">
+                <div class="input_content"></div>
+                <div class="leader_container">
+                    <div class="leader_profile" style="border: 1px solid gray;">
+                        <div class="leader_profile_image">
+                            <img src="" width="130" height="130">
+                        </div>
+                    </div>
+                    <div class="leader_comment" style="border: 1px solid gray;">소개말</div>
+                </div>
             </div>
+            <!-- 댓글 -->
+            <section class="comment_section">
+                <div class="comment_input_container">
+                    <div class="comment_input" contenteditable="true">댓글 추가...</div>
+                    <button id="comment_submit" class="btn btn-primary m-2" type="button">등록</button>
+                </div>
+                <div class="comments" id="comments_container" style="border: 1px solid gray;">댓글</div>
+            </section>
             <div class="d-flex justify-content-end">
-                <button class="btn btn-outline-secondary m-2" type="button">삭제</button>
-                <button class="btn btn-primary m-2" type="button">수정</button>
+                <button id="delete" class="btn btn-outline-secondary m-2" type="button">삭제</button>
+                <button id="edit" class="btn btn-primary m-2" type="button">수정</button>
             </div>
         </section>
     <script src="./static/js/common.js"></script>
-    <script src="./static/js/studygroup_create.js"></script>
+    <script src="./static/js/studygroup_detail.js"></script>
     </main>
 </body>
 
