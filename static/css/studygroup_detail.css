@@ -1,3 +1,4 @@
+@media (min-width: 820px) {
 .full{
     display: flex;
     width: 100vw;
@@ -38,126 +39,133 @@
     height: 40px;
 }
 
-/* 오른쪽 부분 스터디 설정 부분 */
-.right{
-    width: 90vw;
-    height: 80vw;
-    margin: 2vw;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+    /* 오른쪽 부분 스터디 설정 부분 */
+    .right{
+        width: 90vw;
+        max-width: 920px;
+        height: 30vh;
+        max-height: 300px;
+        margin: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
-/* 오른쪽 부분 스터디 설정 전체 */
-.study_setting{
-    display: flex;
-    flex: 2;
-    background-color: #F0EFEF;
-    border-radius: 10px;
-}
+    /* 오른쪽 부분 스터디 설정 전체 */
+    .study_setting{
+        display: flex;
+        background-color: #F0EFEF;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
 
-.thumbnail{
-    flex: 1;
-}
+    .thumbnail{
+        flex: 1;
+    }
 
-/* 오른쪽 부분 스터디 설정 윗 부분(썸네일 이미지, 스터디 명, 난이도, 인원수) */
-.study_setting_top{
-    display: flex;
-    flex-direction: column;
-    flex: 2;
-    margin: 10px;
-    gap: 10px;
-}
+    /* 오른쪽 부분 스터디 설정 윗 부분(썸네일 이미지, 스터디 명, 난이도, 인원수) */
+    .study_setting_top{
+        display: flex;
+        flex-direction: column;
+        flex: 2;
+        margin: 10px;
+        gap: 10px;
+    }
 
-.thumbnail_img, .thumbnail{
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 10px;
-    border-bottom-right-radius: 0px;
-    border-bottom-left-radius: 10px;
-}
+    .thumbnail_img,
+    .thumbnail{
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-top-right-radius: 0px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 10px;
+        object-fit: cover;
+    }
 
-.imageinput{
-    display: none;
-}
+    .imageinput{
+        display: none;
+    }
 
-.title_container{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
+    .title_container{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
 
-.study_title{
-    display: flex;
-    align-items: center;
-    flex: 1;
-    margin-left: 10px;
-}
+    .study_title{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
 
-.input_title{
-    flex: 1;
-    border-radius: 10px;
-    border: none;
-    margin: 10px;
-}
+    .input_title{
+        font-size: 1.5rem;
+        height: 5rem;
+        width: auto;
+        border-radius: 10px;
+        border: none;
+        margin: 10px;
+    }
 
-.level_container{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin: 5px;
-}
+    .level_container{
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: 5px;
+    }
 
-.level{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-}
+    .level{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 1.5vh 0px 1.5vh 0px;
+    }
 
-.level_select{
-    flex: 1;
-    border-radius: 10px;
-    border: none;
-}
+    .level_select{
+        flex: 1;
+        border-radius: 10px;
+        border: none;
+    }
 
-.member_container{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin: 5px;
-}
+    .member_container{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin: 5px;
+    }
 
-.member{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    text-align: center;
-}
+    .member{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 1.5vh 0px 1.5vh 0px;
+    }
 
-.max_member{
-    flex: 1;
-    border-radius: 10px;
-    border: none;
-    margin-bottom: 20px;
-}
+    .max_member{
+        height: 50%;
+        width: 50%;
+        text-align: center;
+        border-radius: 10px;
+        border: none;
+        margin: 0px auto 0px auto;
+    }
 
-/* 오른쪽 부분 스터디 설정 아랫 부분(카테고리, 일정, 요일, 소개글) */
-.study_setting_bottom,
-.date_container{
-    display: flex;
-    flex: 1;
-}
+    /* 오른쪽 부분 스터디 설정 아랫 부분(카테고리, 일정, 요일, 소개글) */
+    .level_member_setting,
+    .date_container{
+        display: flex;
+        flex: 1;
+    }
 
-.category_container,
-.schedule_container{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
+    .category_container,
+    .schedule_container{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
 
 .category,
 .schedule,
@@ -178,78 +186,75 @@
     margin: 5px;
 }
 
-.category_list,
-.level_list{
-    display: flex;
-    flex: 1;
-    gap: 10px;
-    margin-bottom: 20px;
-}
+    .category_list,
+    .level_list{
+        display: flex;
+        flex-wrap: wrap;
+        height: 5rem;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
 
-.category_detail,
-.level_detail{
-    justify-content: center;
-    border: 2px solid #84C19C;
-    border-radius: 10px;
-    background-color: #F0EFEF;
-}
+    .category_detail,
+    .level_detail{
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
+    }
 
-.category_list{
-    justify-content: space-between;
-}
+    .date_container,
+    .schedule_container{
+        gap: 10px;
+    }
 
-.right_side{
-    display: flex;
-    gap: 5px;
-}
+    .start_day_container,
+    .end_day_container,
+    .week_days_container,
+    .week_days_list{
+        display: flex;
+        flex: 2;
+    }
 
-.date_container,
-.schedule_container{
-    gap: 10px;
-}
+    .input_start_day,
+    .input_end_day{
+        height: 3rem;
+        width: 80%;
+        border-radius: 10px;
+        border: 1px solid #F0EFEF;
+    }
 
-.start_day_container,
-.end_day_container,
-.week_days_container,
-.week_days_list{
-    display: flex;
-    flex: 2;
-}
+    .week_days_container{
+        flex-direction: column;
+        gap: 10px;
+    }
 
-.input_start_day,
-.input_end_day{
-    flex: 2;
-    border-radius: 10px;
-    border: 1px solid #F0EFEF;
-}
+    .week_days{
+        margin-left: 5px;
+    }
 
-.week_days_container{
-    flex-direction: column;
-    gap: 10px;
-}
+    .week_days_list{
+        gap: 1rem;
+        margin: 5px;
+    }
 
-.week_days{
-    margin-left: 5px;
-}
+    .week_days_detail{
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
+    }
 
-.week_days_list{
-    gap: 1rem;
-    margin: 5px;
-}
+    .category_detail:hover, .level_detail:hover, .week_days_detail:hover {
+        cursor: pointer;
+        background-color: #84C19C;
+        color:#F0EFEF;
+        transition: 0.2s;
+    }
 
-.week_days_detail{
-    justify-content: center;
-    border: 2px solid #84C19C;
-    border-radius: 10px;
-    background-color: #F0EFEF;
-}
-
-.category_detail:hover, .level_detail:hover, .week_days_detail:hover {
-    cursor: pointer;
-    background-color: #84C19C;
-    color:#F0EFEF;
-    transition: 0.2s;
-}
+    .content{
+        flex: 1;
+    }
 
 .content_container{
     flex: 2;
@@ -257,17 +262,20 @@
     border-radius: 5px;
 }
 
-.input_content{
-    height: 30vh;
-    border-radius: 10px;
-}
+    .input_content{
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        resize: none;
+        padding: 5px;
+    }
 
-.week_days_detail.selected, .category_detail.selected, .level_detail.selected {
-    background-color: #84C19C;
-    color: white;
-    scale: 1.1;
-    transition: 0.2s;
-}
+    .week_days_detail.selected, .category_detail.selected, .level_detail.selected {
+        background-color: #84C19C;
+        color: white;
+        scale: 1.1;
+        transition: 0.2s;
+    }
 
 .leader_container{
     display: flex;
@@ -301,4 +309,284 @@
 
 .hidden {
     display: none;
+}
+}
+
+@media (max-width: 819px) {
+    .full{
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        
+    /* 오른쪽 부분 스터디 설정 부분 */
+    .right{
+        width: 88vw;
+        min-width: 440px;
+        height: 70vh;
+    }
+
+    /* 오른쪽 부분 스터디 설정 전체 */
+    .study_setting{
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #F0EFEF;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* 오른쪽 부분 스터디 설정 윗 부분(썸네일 이미지, 스터디 명, 난이도, 인원수) */
+    .study_setting_top{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: 10px;
+        gap: 10px;
+    }
+
+    .thumbnail {
+        display: flex;
+    }
+
+    .thumbnail_img,
+    .thumbnail{
+        width: 100%;
+        border: none;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        object-fit: cover;
+    }
+
+    .imageinput{
+        display: none;
+    }
+
+    .title_container{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .study_title{
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+
+    .input_title{
+        font-size: 1.5rem;
+        height: 5rem;
+        width: auto;
+        border-radius: 10px;
+        border: none;
+        margin: 10px;
+    }
+
+    .level_member_setting{
+        display: flex;
+    }
+
+    .level_container{
+        width: 70%;
+        margin: 5px;
+    }
+
+    .level{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 0 1rem 0;
+    }
+
+    .level_list{
+        display: flex;
+        height: 3rem;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .level_detail{
+        display: flex;
+        align-items: center;
+        width: 30%;
+        height: 100%;
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
+    }
+
+    .level_select{
+        height: 100%;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .member_container{
+        display: flex;
+        flex-direction: column;
+        width: 45%;
+        margin: 5px;
+    }
+
+    .member{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 0 0 1rem 0;
+    }
+
+    .max_member{
+        height: 45%;
+        width: 50%;
+        text-align: center;
+        border-radius: 10px;
+        border: none;
+        margin: 0px auto;
+    }
+
+    /* 오른쪽 부분 스터디 설정 아랫 부분(카테고리, 일정, 요일, 소개글) */
+
+    .study_setting_bottom{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .category_container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .date_container{
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .schedule_container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .category{
+        margin-bottom: 20px;
+    }
+
+    .category_detail {
+        display: flex;
+        align-items: center;
+        width: 8rem;
+        height: 4rem;
+    }
+
+    .schedule{
+        margin-bottom: 20px;
+    }
+
+    .start_day,
+    .end_day,
+    .week_days
+    {
+        display: flex;
+        align-items: center;
+    }
+
+    .end_day_container{
+        margin: 20px 0 20px 0;
+    }
+
+    .week_days_detail {
+        display: flex;
+        align-items: center;
+        width: 4rem;
+        height: 4rem;
+    }
+
+    .category_list{
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .category_detail{
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
+    }
+
+    .date_container{
+        gap: 10px;
+    }
+
+    .week_days_container,
+    .week_days_list{
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 50%;
+    }
+
+    .input_start_day,
+    .input_end_day{
+        height: 3rem;
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid #F0EFEF;
+        margin-top: 0.5rem;
+    }
+
+    .week_days_container{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .week_days{
+        margin-left: 5px;
+    }
+
+    .week_days_list{
+        gap: 1rem;
+        margin: 5px;
+    }
+
+    .week_days_detail{
+        justify-content: center;
+        border: 2px solid #84C19C;
+        border-radius: 10px;
+        background-color: #F0EFEF;
+    }
+
+    .category_detail:hover, .level_detail:hover, .week_days_detail:hover {
+        cursor: pointer;
+        background-color: #84C19C;
+        color:#F0EFEF;
+        transition: 0.2s;
+    }
+
+    .content{
+        flex: 1;
+    }
+
+    .input_content{
+        width: 100%;
+        min-height: 5rem;
+        overflow-y: auto;
+        border-radius: 10px;
+        resize: none;
+        padding: 5px;
+    }
+
+    .week_days_detail.selected, .category_detail.selected, .level_detail.selected {
+        background-color: #84C19C;
+        color: white;
+        scale: 1.1;
+        transition: 0.2s;
+    }
 }

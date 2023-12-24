@@ -16,17 +16,7 @@
 <body>
     <header data-include-path="./header.html"></header>
 
-    <main class="full">
-        <!-- 프로필 -->
-        <section class="left">
-            <div class="user_profile">
-                <div class="profile_image">
-                    <img src="" width="130" height="130">
-                </div>
-                <div class="user_name">사용자 닉네임</div>
-                <input class="study_create_btn btn btn-secondary" type="submit" value="스터디 생성">
-            </div>
-        </section>
+    <main class="full justify-content-center">
         <!-- 게시물 생성 -->
         <section class="right">
             <div class="study_setting">
@@ -42,7 +32,7 @@
                         <div class="input_title"></div>
                     </div>
                     <!-- 난이도, 인원수 -->
-                    <div class="study_setting_bottom">
+                    <div class="level_member_setting">
                         <div class="level_container">
                             <div class="level">난이도</div>
                             <div class="level_list">
@@ -60,40 +50,43 @@
                 </div>
             </div>
             <!-- 카테고리 -->
-            <div class="category_container">
-                <div class="category">카테고리</div>
-                <div class="category_list">
-                    <div class="category_detail" data-category=1>1</div>
-                    <div class="category_detail" data-category=2>2</div>
-                    <div class="category_detail" data-category=3>3</div>
-                    <div class="category_detail" data-category=4>4</div>
-                    <div class="category_detail" data-category=5>5</div>
-                    <div class="category_detail" data-category=6>6</div>
-                    <div class="category_detail" data-category=7>7</div>
-                    <div class="right_side">
-                        <button id="change_button" class="btn btn-outline-secondary m-2"></button>
-                        <button id="leave_button" class="btn btn-outline-secondary m-2"></button>
+            <div class="study_setting_bottom">
+                <div class="category_container">
+                    <div class="category">카테고리</div>
+                    <div class="category_list">
+                        <div class="category_detail" data-category=1>1</div>
+                        <div class="category_detail" data-category=2>2</div>
+                        <div class="category_detail" data-category=3>3</div>
+                        <div class="category_detail" data-category=4>4</div>
+                        <div class="category_detail" data-category=5>5</div>
+                        <div class="category_detail" data-category=6>6</div>
+                        <div class="category_detail" data-category=7>7</div>
                     </div>
                 </div>
-            </div>
-            <!-- 일정, 요일 -->
-            <div class="date_container">
-                <div class="schedule_container">
-                    <div class="schedule">일정</div>
-                    <div class="start_day_container">
-                        <div class="start_day">시작일</div>
+                <!-- 일정, 요일 -->
+                <div class="date_container">
+                    <div class="schedule_container">
+                        <div class="schedule">일정</div>
+                        <div class="start_day_container">
+                            <div class="start_day">시작일</div>
+                            <input class="input_start_day" type="date">
+                        </div>
+                        <div class="end_day_container">
+                            <div class="end_day">종료일</div>
+                            <input class="input_end_day" type="date">
+                        </div>
                     </div>
-                </div>
-                <div class="week_days_container">
-                    <div class="week_days">요일</div>
-                    <div class="week_days_list">
-                        <div class="week_days_detail" data-day=월>월</div>
-                        <div class="week_days_detail" data-day=화>화</div>
-                        <div class="week_days_detail" data-day=수>수</div>
-                        <div class="week_days_detail" data-day=목>목</div>
-                        <div class="week_days_detail" data-day=금>금</div>
-                        <div class="week_days_detail" data-day=토>토</div>
-                        <div class="week_days_detail" data-day=일>일</div>
+                    <div class="week_days_container">
+                        <div class="week_days">요일</div>
+                        <div class="week_days_list">
+                            <div class="week_days_detail" data-day=월>월</div>
+                            <div class="week_days_detail" data-day=화>화</div>
+                            <div class="week_days_detail" data-day=수>수</div>
+                            <div class="week_days_detail" data-day=목>목</div>
+                            <div class="week_days_detail" data-day=금>금</div>
+                            <div class="week_days_detail" data-day=토>토</div>
+                            <div class="week_days_detail" data-day=일>일</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,8 +111,8 @@
                 <div class="comments" id="comments_container" style="border: 1px solid gray;">댓글</div>
             </section>
             <div class="d-flex justify-content-end">
-                <button id="delete" class="btn btn-outline-secondary m-2" type="button">삭제</button>
-                <button id="edit" class="btn btn-primary m-2" type="button">수정</button>
+                <button id="delete" class="btn btn-outline-danger m-2" type="button">삭제</button>
+                <button id="edit" class="editbtn btn btn-success m-2" type="button">수정</button>
             </div>
         </section>
     <script src="./static/js/common.js"></script>
