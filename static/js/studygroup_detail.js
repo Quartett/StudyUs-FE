@@ -327,6 +327,41 @@ function createCommentElement(comment) {
     return element;
 }
 
+//  댓글 생성
+document.getElementById('comment_submit').addEventListener('click', function() {
+    checkTokenExpired('studygorup_detail.html', (accessToken) => {
+        const text = document.getElementsByClassName('comment_input')[0].textContent;
+        console.log(text)
+        const data = {
+            "text": text,
+            "study_group": pk
+        }
+        console.log(data);
+        fetch(`${baseUrl}/study/comments/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Unable to create comment');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
+            getStudyGroupInfo();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    )}
+);
+
 function saveEditedComment(commentid, updatedText, accessToken, callback) {
     const data = {
         "text": updatedText,
@@ -353,6 +388,28 @@ function saveEditedComment(commentid, updatedText, accessToken, callback) {
             console.log("수정완료")
             callback();
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function deleteComment(commentid, accessToken) {
+    fetch(`${baseUrl}/study/comments/${commentid}/delete/`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Unable to delete comment');
+        }
+        return response;
+    })
+    .then(() => {
+        // 삭제가 성공적으로 완료된 후 댓글 목록을 fetch하여 다시 렌더링
+        getStudyGroupInfo();
     })
     .catch(error => {
         console.error('Error:', error);
