@@ -137,7 +137,7 @@
 <script>
     if (isLogin()) {
         document.querySelector("#profileSection").innerHTML += `
-            <a id="createStudyBtn" href="/create_studygroup.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+            <a id="createStudyBtn" href="/studygroup_create.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
                 스터디 생성
             </a>  
         `
@@ -261,17 +261,19 @@
                 document.querySelector('#noData').style.display = 'none';
                 json.map((memorycard) => {
                 document.querySelector("#memorycardSection").innerHTML += `
-                    <a href='/memorycard_detail.html?memorycard=${memorycard.id}'>
+                    
                             <div class="col">
                                 <div class="card memorycard">
                                     <div class="card-body d-flex align-items-center">
                                         <img id="bookmark_${memorycard.id}" src="${memorycard.bookmark ? './static/img/bookmark_on.svg' : './static/img/bookmark_off.svg'}" class="card-text fs-5" width="25px" height="25px" onclick="setBookmark(${memorycard.id}, ${memorycard.bookmark ? false : true})">
-                                        <div class="card-text ms-3 me-auto fs-5">${memorycard.memory_question}</div>
+                                        <a href='/memorycard_detail.html?memorycard=${memorycard.id}' class="me-auto" style="color: black;">
+                                            <div class="card-text ms-3 fs-5">${memorycard.memory_question}</div>
+                                        </a>
                                         <button type="button" class="btn btn-danger card-text ms-3" onclick="deleteCard(${memorycard.id})">삭제</div>
                                     </div>
                                 </div>
                             </div>
-                    </a>
+                    
                 `
             })
             } else {
