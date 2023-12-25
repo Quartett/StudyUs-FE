@@ -1,43 +1,9 @@
 @media (min-width: 820px) {
-.full{
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-}
-
-/* 왼쪽 부분 사용자 닉네임 및 스터디 생성 버튼 표시 */
-.left{
-    background: #F0EFEF;
-    border-radius: 10px;
-    width: 200px;
-    height: 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-}
-
-.user_profile{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.profile_image{
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.user_name{
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.study_create_btn{
-    margin-top: 10px;
-    width: 120px;
-    height: 40px;
-}
+    .full{
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+    }
 
     /* 오른쪽 부분 스터디 설정 부분 */
     .right{
@@ -307,6 +273,17 @@
         display: flex;
     }
 
+    .comment{
+        display: flex;
+    }
+
+    .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
     .toolbar{
         margin-left: 50px;
     }
@@ -314,6 +291,7 @@
     .hidden {
         display: none;
     }
+
 }
 
 @media (max-width: 819px) {
