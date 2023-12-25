@@ -24,6 +24,11 @@
             <section class="form-signin w-100 m-auto rounded-4" style="background-color:#F0EFEF;">
                 <form>
                     <h1 class="h3 mb-4 fw-normal text-center">회원가입</h1>
+                    <div class="d-flex mb-4 justify-content-center">
+                        <div class="spinner-border" role="status" style="display:none;" id="spinner">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
 <!-- 이메일 입력 -->
                     <div class="form-floating">
                         <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
@@ -50,14 +55,16 @@
                 </section>
         </main>
 
+        
 <!-- javascript import -->
         <script src="./static/js/common.js"></script>
         <script type="module">
             // 회원가입 버튼 클릭 시
             // 1. 이메일, 닉네임, 비밀번호, 비밀번호확인 입력 확인
             // 2. 입력 확인 후 회원가입 요청
-            // 3. 회원가입 성공 시 이메일 발송
-            // 4. 회원가입 실패 시 실패 메시지 출력
+            // 3. 이메일 발송 성공될 때까지 스피너 출력
+            // 4. 회원가입 성공 시 이메일 발송
+            // 5. 회원가입 실패 시 실패 메시지 출력
             
             const joinBtn = document.querySelector('#joinbtn');
             joinBtn.addEventListener('click', function(e) {
@@ -76,7 +83,8 @@
                     password2: password2,
                     nickname: nickname
                 };
-                
+                const spinner = document.querySelector('#spinner');
+                spinner.style.display = 'block';
                 // 회원가입 요청
                 fetch(`${baseUrl}/accounts/join/`, {
                     method: 'POST',
@@ -92,11 +100,14 @@
                     return response.json();
                 })
                 .then(data => {
+                    spinner.style.display = 'none';
                     alert(data.detail);
                     window.location.href = '/login.html';
                 })
                 .catch((error) => {
+                    spinner.style.display = 'none';
                     console.error('Error: ', error);
+                    alert('회원가입에 실패했습니다.');
                 });
             });
         </script>
