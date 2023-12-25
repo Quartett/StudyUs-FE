@@ -245,7 +245,7 @@
                 const data = JSON.parse(e.data);
                 document.querySelector('#chat-log').innerHTML += `
                     <div>
-                        <img src="http://13.115.106.99${data.profile_image}" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <img src="${baseUrl}/${data.profile_image}" style="width: 50px; height: 50px; border-radius: 50%;">
                         <strong>${data.nickname}</strong>
                         <p>${data.message}</p>
                     </div> 
