@@ -19,7 +19,7 @@
                 <form>
                     <div class="d-flex justify-content-end mt-2"><button type="button" class="btn-close" aria-label="Close" onclick="location.href = 'javascript:window.history.back();'"></button></div>
 <!-- 프로필 이미지 출력 및 입력 -->
-                <div class="d-flex justify-content-center mb-5 mt-4" style="height:180px;">
+                <div class="d-flex justify-content-center mb-3 mt-4" style="height:180px;">
                     <label for="fileInput"><img src="#" id="profile-img-edit" onclick="activateFileInput()"></label><input type="file" id="imageinput" style="display: none;" accept="image/*" onchange="handleFileSelect(event)">
                 </div>
 <!-- 이메일 출력 -->
@@ -33,7 +33,10 @@
                         <label for="nickname">닉네임</label>
                     </div>
 <!-- 프로필 수정 완료 버튼 -->
-                    <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="editcomplete" id="editcompletebtn">수정 완료</button>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="password_change" id="password_change" onclick="location.href = 'change_password.html'; return false">비밀번호 변경</button>
+                        <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="editcomplete" id="editcompletebtn">수정 완료</button>
+                    </div>
                 </form>
             </section>
         </main>
