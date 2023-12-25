@@ -231,3 +231,8 @@
     height: 92%;
     border-radius: 10px;
 }
+
+.btn_container{
+    display: flex;
+    flex-direction: row;
+}

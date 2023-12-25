@@ -303,7 +303,12 @@ document.querySelector('#savemember_role').addEventListener('click', function() 
         const selectedCheckbox = document.querySelector('.member-checkbox:checked');
         if (selectedCheckbox) {
             const selectedUserId = selectedCheckbox.getAttribute('data-user-id');
-            updateGroupLeader(selectedUserId, accessToken);
+            const selectedUserRole = selectedCheckbox.closest('label').textContent.includes('그룹장') ? 1 : 0;
+            if (selectedUserRole === 1) {
+                alert('이미 그룹장인 유저입니다');
+            } else {
+                updateGroupLeader(selectedUserId, accessToken);
+            }
         } else {
             alert('그룹장을 선택해주세요.');
         }
