@@ -39,6 +39,15 @@ main {
     border-radius:0;
 }
 
+.form-signin #old_password {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+
 .form-signin #password1 {
     margin-bottom: -1px;
     border-radius:0;
