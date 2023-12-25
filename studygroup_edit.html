@@ -92,9 +92,32 @@
             <div class="content">
                 <input class="input_content" type="text">
             </div>
-            <!-- 변경내용 저장 버튼 -->
-            <input id="createbtn" class="btn btn-success m-2" type="submit" value="저장">
+            <!-- 변경내용 저장 버튼 & 멤버 관리 버튼 -->
+            <div class="btn_container">
+                <input id="createbtn" class="btn btn-success mt-2" type="submit" value="저장">
+                <input id="editmember" class="btn btn-primary mt-2" type="button" data-bs-toggle="modal" data-bs-target="#memberModal" value="멤버관리">
+            </div>
+
         </section>
+        <!-- 모달 -->
+        <div class="modal fade" id="memberModal" tabindex="-1" aria-labelledby="memberdModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="memberdModalLabel">멤버 관리</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="member_list" class="btn-group mb-3" role="group" aria-label="멤버 목록">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button id="savemember_role" type="button" class="btn btn-primary" style="background-color: #84C19C; border-color: #84C19C;">저장하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
     <script src="./static/js/common.js"></script>
     <script src="./static/js/studygroup_edit.js"></script>
     </main>
