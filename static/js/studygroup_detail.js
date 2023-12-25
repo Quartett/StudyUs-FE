@@ -265,9 +265,9 @@ function createCommentElement(comment) {
     commnet_profile_image.classList.add('commnet_profile_image');
     if(comment.profile_image) {
         console.log(comment.profile_image);
-        commnet_profile_image.innerHTML = `<img src="http://127.0.0.1:8000${comment.profile_image}" class="profile-img">`;
+        commnet_profile_image.innerHTML = `<img src="${baseUrl}${comment.profile_image}" class="profile-img">`;
     } else {
-        commnet_profile_image.innerHTML = `<img src="http://127.0.0.1:8000/media/profile_images/default_profile_image.png" class="profile-img">`;
+        commnet_profile_image.innerHTML = `<img src="${baseUrl}/media/profile_images/default_profile_image.png" class="profile-img">`;
     }
     element.appendChild(commnet_profile_image);
     
@@ -536,29 +536,24 @@ function deleteComment(commentid, accessToken) {
 function toggleReplies(commentElement, replies) {
     let repliesContainer = commentElement.querySelector('.replies');
     const toolbar = commentElement.querySelector('.toolbar');
+
     if (!repliesContainer) {
-        // 답글 컨테이너가 존재하지 않으면 생성합니다.
         repliesContainer = document.createElement('div');
         repliesContainer.classList.add('replies');
-        commentElement.appendChild(repliesContainer);
+        toolbar.parentNode.insertBefore(repliesContainer, toolbar.nextSibling);
     } else {
-        // 답글 컨테이너가 이미 존재하면 표시 상태를 토글합니다.
         repliesContainer.style.display = repliesContainer.style.display === 'none' ? 'block' : 'none';
-        return;  // 여기서 함수를 종료합니다.
+        return;
     }
-
-    // 모든 답글(그리고 답글의 답글)을 재귀적으로 렌더링합니다.
+    // 모든 답글(그리고 답글의 답글)을 같은 컨테이너에 렌더링합니다.
     const renderReplies = (replies, container) => {
         replies.forEach(reply => {
             const replyElement = createCommentElement(reply);
             container.appendChild(replyElement);
 
-            // 답글에 또 다른 답글이 있는 경우, 재귀적으로 처리합니다.
+            // 답글에 또 다른 답글이 있는 경우, 같은 컨테이너에 계속해서 추가합니다.
             if (reply.reply && reply.reply.length > 0) {
-                const childRepliesContainer = document.createElement('div');
-                childRepliesContainer.classList.add('replies');
-                replyElement.appendChild(childRepliesContainer);
-                renderReplies(reply.reply, childRepliesContainer);
+                renderReplies(reply.reply, container);  // 현재 컨테이너를 재사용합니다.
             }
         });
     };

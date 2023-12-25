@@ -292,6 +292,11 @@
         display: none;
     }
 
+    .replies{
+        display: flex;
+        flex-direction: column;
+    }
+
 }
 
 @media (max-width: 819px) {
