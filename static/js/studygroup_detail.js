@@ -6,11 +6,14 @@ if (isLogin()){
         isMember(pk, accessToken);
     })
 }else{
-    const button = document.querySelector('.change_button');
+    const button = document.querySelector('#change_button');
     button.textContent = '가입하기';
     button.onclick = function() {
         window.location.href = '/login.html?redirect=studygroup_detail.html?pk=' + pk;
     };
+
+    const button2 = document.querySelector('#leave_button');
+    button2.style.display = 'none';
 }
 
 function isMember(pk, accessToken){
@@ -108,7 +111,7 @@ function memberButton(isMember) {
         console.log('채팅방 입장');
         button.onclick = function() {
             // 채팅방 페이지 작성되면 채팅방으로 이동 필요
-            // window.location.href = '/path/to/chat';
+            window.location.href = '/chat.html?id=' + pk + '&group=' + pk;
         };
 
         const leaveButton = document.querySelector('#leave_button');
@@ -124,6 +127,8 @@ function memberButton(isMember) {
         button.onclick = function() {
             joinStudyGroup();
         };
+        const button2 = document.querySelector('#leave_button');
+        button2.style.display = 'none';
     }
 }
 
