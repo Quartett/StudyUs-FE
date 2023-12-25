@@ -234,9 +234,8 @@
     const user_id = getUserIdFromToken(getAccessToken());
     function setChatSocket(chatRoomId) {
         const chatSocket = new WebSocket(
-            'ws://'
-            // + '13.115.106.99:8001'
-            + '127.0.0.1:8000'
+            'wss://'
+            + 'api-studyus.kro.kr:8443'
             + '/ws/chat/'
             + chatRoomId
             + '/',
