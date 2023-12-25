@@ -234,9 +234,8 @@
     const user_id = getUserIdFromToken(getAccessToken());
     function setChatSocket(chatRoomId) {
         const chatSocket = new WebSocket(
-            'ws://'
-            // + '13.115.106.99:8001'
-            + '127.0.0.1:8000'
+            'wss://'
+            + 'api-studyus.kro.kr:8443'
             + '/ws/chat/'
             + chatRoomId
             + '/',
@@ -246,7 +245,7 @@
                 const data = JSON.parse(e.data);
                 document.querySelector('#chat-log').innerHTML += `
                     <div>
-                        <img src="http://13.115.106.99${data.profile_image}" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <img src="${baseUrl}/${data.profile_image}" style="width: 50px; height: 50px; border-radius: 50%;">
                         <strong>${data.nickname}</strong>
                         <p>${data.message}</p>
                     </div> 

@@ -1,4 +1,4 @@
-const baseUrl = 'http://13.115.106.99';
+const baseUrl = 'https://api-studyus.kro.kr';
 
 function getAccessToken() {
     return localStorage.getItem('access_token');
@@ -34,7 +34,6 @@ function isLogin() {
 
 async function checkTokenExpired(redirect, callback) {
     const accessToken = getAccessToken();
-    console.log("checkTokenExpired() 실행됨 :: ")
     if (accessToken) {
         const url = `${baseUrl}/accounts/token/verify/`;
         try {
@@ -67,7 +66,6 @@ async function checkTokenExpired(redirect, callback) {
 
 async function refreshToken(redirect, callback) {
     const refreshToken = getRefreshToken();
-    console.log("refreshToken() 실행됨 :: ")
     if (refreshToken) {
         const url = `${baseUrl}/accounts/token/refresh/`;
         try {
