@@ -143,6 +143,11 @@ createStudyButton.addEventListener('click', function(e) {
         return; // 필수 필드가 하나라도 빈 경우 함수를 종료합니다.
     }
 
+    if (StartDay && EndDay && new Date(StartDay) > new Date(EndDay)) {
+        alert("시작일이 종료일보다 늦을 수 없습니다.");
+        return; // 함수를 종료하여 더 이상 진행되지 않게 합니다.
+    }
+
     // FormData 객체를 생성하고 폼 데이터를 추가합니다.
     const formData = new FormData();
     formData.append('title', title);

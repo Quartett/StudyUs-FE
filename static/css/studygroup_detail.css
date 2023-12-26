@@ -243,6 +243,7 @@
         scale: 1.1;
         transition: 0.2s;
         width: fit-content;
+        min-width: 60px;
         max-height: 50%
     }
 
@@ -447,7 +448,7 @@
     }
 
     .category{
-        margin-bottom: 20px;
+        margin-bottom: 1rem;
         display: flex;
         justify-content: center;
     }
@@ -564,6 +565,7 @@
         scale: 1.1;
         transition: 0.2s;
         width: fit-content;
+        min-width: 50px;
         max-height: fit-content
     }
 
