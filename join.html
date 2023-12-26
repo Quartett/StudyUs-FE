@@ -51,6 +51,10 @@
                     </div>
 <!-- 회원가입 버튼 -->
                     <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="join" id="joinbtn">회원가입</button>
+                    <div class="resend_email_section" style="display:none;">
+                        <p>인증 메일이 오지 않았나요?<br>재발송 버튼을 클릭해주세요!</p>
+                        <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="resend_email" id="resend_email">인증 메일 재발송</button>
+                    </div>
                 </form>
                 </section>
         </main>
@@ -102,12 +106,56 @@
                 .then(data => {
                     spinner.style.display = 'none';
                     alert(data.detail);
-                    window.location.href = '/login.html';
+                    joinBtn.style.display = 'none';
+                    document.querySelector('.resend_email_section').style.display = 'block';
                 })
                 .catch((error) => {
                     spinner.style.display = 'none';
                     console.error('Error: ', error);
                     alert('회원가입에 실패했습니다.');
+                });
+            });
+
+            // 이메일 재발송 버튼 클릭 시
+            // 1. 이메일 입력 확인
+            // 2. 이메일 재발송 요청
+            // 3. 이메일 발송 성공 시 성공 메시지 출력
+            // 4. 이메일 발송 실패 시 실패 메시지 출력
+            const resendEmailBtn = document.querySelector('#resend_email');
+            resendEmailBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const email = document.querySelector('#email').value;
+                if (email === '') {
+                    alert('이메일을 입력해주세요.');
+                    return;
+                }
+                const data = {
+                    email: email
+                };
+                const spinner = document.querySelector('#spinner');
+                spinner.style.display = 'block';
+                // 이메일 재발송 요청
+                fetch(`${baseUrl}/accounts/account/resend-email/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Invalid email');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    spinner.style.display = 'none';
+                    alert("인증메일이 재발송되었습니다.");
+                })
+                .catch((error) => {
+                    spinner.style.display = 'none';
+                    console.error('Error: ', error);
+                    alert('이메일 발송에 실패했습니다.');
                 });
             });
         </script>
