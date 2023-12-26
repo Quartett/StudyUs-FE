@@ -117,7 +117,7 @@
 
 <script>
     checkTokenExpired('memorycard.html', (accessToken) => {
-        getStudyList(accessToken);
+        getUserStudyList(accessToken);
         getUserNickname(accessToken);
         if (chat_id != 'none' && group_id != 'none') {
             getStudyMemberList(accessToken);
@@ -125,8 +125,8 @@
         }
     })
 
-    function getStudyList(accessToken) {
-        fetch(`${baseUrl}/study/`, {
+    function getUserStudyList(accessToken) {
+        fetch(`${baseUrl}/study/chat/`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
