@@ -46,17 +46,14 @@ function isMember(pk, accessToken){
             return response.json();
         })
         .then(members => {
-            console.log("닉네임", user_nickname);
             const leader = members
                 .filter(member => member.role === 1)
                 .map(memberWithRoleOne => memberWithRoleOne.user_nickname);
             // 리더의 닉네임과 userNickname이 같은지 비교
-            const isLeader = leader.some(leaderNickname => leaderNickname == user_nickname);
-            console.log('리더인지 아닌지:', isLeader)
+            const isLeader = leader.some(leaderNickname => leaderNickname === user_nickname);
             groupeditButton(isLeader);
 
-            console.log('그룹장:', leader);
-            const isMember = members.some(member => member.user_nickname == user_nickname);
+            const isMember = members.some(member => member.user_nickname === user_nickname);
             memberButton(isMember);
         });
     })
@@ -108,22 +105,18 @@ function memberButton(isMember) {
     const button = document.querySelector('#change_button');
     if (isMember) {
         button.textContent = '채팅방 입장';
-        console.log('채팅방 입장');
         button.onclick = function() {
-            // 채팅방 페이지 작성되면 채팅방으로 이동 필요
             window.location.href = '/chat.html?id=' + pk + '&group=' + pk;
         };
 
         const leaveButton = document.querySelector('#leave_button');
         leaveButton.textContent = '탈퇴하기';
         leaveButton.onclick = function() {
-            // 탈퇴 처리를 위한 함수 호출
             leaveStudyGroup(pk);
         };
         button.parentNode.insertBefore(leaveButton, button.nextSibling);
     } else {
         button.textContent = '가입하기';
-        console.log('가입하기');
         button.onclick = function() {
             joinStudyGroup();
         };
@@ -211,7 +204,6 @@ function getStudyGroupInfo(){
         return response.json();
     })
     .then((data) => {
-        console.log(data);
         document.querySelector('.input_title').textContent = data.title;
         document.querySelector('.input_content').textContent = data.content;
         
@@ -223,13 +215,12 @@ function getStudyGroupInfo(){
         
         highlightMeetingDays(data.week_days);
 
-        console.log(data.max_members, pk)
         fetchCurrentMemberCount(pk, data.max_members);
 
         if(data.thumbnail) {
             document.querySelector('.thumbnail img').src = data.thumbnail;
         } else {
-            document.querySelector('.thumbnail img').src = `${baseUrl}` + "/media/study_images/default_study_thumbnail.png";
+            document.querySelector('.thumbnail img').src = `${baseUrl}` + "/media/profile_images/default_study_thumbnail.png";
         }
 
         if(data.leader && data.leader.profile_image) {
@@ -250,7 +241,6 @@ function displayComments(comments) {
         // parent가 null인 경우만 최상위 댓글로 처리
         if (!comment.parent) {
             const commentElement = createCommentElement(comment);
-            console.log(commentElement);
             container.appendChild(commentElement);
         }
     });
@@ -265,10 +255,9 @@ function createCommentElement(comment) {
     const comment_profile_image = document.createElement('div');
     comment_profile_image.classList.add('comment_profile_image');
     if(comment.profile_image) {
-        console.log(comment.profile_image);
         comment_profile_image.innerHTML = `<img src="${baseUrl}${comment.profile_image}" class="profile-img">`;
     } else {
-        comment_profile_image.innerHTML = `<img src="${baseUrl}/media/profile_images/default_profile_image.png" class="profile-img">`;
+        comment_profile_image.innerHTML = `<img src="${baseUrl}/media/profile_images/default_profile.svg" class="profile-img">`;
     }
     element.appendChild(comment_profile_image);
     
@@ -406,8 +395,6 @@ function createCommentElement(comment) {
                         "study_group": pk,
                         "parent": topParentPk
                     };
-                    console.log("답글데이터",data);
-    
                     fetch(`${baseUrl}/study/comments/`, {
                         method: 'POST',
                         headers: {
@@ -464,16 +451,13 @@ function createCommentElement(comment) {
 
     // 답글 보기/숨기기 함수
     function toggleReplies(replies) {
-        // 이미 답글 컨테이너가 있으면 표시 상태를 토글합니다.
         if (commentRepliesRender.innerHTML !== '') {
             commentRepliesRender.style.display = commentRepliesRender.style.display === 'none' ? 'block' : 'none';
             return;
         }
-        // 답글을 렌더링합니다.
         renderReplies(replies, commentRepliesRender);
     }
 
-    // 모든 답글을 렌더링하는 함수
     function renderReplies(replies, container) {
         replies.forEach(reply => {
             const replyElement = createCommentElement(reply);
@@ -485,13 +469,9 @@ function createCommentElement(comment) {
 }
 
 function getParentId(comment) {
-    // 클릭이 발생한 댓글의 부모 댓글 ID를 찾습니다.
-    // 만약 없다면 해당 댓글의 ID를 반환합니다.
     if (comment.parent) {
-        console.log("자식",comment.parent);
         return comment.parent;
     } else {
-        console.log("부모",comment.id);
         return comment.id;
     }
 }
@@ -500,12 +480,10 @@ function getParentId(comment) {
 document.getElementById('comment_submit').addEventListener('click', function() {
     checkTokenExpired('studygorup_detail.html', (accessToken) => {
         const text = document.getElementsByClassName('comment_input')[0].textContent;
-        console.log(text)
         const data = {
             "text": text,
             "study_group": pk
         }
-        console.log(data);
         fetch(`${baseUrl}/study/comments/`, {
             method: 'POST',
             headers: {
@@ -536,7 +514,6 @@ function saveEditedComment(commentid, updatedText, accessToken, callback) {
         "text": updatedText,
         "study_group": pk
     }
-    console.log("수정data",data);
     fetch(`${baseUrl}/study/comments/${commentid}/update/`, {
         method: 'PATCH',
         headers: {
@@ -552,9 +529,7 @@ function saveEditedComment(commentid, updatedText, accessToken, callback) {
         return response
     })
     .then(data => {
-        // 수정이 성공적으로 완료된 후의 콜백 함수 호출
         if(callback && typeof callback === 'function') {
-            console.log("수정완료")
             callback();
         }
     })

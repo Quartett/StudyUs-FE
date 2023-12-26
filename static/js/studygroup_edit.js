@@ -53,8 +53,6 @@ function getStudyGroupInfo(){
                 document.querySelector(`.week_days_detail[data-day="${day}"]`).classList.add('selected');
             });
         }
-
-        console.log(data);
     })
     .catch((err) => {
         alert("글 정보를 받아오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
@@ -194,7 +192,6 @@ createStudyButton.addEventListener('click', function(e) {
 
     // 누락된 필드가 있는지 확인합니다.
     if (missingFieldsMsg) {
-        console.log(missingFieldsMsg)
         missingFieldsMsg = missingFieldsMsg.slice(0, -2);
         alert(missingFieldsMsg + '에 값을 입력해주세요.');
         return; // 필수 필드가 하나라도 빈 경우 함수를 종료합니다.
@@ -211,14 +208,12 @@ createStudyButton.addEventListener('click', function(e) {
     formData.append('week_days', selectedDay);
     formData.append('content', content);
 
-    // 이미지 파일이 선택되었다면 FormData에 추가합니다.
     if (selectedImageFile) {
         formData.append('thumbnail', selectedImageFile);
     }
 
-      // Fetch API를 사용하여 서버에 POST 요청
     if (formData) {
-        checkTokenExpired('create_studygroup.html', (accessToken) => {
+        checkTokenExpired('studygroup_create.html', (accessToken) => {
             fetch(`${baseUrl}/study/${pk}/update/`, {
                 method: 'PATCH',
                 headers: {
@@ -233,7 +228,6 @@ createStudyButton.addEventListener('click', function(e) {
                 return response.json();
             })
             .then((data) => {
-            console.log('글수정성공:', data);
             window.location.href = '/studygroup_detail.html?pk='+pk;
             })
             .catch((err) => {
@@ -340,7 +334,6 @@ function updateGroupLeader(selectedUserId, accessToken) {
         return response.json();
     })
     .then((updatedData) => {
-        console.log('그룹장이 업데이트되었습니다:', updatedData);
         alert('그룹장이 성공적으로 업데이트되었습니다.');
         window.location.href = `studygroup_detail.html?pk=${pk}`;
     })
