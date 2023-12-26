@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyUs</title>
     
+    <link rel="stylesheet" href="./static/css/index.css">
     <link rel="stylesheet" href="./static/css/font.css">
     <link rel="stylesheet" href="./static/css/studygroup_create.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -12,129 +13,11 @@
     
     <script src="./static/js/include.js"></script>
     <script src="./static/js/common.js"></script>
+    <script src="./static/js/index.js"></script>
     
 </head>
 <body>
     <header data-include-path="./header.html"></header>
-
-
-
-    <style>
-        .left{
-            background: #F0EFEF;
-            border-radius: 10px;
-            width: 300px;
-            height: 280px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px;
-        }
-
-        .user_profile{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .born {
-            --bs-gutter-x: 1.5rem;
-            --bs-gutter-y: 0;
-            display: flex;
-            margin-top: calc(-1 * var(--bs-gutter-y));
-            margin-right: calc(-.5 * var(--bs-gutter-x));
-            margin-left: calc(-.5 * var(--bs-gutter-x));
-        }
-
-        .col-md-3 {
-            border: 1px solid black;
-            width: 200px;
-            height: 280px;
-            margin: 10px; /* 요소 간 간격 설정 */
-            padding: 15px;
-        }
-    
-        .isF  {
-            display: flex;
-            /* flex-direction: column; 세로로 정렬하기 위해 컨테이너의 방향을 column으로 설정 */
-            align-items: center; /* 가운데 정렬 */
-            justify-content: center; /* 가운데 정렬 */
-            height: 100%;
-            column-gap: 2rem;
-        }
-
-        .serchlist {
-            display: flex;
-            flex-direction: column; /*세로로 정렬하기 위해 컨테이너의 방향을 column으로 설정 */
-            margin: 10px; /* 요소 간 간격 설정 */
-            padding: 15px;
-            border: 1px solid #ccc;
-            padding: 15px;
-            justify-content: center;
-            margin-top: 20px; /* 필요에 따라 조절하세요 */
-        }
-
-        input[type="text"] {
-                width: 90%;
-                padding: 8px;
-                box-sizing: border-box;
-        }
-
-        li {
-        list-style: none;
-        }
-
-        .ctegorylist{
-        width: max-content;
-        margin: 50px auto 4rem;
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        gap: 3rem;
-        }
-
-        .studylist{
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-        }
-
-        .study_img{
-        object-fit: cover;
-        }
-        
-        a {
-        text-decoration: none;
-        }
-        @media (max-width: 1400px) {
-            .ctegorylist{
-            grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        @media (max-width: 995px) {
-            .born {
-            flex-wrap: wrap;
-            }
-
-            .left{
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .right{
-                width: 100%;
-            }
-        }
-        @media (max-width: 500px) {
-            .ctegorylist{
-            grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
-
-
-</head>
-<body>
     <main class="container">
         <div class="born mb-2 py-5 text-center container">
             <section class="left">
@@ -144,7 +27,7 @@
             </section>
             <section class="right">
                 <div class="serchlist">
-                    <form id="searchForm" method="post" action="{% baseUrl %}">
+                    <form method="post" action="${baseUrl}/study/">
                         <button type="button" onclick="search()">검색</button>
                         <input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요.">
                     </form>
@@ -152,28 +35,28 @@
                     <section class="album py-3 bg-body-tertiary">
                         <ui class="ctegorylist" id="ctegorylist">
                             <li>
-                                <p>웹개발</p>
+                                <button onclick="searchByCategory('웹개발')">웹개발</button>
                             </li>
                             <li>
-                                <p>CS</p>
+                                <button onclick="searchByCategory('CS')">CS</button>
                             </li>
                             <li>
-                                <p>자격증</p>
+                                <button onclick="searchByCategory('자격증')">자격증</button>
                             </li>
                             <li>
-                                <p>면접</p>
+                                <button onclick="searchByCategory('면접')">면접</button>
                             </li>
                             <li>
-                                <p>어학</p>
+                                <button onclick="searchByCategory('어학')">어학</button>
                             </li>
                             <li>
-                                <p>취미</p>
+                                <button onclick="searchByCategory('취미')">취미</button>
                             </li>
                             <li>
-                                <p>운동</p>
+                                <button onclick="searchByCategory('운동')">운동</button>
                             </li>
                             <li>
-                                <p>독서</p>
+                                <button onclick="searchByCategory('독서')">독서</button>
                             </li>
                         </ui>
                     </section>
@@ -183,9 +66,6 @@
                                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"  id="studyList">
                                     <!-- 스터디 목록이 여기에 동적으로 추가될 것입니다. -->
                                 </div>
-                                <ul class="studylist">
-                                    <!-- 스터디 목록이 여기에 동적으로 추가될 것입니다. -->
-                                </ul>
                             </div>
                         </div>
                     </section>
@@ -193,62 +73,5 @@
             </section>
         </div>
     </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 페이지 로드 시 서버에서 스터디 목록을 가져오는 함수 호출
-            fetchStudyList();
-            // fetchctegorylist();
-        });
-
-        // 서버에서 스터디 목록을 가져와 화면에 표시하는 함수
-        function fetchStudyList() {
-            // TODO: 서버에서 스터디 목록을 가져오는 API 엔드포인트를 사용하여 데이터를 받아오세요.
-            // 예시로 fetch 함수 사용 (실제로는 서버의 API 호출 방식에 따라 적절히 변경 필요)
-            fetch(`${baseUrl}/study/`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then((response) => {
-                    // 응답이 성공인지 확인
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    // JSON 형식으로 변환하여 반환
-                    return response.json();
-                })
-                .then(data => {
-                    // 서버에서 받아온 스터디 목록 데이터를 사용하여 동적으로 목록 생성
-                    const studyListContainer = document.getElementById('studyList');
-
-                    data.forEach(study => {
-                        const listItem = document.createElement('div');
-                        listItem.innerHTML = `
-                        <a href="studygroup_detail.html?pk=${study.id}">
-                            <div class="card shadow-sm">
-                                <div>
-                                    ${study.title}
-                                </div>
-                                <img class="bd-placeholder-img card-img-top study_img" width="100%" height="200" src="${study.thumbnail}" aria-label="Placeholder: Thumbnail"></>
-                                <div class="card-body">
-                                    <div>
-                                        ${study.content}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        `;
-                        studyListContainer.appendChild(listItem);
-                    });
-                })
-                .catch(error => console.error('Error fetching study list:', error));
-        }
-
-        function search() {
-            // TODO: 검색 기능 구현
-        }
-    </script>
 </body>
 </html>
