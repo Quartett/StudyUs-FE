@@ -23,7 +23,7 @@
                 <!-- 썸네일 -->
                 <div class="thumbnail">
                         <label for="imageinput" id="thumbnailLabel">
-                            <img id="thumbnailimg">
+                            <img id="thumbnailimg" style="display: none;">
                             <input type="file" id="imageinput" name="file"/>
                         </label>
                 </div>
@@ -92,10 +92,12 @@
             </div>
             <!-- 스터디 설명 -->
             <div class="content">
-                <input class="input_content" type="text">
+                <textarea class="input_content" type="text"></textarea>
             </div>
             <!-- 스터디 생성 버튼 -->
-            <input id="createbtn" class="btn btn-success m-2" type="submit" value="생성">
+            <div class="btn_container">
+                <input id="createbtn" class="btn btn-success m-2" type="submit" value="생성">
+            </div>
         </section>
     <script src="./static/js/common.js"></script>
     <script src="./static/js/studygroup_create.js"></script>

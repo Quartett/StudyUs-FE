@@ -242,6 +242,8 @@
         color: white;
         scale: 1.1;
         transition: 0.2s;
+        width: fit-content;
+        max-height: 50%
     }
 
     .leader_container{
@@ -298,16 +300,9 @@
 
 @media (max-width: 819px) {
     .full{
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-        
-    /* 오른쪽 부분 스터디 설정 부분 */
-    .right{
-        width: 88vw;
-        min-width: 440px;
-        height: 70vh;
+        max-width: 360px;
+        display: flex;
+        margin: auto;
     }
 
     /* 오른쪽 부분 스터디 설정 전체 */
@@ -316,15 +311,13 @@
         flex-wrap: wrap;
         background-color: #F0EFEF;
         border-radius: 10px;
-        margin-bottom: 20px;
     }
 
     /* 오른쪽 부분 스터디 설정 윗 부분(썸네일 이미지, 스터디 명, 난이도, 인원수) */
     .study_setting_top{
         display: flex;
         flex-direction: column;
-        width: 100%;
-        margin: 10px;
+        width: 80%;
         gap: 10px;
     }
 
@@ -341,10 +334,6 @@
         border-bottom-right-radius: 0px;
         border-bottom-left-radius: 0px;
         object-fit: cover;
-    }
-
-    .imageinput{
-        display: none;
     }
 
     .title_container{
@@ -374,6 +363,7 @@
 
     .level_container{
         width: 70%;
+        flex: 1;
     }
 
     .level{
@@ -387,6 +377,7 @@
         display: flex;
         height: 3rem;
         gap: 10px;
+        justify-content: center;
         margin-bottom: 20px;
     }
 
@@ -410,7 +401,7 @@
     .member_container{
         display: flex;
         flex-direction: column;
-        width: 30%;
+        flex: 1;
     }
 
     .member{
@@ -440,7 +431,7 @@
     .category_container {
         display: flex;
         flex-direction: column;
-        width: 30%;
+        flex: 1;
     }
 
     .date_container{
@@ -457,13 +448,13 @@
 
     .category{
         margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
     }
 
     .category_detail {
         display: flex;
         align-items: center;
-        width: 8rem;
-        height: 4rem;
     }
 
     .schedule{
@@ -492,6 +483,7 @@
     .category_list{
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         height: 100%;
         gap: 10px;
         margin-bottom: 20px;
@@ -571,5 +563,57 @@
         color: white;
         scale: 1.1;
         transition: 0.2s;
+        width: fit-content;
+        max-height: fit-content
+    }
+
+    .leader_container{
+        display: flex;
+    }
+
+    .leader_comment{
+        flex: 3;
+    }
+
+    .comments{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .comment_info{
+        display: flex;
+    }
+
+    .comment_input{
+        border-bottom: 1px solid #F0EFEF;
+        flex: 1;
+    }
+
+    .comment_input_container{
+        display: flex;
+    }
+
+    .comment{
+        display: flex;
+    }
+
+    .profile-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .toolbar{
+        margin-left: 50px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .replies{
+        display: flex;
+        flex-direction: column;
     }
 }
