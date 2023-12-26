@@ -229,11 +229,11 @@ function getStudyGroupInfo(){
         if(data.thumbnail) {
             document.querySelector('.thumbnail img').src = data.thumbnail;
         } else {
-            document.querySelector('.thumbnail img').src = "http://127.0.0.1:8000/media/study_images/default_study_thumbnail.png";
+            document.querySelector('.thumbnail img').src = `${baseUrl}` + "/media/study_images/default_study_thumbnail.png";
         }
 
         if(data.leader && data.leader.profile_image) {
-            document.querySelector('.leader_profile_image img').src = "http://127.0.0.1:8000" + data.leader.profile_image;
+            document.querySelector('.leader_profile_image img').src = `${baseUrl}` + data.leader.profile_image;
         }
     })
     .catch((err) => {
@@ -261,15 +261,15 @@ function createCommentElement(comment) {
     element.setAttribute('data-comment-id', comment.id); // 댓글 ID를 속성으로 저장
     const commentid = comment.id;
 
-    const commnet_profile_image = document.createElement('div');
-    commnet_profile_image.classList.add('commnet_profile_image');
+    const comment_profile_image = document.createElement('div');
+    comment_profile_image.classList.add('comment_profile_image');
     if(comment.profile_image) {
         console.log(comment.profile_image);
-        commnet_profile_image.innerHTML = `<img src="${baseUrl}${comment.profile_image}" class="profile-img">`;
+        comment_profile_image.innerHTML = `<img src="${baseUrl}${comment.profile_image}" class="profile-img">`;
     } else {
-        commnet_profile_image.innerHTML = `<img src="${baseUrl}/media/profile_images/default_profile_image.png" class="profile-img">`;
+        comment_profile_image.innerHTML = `<img src="${baseUrl}/media/profile_images/default_profile_image.png" class="profile-img">`;
     }
-    element.appendChild(commnet_profile_image);
+    element.appendChild(comment_profile_image);
     
     const comment_element = document.createElement('div');
     comment_element.classList.add('comment_element');
@@ -358,7 +358,7 @@ function createCommentElement(comment) {
     // 답글 달기 버튼 추가
     const replyButton = document.createElement('button');
     replyButton.classList.add('reply_button', 'btn', 'btn-light');
-    replyButton.textContent = '답글 달기';
+    replyButton.textContent = '답글';
     replyButton.onclick = function() {
         checkTokenExpired('studygorup_detail.html', (accessToken) => {
             let replyContainer = document.querySelector('.reply_input_container');
@@ -370,7 +370,9 @@ function createCommentElement(comment) {
             }
             replyContainer = document.createElement('div');
             replyContainer.classList.add('reply_input_container');
-            replyContainer.dataset.parentId = comment.id;
+            const topParentId = findTopParentId(comment);
+            console.log("부모id",topParentId);
+            replyContainer.dataset.parentId = topParentId;
 
             const replyInput = document.createElement('div');
             replyInput.classList.add('comment_input');
@@ -400,6 +402,7 @@ function createCommentElement(comment) {
                     "study_group": pk,
                     "parent": topParentPk
                 };
+                console.log(data);
 
                 fetch(`${baseUrl}/study/comments/`, {
                     method: 'POST',
@@ -429,19 +432,49 @@ function createCommentElement(comment) {
     };
     toolbar.appendChild(replyButton);
 
+    // 답글 보기/숨기기 토글 버튼
+    if (!comment.parent) { // 최상위 댓글인 경우에만 토글 버튼을 추가합니다.
+        const toggleRepliesButton = document.createElement('button');
+        toggleRepliesButton.classList.add('toggle_replies_button', 'btn', 'btn-light');
+        toggleRepliesButton.innerHTML = `답글 ${comment.reply ? comment.reply.length : 0}개`;  // 답글 수 표시
+        comment_element.appendChild(toggleRepliesButton);
 
-    // 답글이 있고, parent가 null인 경우만 답글 보기 버튼 추가
-    if (!comment.parent && comment.reply && comment.reply.length > 0) {
-        const show_replyButton = document.createElement('button');
-        show_replyButton.classList.add('show_reply_button', 'btn', 'btn-light');
-        show_replyButton.textContent = '답글 보기';
-        show_replyButton.onclick = function() {
-            toggleReplies(element, comment.reply);
-        };
-        toolbar.appendChild(show_replyButton);
+        toggleRepliesButton.addEventListener('click', () => {
+            toggleReplies(comment.reply || []);
+        });
+    }
+
+    const commentRepliesRender = document.createElement('div');
+    commentRepliesRender.classList.add('comment_replies_render');
+    comment_element.appendChild(commentRepliesRender);
+
+    // 답글 보기/숨기기 함수
+    function toggleReplies(replies) {
+        // 이미 답글 컨테이너가 있으면 표시 상태를 토글합니다.
+        if (commentRepliesRender.innerHTML !== '') {
+            commentRepliesRender.style.display = commentRepliesRender.style.display === 'none' ? 'block' : 'none';
+            return;
+        }
+        // 답글을 렌더링합니다.
+        renderReplies(replies, commentRepliesRender);
+    }
+
+    // 모든 답글을 렌더링하는 함수
+    function renderReplies(replies, container) {
+        replies.forEach(reply => {
+            const replyElement = createCommentElement(reply);
+            container.appendChild(replyElement);
+        });
     }
 
     return element;
+}
+
+function findTopParentId(comment) {
+    while (comment.parent) {
+        comment = comment.parent;
+    }
+    return comment;
 }
 
 //  댓글 생성
@@ -531,34 +564,6 @@ function deleteComment(commentid, accessToken) {
     .catch((err) => {
         alert("댓글 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
     }); 
-}
-
-function toggleReplies(commentElement, replies) {
-    let repliesContainer = commentElement.querySelector('.replies');
-    const toolbar = commentElement.querySelector('.toolbar');
-
-    if (!repliesContainer) {
-        repliesContainer = document.createElement('div');
-        repliesContainer.classList.add('replies');
-        toolbar.parentNode.insertBefore(repliesContainer, toolbar.nextSibling);
-    } else {
-        repliesContainer.style.display = repliesContainer.style.display === 'none' ? 'block' : 'none';
-        return;
-    }
-    // 모든 답글(그리고 답글의 답글)을 같은 컨테이너에 렌더링합니다.
-    const renderReplies = (replies, container) => {
-        replies.forEach(reply => {
-            const replyElement = createCommentElement(reply);
-            container.appendChild(replyElement);
-
-            // 답글에 또 다른 답글이 있는 경우, 같은 컨테이너에 계속해서 추가합니다.
-            if (reply.reply && reply.reply.length > 0) {
-                renderReplies(reply.reply, container);  // 현재 컨테이너를 재사용합니다.
-            }
-        });
-    };
-
-    renderReplies(replies, repliesContainer);
 }
 
 function fetchCurrentMemberCount(pk, maxMembers) {
