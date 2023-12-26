@@ -110,15 +110,29 @@
             const editcompleteBtn = document.querySelector('#editcompletebtn');
             editcompleteBtn.addEventListener("click", function(e) {
                 e.preventDefault()
-                const nickname = document.querySelector('#nickname').value;
+                const nicknameInput = document.querySelector('#nickname').value || null;
                 const fileInput = document.querySelector('#imageinput');
-                const files = fileInput.files[0];
+                const files = fileInput.files[0] || null;
                 const accesstoken = getAccessToken()
                 
                 const formData = new FormData();
-                formData.append('profile_image', files);
-                formData.append('nickname', nickname);
+                
+                // 파일이 선택되었는지 확인
+                if (files) {
+                    formData.append('profile_image', files);
+                }
 
+                // 닉네임이 입력되었는지 확인
+                if (nicknameInput) {
+                    formData.append('nickname', nicknameInput);
+                }
+
+                // 파일이나 닉네임 중 하나라도 변경되었는지 확인
+                if (!nicknameInput && !files) {
+                    alert('변경할 프로필 이미지나 닉네임을 입력해주세요.');
+                    return;
+                }
+                
                 checkTokenExpired(`profile.html`, (accesstoken) => {
                     fetch(`${baseUrl}/accounts/user/`, {
                         method: 'PATCH',
