@@ -27,7 +27,7 @@
             </section>
             <section class="right">
                 <div class="serchlist">
-                    <form method="post" action="${baseUrl}/study/">
+                    <form action="${baseUrl}/study/">
                         <button type="button" onclick="search()">검색</button>
                         <input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요.">
                     </form>
@@ -35,28 +35,31 @@
                     <section class="album py-3 bg-body-tertiary">
                         <ui class="ctegorylist" id="ctegorylist">
                             <li>
-                                <button onclick="searchByCategory('웹개발')">웹개발</button>
+                                <button value="0" onclick="searchByCategory(this.value)">전체</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('CS')">CS</button>
+                                <button value="1" onclick="searchByCategory(this.value)">웹개발</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('자격증')">자격증</button>
+                                <button value="2" onclick="searchByCategory(this.value)">CS</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('면접')">면접</button>
+                                <button value="3" onclick="searchByCategory(this.value)">자격증</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('어학')">어학</button>
+                                <button value="4" onclick="searchByCategory(this.value)">면접</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('취미')">취미</button>
+                                <button value="5" onclick="searchByCategory(this.value)">어학</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('운동')">운동</button>
+                                <button value="6" onclick="searchByCategory(this.value)">취미</button>
                             </li>
                             <li>
-                                <button onclick="searchByCategory('독서')">독서</button>
+                                <button value="7" onclick="searchByCategory(this.value)">운동</button>
+                            </li>
+                            <li>
+                                <button value="8" onclick="searchByCategory(this.value)">독서</button>
                             </li>
                         </ui>
                     </section>
