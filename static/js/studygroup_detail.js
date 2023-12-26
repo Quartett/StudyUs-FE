@@ -235,6 +235,7 @@ function getStudyGroupInfo(){
         if(data.leader && data.leader.profile_image) {
             document.querySelector('.leader_profile_image img').src = `${baseUrl}` + data.leader.profile_image;
         }
+        document.querySelector('.leader_nickname').textContent = "그룹장: " + data.leader.nickname;
     })
     .catch((err) => {
         alert("글 정보를 받아오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
