@@ -219,7 +219,7 @@ function getStudyGroupInfo(){
 
         displayStudyDates(data.study_start_at, data.study_end_at);
 
-        category_level(data.category, data.level)
+        category_level(data.category, data.level, data.category_name)
         
         highlightMeetingDays(data.week_days);
 
@@ -361,73 +361,83 @@ function createCommentElement(comment) {
     replyButton.textContent = '답글';
     replyButton.onclick = function() {
         checkTokenExpired('studygorup_detail.html', (accessToken) => {
-            let replyContainer = document.querySelector('.reply_input_container');
+            const replyContainerId = 'reply-container-for-' + comment.id;
+            let replyContainer = document.getElementById(replyContainerId);
 
-            if (replyContainer) {
-                replyContainer.style.display = replyContainer.style.display === 'none' ? 'block' : 'none';
-                replyContainer.querySelector('.comment_input').focus();
-                return;
-            }
-            replyContainer = document.createElement('div');
-            replyContainer.classList.add('reply_input_container');
-            const topParentId = findTopParentId(comment);
-            console.log("부모id",topParentId);
-            replyContainer.dataset.parentId = topParentId;
+            if (!replyContainer) {
+                // 새로운 답글 입력창을 생성합니다.
+                replyContainer = document.createElement('div');
+                replyContainer.id = replyContainerId;
+                replyContainer.classList.add('reply_input_container');
+                const topParentId = getParentId(comment);
+                replyContainer.dataset.parentId = topParentId;
 
-            const replyInput = document.createElement('div');
-            replyInput.classList.add('comment_input');
-            replyInput.contentEditable = 'true';
-            replyInput.textContent = '댓글 추가...';
+                const replyInput = document.createElement('div');
+                replyInput.classList.add('comment_input');
+                replyInput.contentEditable = 'true';
+                replyInput.textContent = '댓글 추가...';
 
-            const submitButton = document.createElement('button');
-            submitButton.id = 'comment_submit';
-            submitButton.classList.add('btn', 'btn-primary', 'm-2');
-            submitButton.textContent = '등록';
-            submitButton.type = 'button';
+                const submitButton = document.createElement('button');
+                submitButton.id = 'comment_submit';
+                submitButton.classList.add('btn', 'btn-primary', 'm-2');
+                submitButton.textContent = '등록';
+                submitButton.type = 'button';
 
-            replyContainer.appendChild(replyInput);
-            replyContainer.appendChild(submitButton);
-
-            document.querySelector('.comment_section').appendChild(replyContainer);
-
-            replyInput.focus();
-
-            comment_element.appendChild(replyContainer);
-
-            submitButton.addEventListener('click', function() {
-                const topParentPk = replyContainer.dataset.parentId;
-                const text = replyInput.textContent;
-                const data = {
-                    "text": text,
-                    "study_group": pk,
-                    "parent": topParentPk
+                const cancelButton = document.createElement('button'); // 취소 버튼 생성
+                cancelButton.textContent = '취소';
+                cancelButton.classList.add('btn', 'btn-secondary', 'm-2');
+                cancelButton.onclick = function() {
+                    replyContainer.style.display = 'none'; // 취소 버튼을 누르면 입력창 숨김
                 };
-                console.log(data);
 
-                fetch(`${baseUrl}/study/comments/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${accessToken}`
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(response.status);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
-                    getStudyGroupInfo();
-                })
-                .catch((err) => {
-                    alert("댓글 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+                replyContainer.appendChild(replyInput);
+                replyContainer.appendChild(submitButton);
+                replyContainer.appendChild(cancelButton); // 취소 버튼을 입력창에 추가
+
+                // 답글 입력창을 현재 댓글 요소 바로 다음에 삽입합니다.
+                element.parentNode.insertBefore(replyContainer, element.nextSibling);
+
+                submitButton.addEventListener('click', function() {
+                    const topParentPk = replyContainer.dataset.parentId;
+                    const text = replyInput.textContent;
+                    const data = {
+                        "text": text,
+                        "study_group": pk,
+                        "parent": topParentPk
+                    };
+                    console.log("답글데이터",data);
+    
+                    fetch(`${baseUrl}/study/comments/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessToken}`
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
+                        getStudyGroupInfo();
+                    })
+                    .catch((err) => {
+                        alert("댓글 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+                    });
+                    
+                    replyContainer.style.display = 'none';
                 });
-                
-                replyContainer.style.display = 'none';
-            });
+            } else {
+                // 답글 입력창이 이미 있으면 표시 상태를 토글합니다.
+                replyContainer.style.display = replyContainer.style.display === 'none' ? 'block' : 'none';
+                if (replyContainer.style.display === 'block') {
+                    replyContainer.querySelector('.comment_input').focus();
+                }
+            }
         });
     };
     toolbar.appendChild(replyButton);
@@ -436,7 +446,10 @@ function createCommentElement(comment) {
     if (!comment.parent) { // 최상위 댓글인 경우에만 토글 버튼을 추가합니다.
         const toggleRepliesButton = document.createElement('button');
         toggleRepliesButton.classList.add('toggle_replies_button', 'btn', 'btn-light');
-        toggleRepliesButton.innerHTML = `답글 ${comment.reply ? comment.reply.length : 0}개`;  // 답글 수 표시
+        toggleRepliesButton.innerHTML = `답글 ${comment.reply ? comment.reply.length : 0}개`;
+        if (comment.reply && comment.reply.length === 0) {
+        toggleRepliesButton.style.display = 'none';
+    }
         comment_element.appendChild(toggleRepliesButton);
 
         toggleRepliesButton.addEventListener('click', () => {
@@ -470,11 +483,16 @@ function createCommentElement(comment) {
     return element;
 }
 
-function findTopParentId(comment) {
-    while (comment.parent) {
-        comment = comment.parent;
+function getParentId(comment) {
+    // 클릭이 발생한 댓글의 부모 댓글 ID를 찾습니다.
+    // 만약 없다면 해당 댓글의 ID를 반환합니다.
+    if (comment.parent) {
+        console.log("자식",comment.parent);
+        return comment.parent;
+    } else {
+        console.log("부모",comment.id);
+        return comment.id;
     }
-    return comment;
 }
 
 //  댓글 생성
@@ -604,7 +622,7 @@ function highlightMeetingDays(weekDays) {
     });
 }
 
-function category_level(category, level) {
+function category_level(category, level, categoryName) {
     const categories = document.querySelectorAll('.category_detail');
     const levels = document.querySelectorAll('.level_detail');
 
@@ -623,6 +641,7 @@ function category_level(category, level) {
 
         if (categoryNumber == category) {
             categoryElement.classList.add('selected');
+            categoryElement.innerHTML = categoryName;
         } else {
             categoryElement.style.display = 'none';
         }
