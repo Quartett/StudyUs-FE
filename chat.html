@@ -45,6 +45,20 @@
             text-decoration: none;
         }
 
+        .received-chat {
+            border: 1px solid #D9D9D9;
+            border-radius: 0 10px 10px 10px;
+            background-color: #D9D9D9;
+            padding: 5px 10px 5px 10px;
+        }
+
+        .sended-chat {
+            border: 1px solid #D9D9D9;
+            border-radius: 10px 0 10px 10px;
+            background-color: white;
+            padding: 5px 10px 5px 10px;
+        }
+
 
     </style>
 </head>
@@ -77,25 +91,10 @@
 </body>
 
 <script>
-    // if (isLogin()) {
-    //     document.querySelector("#profileSection").innerHTML += `
-    //         <a id="createStudyBtn" href="/studygroup_create.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
-    //             스터디 생성
-    //         </a>  
-    //     `
-    // } else {
-    //     document.querySelector("#profileSection").innerHTML += `
-    //         <a id="loginBtn" href="/login.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
-    //             시작하기
-    //         </a>
-    //     `
-    // }
-</script>
-
-<script>
     const urlParams = new URLSearchParams(window.location.search);
     const chat_id = urlParams.get('id') || 'none';
     const group_id = urlParams.get('group') || 'none';
+    let nickname = 'anonymous';
 
     if(chat_id == 'none') {
         document.querySelector("#ChatSection").innerHTML = `
@@ -105,7 +104,7 @@
         `;
     } else {
         document.querySelector("#ChatSection").innerHTML = `
-            <div id="chat-log" class="form-control text-start" style="resize: none; height: 300px; overflow-y: scroll" readonly></div>
+            <div id="chat-log" class="form-control text-start" style="resize: none; height: 500px; overflow-y: scroll" readonly></div>
             <br>
             <input id="chat-message-input" type="text" size="100" class="form-control"><br>
             <input id="chat-message-submit" type="button" value="전송" class="btn btn-primary" style="background-color: #84C19C; border-color: #84C19C;">
@@ -119,6 +118,7 @@
 <script>
     checkTokenExpired('memorycard.html', (accessToken) => {
         getStudyList(accessToken);
+        getUserNickname(accessToken);
         if (chat_id != 'none' && group_id != 'none') {
             getStudyMemberList(accessToken);
             setChatSocket(chat_id);
@@ -182,6 +182,29 @@
         })
     }
 
+    function getUserNickname(accessToken) {
+        fetch(`${baseUrl}/accounts/user/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error(response.status)
+            }
+            return response.json()
+        })
+        .then((json) => {
+            nickname = json.nickname;
+            console.log(nickname);
+        })
+        .catch((err) => {
+            console.log(err.message)
+        });
+    }
+
     function getStudyMemberList(accessToken) {
             fetch(`${baseUrl}/study/${group_id}/member/`, {
                 method: 'GET',
@@ -243,13 +266,23 @@
     
         chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                document.querySelector('#chat-log').innerHTML += `
-                    <div>
-                        <img src="${baseUrl}/${data.profile_image}" style="width: 50px; height: 50px; border-radius: 50%;">
-                        <strong>${data.nickname}</strong>
-                        <p>${data.message}</p>
-                    </div> 
-                `;
+                if (data.nickname == nickname) {
+                    document.querySelector('#chat-log').innerHTML += `
+                        <div class="d-flex gap-2 justify-content-end align-items-center mb-3">
+                            <div class="sended-chat">${data.message}</div>
+                        </div> 
+                    `;
+                } else {
+                    document.querySelector('#chat-log').innerHTML += `
+                        <div class="d-flex gap-2 align-items-center mb-3">
+                            <img src="${baseUrl}/${data.profile_image}" style="width: 40px; height: 40px; border-radius: 50%;" class="text-center">
+                            <div class="d-grid g-3">
+                                <strong class="mb-1">${data.nickname}</strong>
+                                <div class="received-chat">${data.message}</div>
+                            </div>
+                        </div> 
+                    `;
+                }
                 
                 document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
         };
