@@ -1,17 +1,23 @@
 let selectedImageFile = null; // 선택된 이미지 파일
 
 document.getElementById('imageinput').addEventListener('change', function(event) {
-    const file = event.target.files[0]; // 사용자가 선택한 파일 가져오기
-    selectedImageFile = file;
+    const file = event.target.files[0];
+    if (file) {  // 파일이 선택된 경우
+        selectedImageFile = file;
 
-    const reader = new FileReader();
-    
-    reader.onload = function(e) {
-        // 파일 읽기가 완료되면 실행
-        document.getElementById('thumbnailimg').src = e.target.result;
-    };
-    
-    reader.readAsDataURL(file); // 파일을 읽어 데이터 URL로 변환
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const thumbnailImg = document.getElementById('thumbnailimg');
+            thumbnailImg.src = e.target.result;
+            thumbnailImg.style.display = 'block';
+            document.getElementById('imageinput').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    } else {  // 파일 선택이 취소된 경우
+        selectedImageFile = null;  // 선택된 파일 상태를 재설정
+        document.getElementById('thumbnailimg').style.display = 'none';
+        document.getElementById('imageinput').style.display = 'block';
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {

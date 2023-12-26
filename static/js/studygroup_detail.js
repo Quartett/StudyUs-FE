@@ -6,11 +6,14 @@ if (isLogin()){
         isMember(pk, accessToken);
     })
 }else{
-    const button = document.querySelector('.change_button');
+    const button = document.querySelector('#change_button');
     button.textContent = '가입하기';
     button.onclick = function() {
         window.location.href = '/login.html?redirect=studygroup_detail.html?pk=' + pk;
     };
+
+    const button2 = document.querySelector('#leave_button');
+    button2.style.display = 'none';
 }
 
 function isMember(pk, accessToken){
@@ -108,7 +111,7 @@ function memberButton(isMember) {
         console.log('채팅방 입장');
         button.onclick = function() {
             // 채팅방 페이지 작성되면 채팅방으로 이동 필요
-            // window.location.href = '/path/to/chat';
+            window.location.href = '/chat.html?id=' + pk + '&group=' + pk;
         };
 
         const leaveButton = document.querySelector('#leave_button');
@@ -124,6 +127,8 @@ function memberButton(isMember) {
         button.onclick = function() {
             joinStudyGroup();
         };
+        const button2 = document.querySelector('#leave_button');
+        button2.style.display = 'none';
     }
 }
 
@@ -255,6 +260,16 @@ function createCommentElement(comment) {
     element.classList.add('comment');
     element.setAttribute('data-comment-id', comment.id); // 댓글 ID를 속성으로 저장
     const commentid = comment.id;
+
+    const commnet_profile_image = document.createElement('div');
+    commnet_profile_image.classList.add('commnet_profile_image');
+    if(comment.profile_image) {
+        console.log(comment.profile_image);
+        commnet_profile_image.innerHTML = `<img src="${baseUrl}${comment.profile_image}" class="profile-img">`;
+    } else {
+        commnet_profile_image.innerHTML = `<img src="${baseUrl}/media/profile_images/default_profile_image.png" class="profile-img">`;
+    }
+    element.appendChild(commnet_profile_image);
     
     const comment_element = document.createElement('div');
     comment_element.classList.add('comment_element');
@@ -289,7 +304,7 @@ function createCommentElement(comment) {
     comment_info.appendChild(input);
 
     const editButton = document.createElement('button');
-    editButton.classList.add('edit_button');
+    editButton.classList.add('edit_button', 'btn', 'btn-success', 'm-2');
     editButton.textContent = '수정';
     
     const toggleEdit = function(isEditing) {
@@ -331,7 +346,7 @@ function createCommentElement(comment) {
     toolbar.appendChild(editButton);
 
     const deleteButton = document.createElement('button');
-    deleteButton.classList.add('delete_button');
+    deleteButton.classList.add('delete_button', 'btn', 'btn-outline-danger', 'm-2');
     deleteButton.textContent = '삭제';
     deleteButton.onclick = function() {
         checkTokenExpired('studygorup_detail.html', (accessToken) => {
@@ -340,19 +355,90 @@ function createCommentElement(comment) {
     };
     toolbar.appendChild(deleteButton);
 
-    // const profileImage = document.createElement('div');
-    // profileImage.classList.add('commnet_profile_image');
-    // profileImage.textContent = "프로필 이미지"
-    // element.appendChild(profileImage);
+    // 답글 달기 버튼 추가
+    const replyButton = document.createElement('button');
+    replyButton.classList.add('reply_button', 'btn', 'btn-light');
+    replyButton.textContent = '답글 달기';
+    replyButton.onclick = function() {
+        checkTokenExpired('studygorup_detail.html', (accessToken) => {
+            let replyContainer = document.querySelector('.reply_input_container');
+
+            if (replyContainer) {
+                replyContainer.style.display = replyContainer.style.display === 'none' ? 'block' : 'none';
+                replyContainer.querySelector('.comment_input').focus();
+                return;
+            }
+            replyContainer = document.createElement('div');
+            replyContainer.classList.add('reply_input_container');
+            replyContainer.dataset.parentId = comment.id;
+
+            const replyInput = document.createElement('div');
+            replyInput.classList.add('comment_input');
+            replyInput.contentEditable = 'true';
+            replyInput.textContent = '댓글 추가...';
+
+            const submitButton = document.createElement('button');
+            submitButton.id = 'comment_submit';
+            submitButton.classList.add('btn', 'btn-primary', 'm-2');
+            submitButton.textContent = '등록';
+            submitButton.type = 'button';
+
+            replyContainer.appendChild(replyInput);
+            replyContainer.appendChild(submitButton);
+
+            document.querySelector('.comment_section').appendChild(replyContainer);
+
+            replyInput.focus();
+
+            comment_element.appendChild(replyContainer);
+
+            submitButton.addEventListener('click', function() {
+                const topParentPk = replyContainer.dataset.parentId;
+                const text = replyInput.textContent;
+                const data = {
+                    "text": text,
+                    "study_group": pk,
+                    "parent": topParentPk
+                };
+
+                fetch(`${baseUrl}/study/comments/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
+                    getStudyGroupInfo();
+                })
+                .catch((err) => {
+                    alert("댓글 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+                });
+                
+                replyContainer.style.display = 'none';
+            });
+        });
+    };
+    toolbar.appendChild(replyButton);
+
 
     // 답글이 있고, parent가 null인 경우만 답글 보기 버튼 추가
     if (!comment.parent && comment.reply && comment.reply.length > 0) {
-        const replyButton = document.createElement('button');
-        replyButton.textContent = '답글 보기';
-        replyButton.onclick = function() {
+        const show_replyButton = document.createElement('button');
+        show_replyButton.classList.add('show_reply_button', 'btn', 'btn-light');
+        show_replyButton.textContent = '답글 보기';
+        show_replyButton.onclick = function() {
             toggleReplies(element, comment.reply);
         };
-        toolbar.appendChild(replyButton);
+        toolbar.appendChild(show_replyButton);
     }
 
     return element;
@@ -450,19 +536,29 @@ function deleteComment(commentid, accessToken) {
 function toggleReplies(commentElement, replies) {
     let repliesContainer = commentElement.querySelector('.replies');
     const toolbar = commentElement.querySelector('.toolbar');
+
     if (!repliesContainer) {
-        // 답글 컨테이너 생성 및 답글 추가
         repliesContainer = document.createElement('div');
         repliesContainer.classList.add('replies');
+        toolbar.parentNode.insertBefore(repliesContainer, toolbar.nextSibling);
+    } else {
+        repliesContainer.style.display = repliesContainer.style.display === 'none' ? 'block' : 'none';
+        return;
+    }
+    // 모든 답글(그리고 답글의 답글)을 같은 컨테이너에 렌더링합니다.
+    const renderReplies = (replies, container) => {
         replies.forEach(reply => {
             const replyElement = createCommentElement(reply);
-            repliesContainer.appendChild(replyElement);
+            container.appendChild(replyElement);
+
+            // 답글에 또 다른 답글이 있는 경우, 같은 컨테이너에 계속해서 추가합니다.
+            if (reply.reply && reply.reply.length > 0) {
+                renderReplies(reply.reply, container);  // 현재 컨테이너를 재사용합니다.
+            }
         });
-        toolbar.appendChild(repliesContainer);
-    } else {
-        // 답글 컨테이너 토글
-        repliesContainer.style.display = repliesContainer.style.display === 'none' ? 'block' : 'none';
-    }
+    };
+
+    renderReplies(replies, repliesContainer);
 }
 
 function fetchCurrentMemberCount(pk, maxMembers) {

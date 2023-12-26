@@ -35,8 +35,9 @@
 <!-- 프로필 수정 완료 버튼 -->
                     <div class="d-flex gap-3">
                         <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="password_change" id="password_change" onclick="location.href = 'change_password.html'; return false">비밀번호 변경</button>
-                        <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="editcomplete" id="editcompletebtn">수정 완료</button>
+                        <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="button" name="user_delete" id="user_delete">회원 탈퇴</button>
                     </div>
+                        <button class="btn btn-primary w-100 mt-4 py-2 border-0 rounded-3" style="background-color:#84C19C;" type="submit" name="editcomplete" id="editcompletebtn">수정 완료</button>
                 </form>
             </section>
         </main>
@@ -144,6 +145,40 @@
                         window.location.href = '/login.html';
                     });
                 })
+            })
+
+            //4) 회원 탈퇴 버튼을 눌렀을 때, 회원 탈퇴할 건지 물어보는 alert 창 띄우고, 확인을 누르면 회원 탈퇴를 진행한다
+            const userdeleteBtn = document.querySelector('#user_delete');
+            userdeleteBtn.addEventListener("click", (e) => {
+                e.preventDefault()
+                const accesstoken = getAccessToken()
+                if (confirm("정말로 회원 탈퇴를 하시겠습니까?")) {
+                    checkTokenExpired(`profile.html`, (accesstoken) => {
+                        fetch(`${baseUrl}/accounts/user/delete/`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${accesstoken}`,
+                            }
+                        })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error('Invalid token');
+                                window.location.href = '/login.html';
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            alert("회원 탈퇴가 완료되었습니다.")
+                            removeToken()
+                            window.location.href = '/login.html';
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            // 토큰이 유효하지 않으면 로그인 페이지로 이동
+                            window.location.href = '/login.html';
+                        });
+                    })
+                }
             })
         </script>
     </body>

@@ -61,19 +61,24 @@ function getStudyGroupInfo(){
     }); 
 }
 
-
 document.getElementById('imageinput').addEventListener('change', function(event) {
-    const file = event.target.files[0]; // 사용자가 선택한 파일 가져오기
-    selectedImageFile = file;
+    const file = event.target.files[0];
+    if (file) {  // 파일이 선택된 경우
+        selectedImageFile = file;
 
-    const reader = new FileReader();
-    
-    reader.onload = function(e) {
-        // 파일 읽기가 완료되면 실행
-        document.getElementById('thumbnailimg').src = e.target.result;
-    };
-    
-    reader.readAsDataURL(file); // 파일을 읽어 데이터 URL로 변환
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const thumbnailImg = document.getElementById('thumbnailimg');
+            thumbnailImg.src = e.target.result;
+            thumbnailImg.style.display = 'block';
+            document.getElementById('imageinput').style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    } else {  // 파일 선택이 취소된 경우
+        selectedImageFile = null;  // 선택된 파일 상태를 재설정
+        document.getElementById('thumbnailimg').style.display = 'none';
+        document.getElementById('imageinput').style.display = 'block';
+    }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -239,3 +244,107 @@ createStudyButton.addEventListener('click', function(e) {
         alert('입력되지 않은 값이 있습니다.');
     }
 });
+
+// 멤버관리 버튼 선택
+const memberManageButton = document.querySelector('#editmember')
+
+memberManageButton.addEventListener('click', function(e) {
+    checkTokenExpired('studygroup_edit.html', (accessToken) => {
+        fetchMembers(accessToken);
+    });
+});
+
+const memberListContainer = document.querySelector('#member_list');
+
+function fetchMembers(accessToken) {
+    fetch(`${baseUrl}/study/${pk}/member/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+        return response.json();
+    })
+    .then((data) => {
+        const memberListContainer = document.querySelector('#member_list');
+        memberListContainer.innerHTML = ''; // 기존 목록 초기화
+        data.forEach(member => {
+            const memberItem = document.createElement('div');
+            const role = member.role === 1 ? '그룹장' : '그룹원';
+            const checked = member.role === 1 ? 'checked' : '';
+
+            memberItem.innerHTML = `
+                <label>
+                    <input type="checkbox" class="member-checkbox" data-user-id="${member.user}" ${checked}>
+                    ${member.user_nickname} - ${role}
+                </label>
+            `;
+            memberListContainer.appendChild(memberItem);
+        });
+    })
+    .catch((err) => {
+        alert("멤버 정보를 받아오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+    }); 
+}
+
+// 체크박스의 선택을 관리합니다.
+memberListContainer.addEventListener('change', function(e) {
+    if (e.target.classList.contains('member-checkbox')) {
+        document.querySelectorAll('.member-checkbox').forEach((cb) => {
+            cb.checked = false;
+        });
+        e.target.checked = true;
+    }
+});
+
+// 저장하기 버튼을 클릭했을 때 선택된 멤버를 업데이트합니다.
+document.querySelector('#savemember_role').addEventListener('click', function() {
+    checkTokenExpired('studygroup_edit.html', (accessToken) => {
+        const selectedCheckbox = document.querySelector('.member-checkbox:checked');
+        if (selectedCheckbox) {
+            const selectedUserId = selectedCheckbox.getAttribute('data-user-id');
+            const selectedUserRole = selectedCheckbox.closest('label').textContent.includes('그룹장') ? 1 : 0;
+            if (selectedUserRole === 1) {
+                alert('이미 그룹장인 유저입니다');
+            } else {
+                updateGroupLeader(selectedUserId, accessToken);
+            }
+        } else {
+            alert('그룹장을 선택해주세요.');
+        }
+    });
+});
+
+function updateGroupLeader(selectedUserId, accessToken) {
+    const data = {
+        user: selectedUserId
+    };
+
+    fetch(`${baseUrl}/study/${pk}/member/update/`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(data)
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+        return response.json();
+    })
+    .then((updatedData) => {
+        console.log('그룹장이 업데이트되었습니다:', updatedData);
+        alert('그룹장이 성공적으로 업데이트되었습니다.');
+        window.location.href = `studygroup_detail.html?pk=${pk}`;
+    })
+    .catch((error) => {
+        alert('그룹장 업데이트 중 오류가 발생했습니다.');
+    });
+}
