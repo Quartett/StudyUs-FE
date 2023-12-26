@@ -1,0 +1,110 @@
+.left{
+    background: #F0EFEF;
+    border-radius: 10px;
+    width: 300px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+}
+
+.user_profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.born {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+.col-md-3 {
+    border: 1px solid black;
+    width: 200px;
+    height: 280px;
+    margin: 10px; /* 요소 간 간격 설정 */
+    padding: 15px;
+}
+
+.isF  {
+    display: flex;
+    /* flex-direction: column; 세로로 정렬하기 위해 컨테이너의 방향을 column으로 설정 */
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 가운데 정렬 */
+    height: 100%;
+    column-gap: 2rem;
+}
+
+.serchlist {
+    display: flex;
+    flex-direction: column; /*세로로 정렬하기 위해 컨테이너의 방향을 column으로 설정 */
+    margin: 10px; /* 요소 간 간격 설정 */
+    padding: 15px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    justify-content: center;
+    margin-top: 20px; /* 필요에 따라 조절하세요 */
+}
+
+input[type="text"] {
+        width: 90%;
+        padding: 8px;
+        box-sizing: border-box;
+}
+
+li {
+list-style: none;
+}
+
+.ctegorylist{
+width: max-content;
+margin: 50px auto 4rem;
+display: grid;
+grid-template-columns: repeat(8, 1fr);
+gap: 3rem;
+}
+
+.studylist{
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2rem;
+}
+
+.study_img{
+object-fit: cover;
+}
+
+a {
+text-decoration: none;
+}
+@media (max-width: 1400px) {
+    .ctegorylist{
+    grid-template-columns: repeat(4, 1fr);
+    }
+}
+@media (max-width: 995px) {
+    .born {
+    flex-wrap: wrap;
+    }
+
+    .left{
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .right{
+        width: 100%;
+    }
+}
+@media (max-width: 500px) {
+    .ctegorylist{
+    grid-template-columns: repeat(2, 1fr);
+    }
+}
