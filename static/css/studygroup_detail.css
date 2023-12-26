@@ -141,12 +141,10 @@
     }
 
     .category_detail, .level_detail{
+        display: none;
         width: 5vw;
         height: 5vw;
-        display: flex;
-        align-items: center;
         margin: 5px;
-        justify-content: center;
         border: 2px solid #84C19C;
         border-radius: 10px;
         background-color: #F0EFEF;
@@ -165,6 +163,11 @@
         height: 5rem;
         gap: 10px;
         margin-bottom: 20px;
+    }
+
+    .level_name, .category_name{
+        text-align: center;
+        margin-top: 5px;
     }
 
     .category_list{
@@ -398,11 +401,8 @@
     }
 
     .level_detail{
-        display: flex;
-        align-items: center;
-        width: 30%;
-        height: 100%;
-        justify-content: center;
+        display: none;
+        min-width: 55px;
         border: 2px solid #84C19C;
         border-radius: 10px;
         background-color: #F0EFEF;
@@ -469,8 +469,8 @@
     }
 
     .category_detail {
-        display: flex;
-        align-items: center;
+        display: none;
+        min-width: 55px;
     }
 
     .schedule{
@@ -642,5 +642,10 @@
         font-weight: bold;
         align-items: center;
         justify-content: center;
+    }
+
+    .level_name, .category_name{
+        text-align: center;
+        margin-top: 5px;
     }
 }

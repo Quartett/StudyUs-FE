@@ -64,7 +64,6 @@ function isMember(pk, accessToken){
 
 function groupeditButton(isLeader) {
     // 그룹장이라면 수정, 삭제 버튼이 보이도록 처리
-    // 수정에 대한 이벤트 작성필요
     const editbutton = document.querySelector('#edit');
     const deletebutton = document.querySelector('#delete');
     if (isLeader) {
@@ -607,8 +606,7 @@ function category_level(category, level, categoryName) {
 
         if (levelNumber == level) {
             levelElement.classList.add('selected');
-        } else {
-            levelElement.style.display = 'none';
+            levelElement.style.display = 'block'; // 해당하는 레벨만 표시합니다.
         }
     });
 
@@ -617,9 +615,12 @@ function category_level(category, level, categoryName) {
 
         if (categoryNumber == category) {
             categoryElement.classList.add('selected');
-            categoryElement.innerHTML = categoryName;
-        } else {
-            categoryElement.style.display = 'none';
+            categoryElement.style.display = 'block';
+            
+            const categoryNameElement = categoryElement.querySelector('.category_name');
+            if (categoryNameElement) {
+                categoryNameElement.textContent = categoryName;
+            }
         }
     });
 }
