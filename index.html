@@ -47,10 +47,10 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <form action="${baseUrl}/study/" class="mb-3">
+                    <form class="mb-3">
                         <div class="input-group">
-                            <input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요." class="form-control">
-                            <button type="button" class="btn btn-secondary" onclick="search()">검색</button>
+                            <input type="text" id="searchInput" name="search" placeholder="검색어를 입력하세요." class="form-control">
+                            <button id="searchBtn" type="submit" class="btn btn-secondary">검색</button>
                         </div>
                     </form>
                     
@@ -112,7 +112,7 @@
                     </div>
         
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5 mt-5 mb-5"  id="studyList">
-                        <!-- 스터디 목록이 여기에 동적으로 추가될 것입니다. -->
+                        
                     </div>
                     
                 </div>
