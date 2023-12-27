@@ -66,6 +66,7 @@ function groupeditButton(isLeader) {
     // 그룹장이라면 수정, 삭제 버튼이 보이도록 처리
     const editbutton = document.querySelector('#edit');
     const deletebutton = document.querySelector('#delete');
+
     if (isLeader) {
         editbutton.onclick = function() {
             checkTokenExpired('studygorup_detail.html', (accessToken) => {
@@ -126,25 +127,39 @@ function memberButton(isMember) {
 
 function leaveStudyGroup(pk) {
     checkTokenExpired('studygorup_detail.html', (accessToken) => {
-        fetch(`${baseUrl}/study/${pk}/member/delete/`, {
-            method: 'DELETE',
+        fetch(`${baseUrl}/study/${pk}/member/`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
-            },
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(response.status);
             }
-            return response;
         })
-        .then(() => {
-            // 탈퇴 성공시 페이지 새로고침
-            window.location.reload();
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 1 && data[0].role === 1) {
+                alert("다른 멤버가 없을 시 그룹장은 탈퇴가 불가합니다");
+            } else {
+                fetch(`${baseUrl}/study/${pk}/member/delete/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status);
+                    }
+                    return response;
+                })
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch((err) => {
+                    alert("그룹 탈퇴 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+                });
+            }
         })
         .catch((err) => {
-            alert("그룹 탈퇴 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
-        }); 
+            alert("그룹 멤버 정보를 가져오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+        });
     });
 }
 
