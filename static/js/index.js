@@ -44,7 +44,10 @@ function fetchStudyList() {
                                     <div class="card-body">
                                         <h5 class="card-title">${study.title}</h5>
                                         <p class="card-text">${study.content}</p>
-                                        
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-secondary rounded-pill px-3" type="button" disabled>${study.category_name}</button>
+                                        <button class="btn btn-secondary rounded-pill px-3" type="button" disabled>${getLevel(study.level)}</button>
                                     </div>
                                 </div>
                             </a>
@@ -63,7 +66,10 @@ function fetchStudyList() {
                                     <div class="card-body">
                                         <h5 class="card-title">${study.title}</h5>
                                         <p class="card-text">${study.content}</p>
-                                        
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-secondary rounded-pill px-3" type="button" disabled>${study.category_name}</button>
+                                        <button class="btn btn-secondary rounded-pill px-3" type="button" disabled>${getLevel(study.level)}</button>
                                     </div>
                                 </div>
                             </a>
@@ -84,5 +90,15 @@ function searchByCategory(category) {
         window.location.href = `/index.html?search=${search}&category=${category}`
     } else {
         window.location.href = `/index.html?category=${category}`;
+    }
+}
+
+function getLevel(level) {
+    if (level==1) {
+        return "초급";
+    } else if (level==2) {
+        return "중급";
+    } else {
+        return "고급";
     }
 }
