@@ -43,7 +43,8 @@ function fetchStudyList() {
                                     <img src="${study.thumbnail}" class="card-img-top" width="100%" height="200">
                                     <div class="card-body">
                                         <h5 class="card-title">${study.title}</h5>
-                                        <p class="card-text">${study.content}</p>
+                                        <p class="card-text" style="text-overflow: ellipsis; overflow: hidden; -webkit-line-clamp: 3;
+                                        -webkit-box-orient: vertical; display: -webkit-box;">${study.content}</p>
                                     </div>
                                     <div class="card-footer">
                                         <button class="btn btn-secondary rounded-pill px-3" type="button" disabled>${study.category_name}</button>
@@ -65,7 +66,8 @@ function fetchStudyList() {
                                     <img src="${study.thumbnail}" class="card-img-top" width="100%" height="200">
                                     <div class="card-body">
                                         <h5 class="card-title">${study.title}</h5>
-                                        <p class="card-text">${study.content}</p>
+                                        <p class="card-text" style="text-overflow: ellipsis; overflow: hidden; -webkit-line-clamp: 3;
+                                        -webkit-box-orient: vertical; display: -webkit-box;">${study.content}</p>
                                     </div>
                                     <div class="card-footer">
                                         <button class="btn btn-secondary rounded-pill px-3" type="button" disabled>${study.category_name}</button>
