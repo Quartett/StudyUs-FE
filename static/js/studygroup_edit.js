@@ -1,3 +1,7 @@
+if (!isLogin()) {
+    window.location.href = '/login.html?redirect=' + '/studygroup_create.html';
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 const pk = urlParams.get('pk');
 

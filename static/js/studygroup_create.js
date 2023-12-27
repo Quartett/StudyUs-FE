@@ -1,3 +1,7 @@
+if (!isLogin()) {
+    window.location.href = '/login.html?redirect=' + '/studygroup_create.html';
+}
+
 let selectedImageFile = null;
 
 document.getElementById('imageinput').addEventListener('change', function(event) {
@@ -165,7 +169,7 @@ createStudyButton.addEventListener('click', function(e) {
             window.location.href = '/index.html';
             })
             .catch((err) => {
-            console.error('글 작성 중 에러 발생했습니다. 잠시 후 다시 시도해주세요');
+            alert('글 작성 중 에러 발생했습니다. 잠시 후 다시 시도해주세요');
             });
         })
     } else {
