@@ -122,7 +122,9 @@
 </script>
 
 <script>
-    checkTokenExpired('memorycard.html', (accessToken) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const subject_id = urlParams.get('subject');
+    checkTokenExpired(`memorycard_play.html?subject=${subject_id}`, (accessToken) => {
         getUserInfo(accessToken);
         getMemoryList(accessToken);
     })
