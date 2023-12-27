@@ -1,3 +1,9 @@
+function logout() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    window.location.href = '/index.html';
+}
+
 window.addEventListener('load', function() {
     const allElements = document.getElementsByTagName('*');
     Array.prototype.forEach.call(allElements, function(el) {
@@ -20,9 +26,15 @@ window.addEventListener('load', function() {
                             <a class="navbar-brand" href="/chat.html">
                                 <img src="./static/img/chat.svg" width="40" height="40">
                             </a>
-                            <a class="navbar-brand" href="/profile.html">
-                                <img src="./static/img/profile.svg" width="40" height="40">
-                            </a>
+                            <li class="nav-item dropdown d-flex align-self-center">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="./static/img/profile.svg" width="40" height="40">
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="/profile.html">프로필 설정</a></li>
+                                    <li><button class="dropdown-item" onclick="logout()">로그아웃</button></li>
+                                </ul>
+                                </li>
                         `
                     } else {
                         navbarMenu.innerHTML += `
