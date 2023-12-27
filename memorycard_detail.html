@@ -79,7 +79,10 @@
 </script>
 
 <script>
-    checkTokenExpired('memorycard.html', (accessToken) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const memorycard_id = urlParams.get('memorycard');
+
+    checkTokenExpired(`memorycard_detail.html?memorycard=${memorycard_id}`, (accessToken) => {
         getUserInfo(accessToken);
         getMemoryCard(accessToken);
     })
@@ -125,7 +128,6 @@
             return response.json();
         })
         .then((json) => {
-            console.log(json)
             document.getElementById("question").value = json.data.memory_question;
             document.getElementById("answer").value = json.data.memory_answer;
 
