@@ -153,31 +153,33 @@
 </script>
 
 <script>
-    checkTokenExpired('index.html', (accessToken) => {
-            getUserInfo(accessToken);
-    });
-    
-    function getUserInfo(accessToken) {
-        fetch(`${baseUrl}/accounts/user/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-        })
-        .then((response) => {
-            if(!response.ok) {
-                throw new Error(response.status)
-            }
-            return response.json()
-        })
-        .then((json) => {
-            document.querySelector("#nickname").innerHTML = json.nickname
-            document.getElementById("userProfile").src = json.profile_image
-        })
-        .catch((err) => {
-            alert("사용자 정보 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
-        });    
+    if (isLogin()) {
+        checkTokenExpired('index.html', (accessToken) => {
+                getUserInfo(accessToken);
+        });
+        
+        function getUserInfo(accessToken) {
+            fetch(`${baseUrl}/accounts/user/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+            })
+            .then((response) => {
+                if(!response.ok) {
+                    throw new Error(response.status)
+                }
+                return response.json()
+            })
+            .then((json) => {
+                document.querySelector("#nickname").innerHTML = json.nickname
+                document.getElementById("userProfile").src = json.profile_image
+            })
+            .catch((err) => {
+                alert("사용자 정보 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+            });    
+        }
     }
 </script>
 
