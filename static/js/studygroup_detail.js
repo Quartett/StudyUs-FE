@@ -14,6 +14,12 @@ if (isLogin()){
 
     const button2 = document.querySelector('#leave_button');
     button2.style.display = 'none';
+
+    const editbutton = document.querySelector('#edit');
+    const deletebutton = document.querySelector('#delete');
+
+    editbutton.style.display = 'none';
+    deletebutton.style.display = 'none';
 }
 
 function isMember(pk, accessToken){
@@ -58,7 +64,7 @@ function isMember(pk, accessToken){
         });
     })
     .catch(error => {
-        console.error('Error:', error);
+        alert('그룹 멤버 정보를 가져오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요');
     });
 }
 
@@ -199,10 +205,9 @@ getStudyGroupInfo();
 
 function getStudyGroupInfo(){
 
-    // pk가 없다면 함수를 종료합니다.
     if (!pk) {
-        console.error('pk를 입력해주세요');
-        return;
+        alert('잘못된 접근입니다.');
+        window.location.href = '/index.html';
     }
     
     fetch(`${baseUrl}/study/${pk}/`, {
@@ -218,6 +223,7 @@ function getStudyGroupInfo(){
         return response.json();
     })
     .then((data) => {
+        console.log(data)
         document.querySelector('.input_title').textContent = data.title;
         document.querySelector('.input_content').textContent = data.content;
         
