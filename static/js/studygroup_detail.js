@@ -525,7 +525,7 @@ function getParentId(comment) {
 
 //  댓글 생성
 document.getElementById('comment_submit').addEventListener('click', function() {
-    checkTokenExpired('studygorup_detail.html', (accessToken) => {
+    checkTokenExpired('studygroup_detail.html?pk='+pk, (accessToken) => {
         const text = document.getElementsByClassName('comment_input')[0].textContent;
         const data = {
             "text": text,
