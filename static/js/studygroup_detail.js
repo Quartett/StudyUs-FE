@@ -55,12 +55,12 @@ function isMember(pk, accessToken){
         .then(members => {
             const leader = members
                 .filter(member => member.role === 1)
-                .map(memberWithRoleOne => memberWithRoleOne.usernickname);
-            // 리더의 닉네임과 userNickname이 같은지 비교
+                .map(member => member.user_nickname);
+            // 리더의 닉네임과 userNickname이 같은지 비교))
             const isLeader = leader.some(leaderNickname => leaderNickname === usernickname);
             groupeditButton(isLeader);
 
-            const isMember = members.some(member => member.usernickname === usernickname);
+            const isMember = members.some(member => member.user_nickname === usernickname);
             memberButton(isMember);
         });
     })
@@ -101,8 +101,8 @@ function groupeditButton(isLeader) {
                 )
             });
         };
-    } else {
-        // 버튼이 보이지 않도록 처리
+    }
+    if (!isLeader) {
         editbutton.style.display = 'none';
         deletebutton.style.display = 'none';
     }
@@ -224,7 +224,6 @@ function getStudyGroupInfo(){
         return response.json();
     })
     .then((data) => {
-        console.log(data)
         document.querySelector('.input_title').textContent = data.title;
         document.querySelector('.input_content').textContent = data.content;
         
@@ -380,7 +379,6 @@ function createCommentElement(comment) {
             })
             .then(userData => {
                 usernickname = userData.nickname;
-                console.log(usernickname)
                 if (comment.author_nickname === usernickname) {
                     toolbar.appendChild(editButton);
                     toolbar.appendChild(deleteButton);
