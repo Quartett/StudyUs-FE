@@ -1,5 +1,5 @@
 if (!isLogin()) {
-    window.location.href = '/login.html?redirect=' + '/studygroup_create.html';
+    window.location.href = '/login.html?redirect=' + '/studygroup_eidt.html';
 }
 
 const urlParams = new URLSearchParams(window.location.search);
