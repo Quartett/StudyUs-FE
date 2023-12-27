@@ -22,6 +22,7 @@ if (isLogin()){
     deletebutton.style.display = 'none';
 }
 
+let usernickname = null;
 function isMember(pk, accessToken){
     fetch(`${baseUrl}/accounts/user/`, {
         method: 'GET',
@@ -37,7 +38,7 @@ function isMember(pk, accessToken){
         return response.json();
     })
     .then(userData => {
-        const user_nickname = userData.nickname;
+        usernickname = userData.nickname;
         fetch(`${baseUrl}/study/${pk}/member/`, {
             method: 'GET',
             headers: {
@@ -54,12 +55,12 @@ function isMember(pk, accessToken){
         .then(members => {
             const leader = members
                 .filter(member => member.role === 1)
-                .map(memberWithRoleOne => memberWithRoleOne.user_nickname);
+                .map(memberWithRoleOne => memberWithRoleOne.usernickname);
             // 리더의 닉네임과 userNickname이 같은지 비교
-            const isLeader = leader.some(leaderNickname => leaderNickname === user_nickname);
+            const isLeader = leader.some(leaderNickname => leaderNickname === usernickname);
             groupeditButton(isLeader);
 
-            const isMember = members.some(member => member.user_nickname === user_nickname);
+            const isMember = members.some(member => member.usernickname === usernickname);
             memberButton(isMember);
         });
     })
@@ -352,8 +353,6 @@ function createCommentElement(comment) {
             });
         }
     };
-    
-    toolbar.appendChild(editButton);
 
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('delete_button', 'btn', 'btn-outline-danger', 'm-2');
@@ -363,7 +362,35 @@ function createCommentElement(comment) {
             deleteComment(commentid, accessToken);
         })
     };
-    toolbar.appendChild(deleteButton);
+    
+    if (isLogin()){
+        checkTokenExpired('studygroup_detail.html', (accessToken) => {
+            fetch(`${baseUrl}/accounts/user/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+                return response.json();
+            })
+            .then(userData => {
+                usernickname = userData.nickname;
+                console.log(usernickname)
+                if (comment.author_nickname === usernickname) {
+                    toolbar.appendChild(editButton);
+                    toolbar.appendChild(deleteButton);
+                }
+            })
+            .catch(error => {
+                alert('그룹 멤버 정보를 가져오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요');
+            });
+        });
+    }
 
     // 답글 달기 버튼 추가
     const replyButton = document.createElement('button');
@@ -572,7 +599,6 @@ function deleteComment(commentid, accessToken) {
         return response;
     })
     .then(() => {
-        // 삭제가 성공적으로 완료된 후 댓글 목록을 fetch하여 다시 렌더링
         getStudyGroupInfo();
     })
     .catch((err) => {
@@ -627,7 +653,7 @@ function category_level(category, level, categoryName) {
 
         if (levelNumber == level) {
             levelElement.classList.add('selected');
-            levelElement.style.display = 'block'; // 해당하는 레벨만 표시합니다.
+            levelElement.style.display = 'block';
         }
     });
 
