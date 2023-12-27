@@ -35,19 +35,16 @@ function fetchStudyList() {
                 if (category === '0' || category === study.category.toString()) {
                 const listItem = document.createElement('div');
                     listItem.innerHTML = `
-                    <a href="studygroup_detail.html?pk=${study.id}">
-                        <div class="card shadow-sm">
-                            <div>
-                                ${study.title}
-                            </div>
-                            <img class="bd-placeholder-img card-img-top study_img" width="100%" height="200" src="${study.thumbnail}" aria-label="Placeholder: Thumbnail"></>
-                            <div class="card-body">
-                                <div>
-                                    ${study.content}
+                        <a href="studygroup_detail.html?pk=${study.id}" id="studyContentCard">
+                            <div class="card shadow-sm gap-4 h-100 text-start">
+                                <img src="${study.thumbnail}" class="card-img-top" width="100%" height="200">
+                                <div class="card-body">
+                                    <h5 class="card-title">${study.title}</h5>
+                                    <p class="card-text">${study.content}</p>
+                                    
                                 </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
                     `;
                     studyListContainer.appendChild(listItem);
                 }
@@ -108,16 +105,13 @@ function updateStudyList(data) {
         if (category === '0' || category === study.category.toString()) {
             const listItem = document.createElement('div');
             listItem.innerHTML = `
-                <a href="studygroup_detail.html?pk=${study.id}">
-                    <div class="card shadow-sm">
-                        <div>
-                            ${study.title}
-                        </div>
-                        <img class="bd-placeholder-img card-img-top study_img" width="100%" height="200" src="${study.thumbnail}" aria-label="Placeholder: Thumbnail"></>
+                <a href="studygroup_detail.html?pk=${study.id}" id="studyContentCard">
+                    <div class="card shadow-sm gap-4 h-100 text-start">
+                        <img src="${study.thumbnail}" class="card-img-top" width="100%" height="200">
                         <div class="card-body">
-                            <div>
-                                ${study.content}
-                            </div>
+                            <h5 class="card-title">${study.title}</h5>
+                            <p class="card-text">${study.content}</p>
+                            
                         </div>
                     </div>
                 </a>

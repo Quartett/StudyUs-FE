@@ -5,76 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyUs</title>
     
-    <link rel="stylesheet" href="./static/css/index.css">
-    <link rel="stylesheet" href="./static/css/font.css">
-    <link rel="stylesheet" href="./static/css/studygroup_create.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     
     <script src="./static/js/include.js"></script>
     <script src="./static/js/common.js"></script>
     <script src="./static/js/index.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter-Regular';
+            padding: 0 0 30px 0;
+        }
+
+        #userProfile {
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            margin-bottom: 20px; 
+            object-fit: cover;
+        }
+
+        #studyContentCard {
+            text-decoration: none;
+        }
+
+    </style>
     
 </head>
 <body>
     <header data-include-path="./header.html"></header>
     <main class="container">
-        <div class="born mb-2 py-5 text-center container">
-            <section class="left">
-                <div class="user_profile">
-                    <!-- 사용자 프로필 섹션 -->
+        <div class="text-center">
+            <div class="row g-5">
+                <div class="col-lg-3">
+                    <div class="card text-bg-light mx-auto" style="max-width: 18rem;">
+                        <img id="userProfile" src="./static/img/default_profile.svg" class="card-img-top mx-auto mt-4" width="130" height="130">
+                        <div id="profileSection" class="card-body">
+                            <h5 id="nickname" class="card-title"></h5>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            <section class="right">
-                <div class="serchlist">
-                    <form action="${baseUrl}/study/">
-                        <button type="button" onclick="search()">검색</button>
-                        <input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요.">
+                <div class="col-lg-9">
+                    <form action="${baseUrl}/study/" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" id="searchInput" name="searchInput" placeholder="검색어를 입력하세요." class="form-control">
+                            <button type="button" class="btn btn-secondary" onclick="search()">검색</button>
+                        </div>
                     </form>
-                    <!-- 카테고리검색 -->
-                    <section class="album py-3 bg-body-tertiary">
-                        <ui class="ctegorylist" id="ctegorylist">
-                            <li>
-                                <button value="0" onclick="searchByCategory(this.value)">전체</button>
-                            </li>
-                            <li>
-                                <button value="1" onclick="searchByCategory(this.value)">웹개발</button>
-                            </li>
-                            <li>
-                                <button value="2" onclick="searchByCategory(this.value)">CS</button>
-                            </li>
-                            <li>
-                                <button value="3" onclick="searchByCategory(this.value)">자격증</button>
-                            </li>
-                            <li>
-                                <button value="4" onclick="searchByCategory(this.value)">면접</button>
-                            </li>
-                            <li>
-                                <button value="5" onclick="searchByCategory(this.value)">어학</button>
-                            </li>
-                            <li>
-                                <button value="6" onclick="searchByCategory(this.value)">취미</button>
-                            </li>
-                            <li>
-                                <button value="7" onclick="searchByCategory(this.value)">운동</button>
-                            </li>
-                            <li>
-                                <button value="8" onclick="searchByCategory(this.value)">독서</button>
-                            </li>
-                        </ui>
-                    </section>
-                    <section class="py-5 text-center container">
-                        <div class="album py-5 bg-body-tertiary">
-                            <div class="container">
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"  id="studyList">
-                                    <!-- 스터디 목록이 여기에 동적으로 추가될 것입니다. -->
-                                </div>
+                    
+                    <div class="row row-cols-2 row-cols-sm-5 g-4 mt-4">
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="all" autocomplete="off" value="0" checked>
+                                <label class="btn btn-outline-success" for="all">전체</label>
                             </div>
                         </div>
-                    </section>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="web" autocomplete="off" value="1">
+                                <label class="btn btn-outline-success" for="web">웹개발</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="cs" autocomplete="off" value="2">
+                                <label class="btn btn-outline-success" for="cs">CS</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="certificate" autocomplete="off" value="3">
+                                <label class="btn btn-outline-success" for="certificate">자격증</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="interview" autocomplete="off" value="4">
+                                <label class="btn btn-outline-success" for="interview">면접</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="language" autocomplete="off" value="5">
+                                <label class="btn btn-outline-success" for="language">어학</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="hobby" autocomplete="off" value="6">
+                                <label class="btn btn-outline-success" for="hobby">취미</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="exercise" autocomplete="off" value="7">
+                                <label class="btn btn-outline-success" for="exercise">운동</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card">
+                                <input type="radio" class="btn-check" name="category" id="reading" autocomplete="off" value="8">
+                                <label class="btn btn-outline-success" for="reading">독서</label>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5 mt-5 mb-5"  id="studyList">
+                        <!-- 스터디 목록이 여기에 동적으로 추가될 것입니다. -->
+                    </div>
+                    
                 </div>
-            </section>
+            </div>
         </div>
     </main>
 </body>
+
+<script>
+    if (isLogin()) {
+        document.querySelector("#profileSection").innerHTML += `
+            <a id="createStudyBtn" href="/studygroup_create.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+                스터디 생성
+            </a>  
+        `
+    } else {
+        document.querySelector("#profileSection").innerHTML += `
+            <a id="loginBtn" href="/login.html" class="btn btn-primary mt-3" style="background-color: #84C19C; border-color: #84C19C;">
+                시작하기
+            </a>
+        `
+    }
+</script>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category') || 0;
+
+    document.querySelectorAll('input[name="category"]').forEach(function(radio) {
+        if(radio.value == category) {
+            radio.checked = true
+        }
+
+        radio.addEventListener('change', function(e) {
+            searchByCategory(e.target.value)
+        });
+    });
+</script>
+
+<script>
+    checkTokenExpired('index.html', (accessToken) => {
+            getUserInfo(accessToken);
+    });
+    
+    function getUserInfo(accessToken) {
+        fetch(`${baseUrl}/accounts/user/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+        })
+        .then((response) => {
+            if(!response.ok) {
+                throw new Error(response.status)
+            }
+            return response.json()
+        })
+        .then((json) => {
+            document.querySelector("#nickname").innerHTML = json.nickname
+            document.getElementById("userProfile").src = json.profile_image
+        })
+        .catch((err) => {
+            alert("사용자 정보 확인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
+        });    
+    }
+</script>
+
 </html>
