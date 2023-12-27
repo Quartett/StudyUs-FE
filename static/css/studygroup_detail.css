@@ -238,6 +238,11 @@
         border-radius: 10px;
         resize: none;
         padding: 5px;
+        overflow: auto;
+    }
+
+    pre {
+        white-space: pre-wrap;
     }
 
     .week_days_detail.selected, .category_detail.selected, .level_detail.selected {

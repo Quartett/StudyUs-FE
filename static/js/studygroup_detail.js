@@ -225,7 +225,7 @@ function getStudyGroupInfo(){
     })
     .then((data) => {
         document.querySelector('.input_title').textContent = data.title;
-        document.querySelector('.input_content').textContent = data.content;
+        document.querySelector('.input_content').innerHTML = `<pre>${data.content}</pre>`;
         
         displayComments(data.comments);
 
