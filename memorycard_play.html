@@ -58,6 +58,14 @@
             margin-bottom: 20px; 
             object-fit: cover;
         }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        p {
+            overflow: auto;
+        }
     </style>
 </head>
 <body>
@@ -190,8 +198,8 @@
 
         if (questionSection && answerSection) {
             const currentCardData = cards[currentIndex];
-            questionSection.textContent = currentCardData.memory_question;
-            answerSection.textContent = currentCardData.memory_answer;
+            questionSection.innerHTML = `<pre>${currentCardData.memory_question}</pre>`;
+            answerSection.innerHTML = `<pre>${currentCardData.memory_answer}</pre>`;
 
             if (currentIndex === 0) {
                 prevButton.style.display = "none";
