@@ -95,7 +95,6 @@ function groupeditButton(isLeader) {
                     return response;
                 })
                 .then(() => {
-                    // 삭제 성공시 페이지 이동
                     window.location.href = '/index.html';
                 }
                 )
@@ -192,7 +191,6 @@ function joinStudyGroup() {
                 return response;
             })
             .then(() => {
-                // 가입 성공시 페이지 새로고침
                 window.location.reload();
             })
             .catch((err) => {
@@ -255,7 +253,7 @@ function getStudyGroupInfo(){
 
 function displayComments(comments) {
     const container = document.getElementById('comments_container');
-    container.innerHTML = ''; // 기존 댓글을 지웁니다.
+    container.innerHTML = '';
 
     comments.forEach(comment => {
         // parent가 null인 경우만 최상위 댓글로 처리
@@ -270,6 +268,9 @@ function createCommentElement(comment) {
     const element = document.createElement('div');
     element.classList.add('comment');
     element.setAttribute('data-comment-id', comment.id); // 댓글 ID를 속성으로 저장
+    if (comment.parent) {
+        element.setAttribute('data-comment-parent', comment.parent);
+    }
     const commentid = comment.id;
 
     const comment_profile_image = document.createElement('div');
@@ -302,7 +303,6 @@ function createCommentElement(comment) {
     author.textContent = comment.author_nickname;
     header.appendChild(author);
 
-    // 댓글 내용 추가
     const text = document.createElement('div');
     text.classList.add('text');
     text.textContent = comment.text;
@@ -319,7 +319,6 @@ function createCommentElement(comment) {
     
     const toggleEdit = function(isEditing) {
         if (isEditing) {
-            // '수정' 상태로 전환
             input.value = text.textContent;
             if (text.parentNode === comment_info) {
                 comment_info.replaceChild(input, text);
@@ -327,7 +326,6 @@ function createCommentElement(comment) {
             input.classList.remove('hidden');
             editButton.textContent = '저장';
         } else {
-            // '저장' 후 '수정' 상태로 되돌림
             if (input.parentNode === comment_info) {
                 comment_info.replaceChild(text, input);
             }
@@ -345,7 +343,6 @@ function createCommentElement(comment) {
             const updatedText = input.value;
             checkTokenExpired('studygroup_detail.html', (accessToken) => {
                 saveEditedComment(commentid, updatedText, accessToken, function() {
-                    // 성공적으로 수정한 후에는 '수정' 상태로 되돌림
                     text.textContent = updatedText;
                     toggleEdit(false); // 상태를 '수정'으로 전환합니다.
                 });
@@ -379,7 +376,7 @@ function createCommentElement(comment) {
             })
             .then(userData => {
                 usernickname = userData.nickname;
-                if (comment.author_nickname === usernickname) {
+                if (comment.author_nickname == usernickname) {
                     toolbar.appendChild(editButton);
                     toolbar.appendChild(deleteButton);
                 }
@@ -455,8 +452,18 @@ function createCommentElement(comment) {
                         return response.json();
                     })
                     .then(data => {
-                        // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
-                        getStudyGroupInfo();
+                        const newReplyElement = createCommentElement(data);
+                        const parentCommentElement = document.querySelector(`[data-comment-id="${topParentPk}"]`);
+                        const repliesContainer = parentCommentElement.querySelector('.comment_replies_render');
+                        if (!repliesContainer) {
+                            const newRepliesContainer = document.createElement('div');
+                            newRepliesContainer.classList.add('comment_replies_render');
+                            parentCommentElement.appendChild(newRepliesContainer);
+                            newRepliesContainer.appendChild(newReplyElement);
+                        } else {
+                            repliesContainer.appendChild(newReplyElement);
+                        }
+                        updateReplyCount(parentCommentElement, 1);
                     })
                     .catch((err) => {
                         alert("댓글 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
@@ -465,7 +472,6 @@ function createCommentElement(comment) {
                     replyContainer.style.display = 'none';
                 });
             } else {
-                // 답글 입력창이 이미 있으면 표시 상태를 토글합니다.
                 replyContainer.style.display = replyContainer.style.display === 'none' ? 'block' : 'none';
                 if (replyContainer.style.display === 'block') {
                     replyContainer.querySelector('.comment_input').focus();
@@ -476,7 +482,7 @@ function createCommentElement(comment) {
     toolbar.appendChild(replyButton);
 
     // 답글 보기/숨기기 토글 버튼
-    if (!comment.parent) { // 최상위 댓글인 경우에만 토글 버튼을 추가합니다.
+    if (!comment.parent) {
         const toggleRepliesButton = document.createElement('button');
         toggleRepliesButton.classList.add('toggle_replies_button', 'btn', 'btn-light');
         toggleRepliesButton.innerHTML = `답글 ${comment.reply ? comment.reply.length : 0}개`;
@@ -544,8 +550,9 @@ document.getElementById('comment_submit').addEventListener('click', function() {
             return response.json();
         })
         .then(data => {
-            // 댓글이 성공적으로 생성된 후 댓글 목록을 fetch하여 다시 렌더링
-            getStudyGroupInfo();
+            const container = document.getElementById('comments_container');
+            const newCommentElement = createCommentElement(data);
+            container.appendChild(newCommentElement);
         })
         .catch((err) => {
             alert("댓글 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
@@ -597,11 +604,38 @@ function deleteComment(commentid, accessToken) {
         return response;
     })
     .then(() => {
-        getStudyGroupInfo();
+        const commentElement = document.querySelector(`[data-comment-id="${commentid}"]`);
+        if (commentElement) {
+            commentElement.parentNode.removeChild(commentElement);
+            const parentCommentId = commentElement.getAttribute('data-comment-parent');
+            if(parentCommentId) {
+                const parentCommentElement = document.querySelector(`[data-comment-id="${parentCommentId}"]`);
+                if(parentCommentElement) {
+                    updateReplyCount(parentCommentElement, -1);
+                }
+            }
+        }
     })
     .catch((err) => {
         alert("댓글 삭제 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요");
     }); 
+}
+
+function updateReplyCount(parentCommentElement, change) {
+    const toggleRepliesButton = parentCommentElement.querySelector('.toggle_replies_button');
+    if (toggleRepliesButton) {
+        const matches = toggleRepliesButton.innerHTML.match(/답글 (\d+)개/);
+        if (matches) {
+            const currentCount = parseInt(matches[1]);
+            const newCount = Math.max(currentCount + change, 0);
+            toggleRepliesButton.innerHTML = `답글 ${newCount}개`;
+            if(newCount === 0) {
+                toggleRepliesButton.style.display = 'none';
+            } else {
+                toggleRepliesButton.style.display = 'block';
+            }
+        }
+    }
 }
 
 function fetchCurrentMemberCount(pk, maxMembers) {
