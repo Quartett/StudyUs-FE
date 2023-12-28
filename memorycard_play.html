@@ -15,14 +15,21 @@
     <style>
         .flashcard {
             perspective: 1000px;
+            
         }
 
         /* 클래스 이름을 memorycard로 변경 */
         .memorycard {
             width: 65%;
             height: 600px;
+            min-height: 600px;
             transform-style: preserve-3d;
             transition: transform 0.5s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
         }
 
         .memorycard.flipped {
@@ -59,12 +66,13 @@
             object-fit: cover;
         }
 
-        pre {
-            white-space: pre-wrap;
-        }
-
-        p {
+        .question, .answer {
+            font-size: 1.25rem; /* 폰트 크기를 1.5rem으로 설정 */
+            white-space: pre-wrap; /* 개행 및 줄바꿈 적용 */
             overflow: auto;
+            margin: 0;
+            padding: 30px;
+            max-height: 580px;
         }
     </style>
 </head>
@@ -94,10 +102,10 @@
                     <button id="prevButton" type="button" class="btn btn-outline-secondary border-0" onclick="showPrevCard()">◀</button>
                     <div class="memorycard">
                         <div class="card-front">
-                            <p class="question" id="question"></p>
+                            <p class="question d-flex align-items-center justify-content-center" id="question"></p>
                         </div>
                         <div class="card-back">
-                            <p class="answer" id="answer"></p>
+                            <p class="answer d-flex align-items-center justify-content-center" id="answer"></p>
                         </div>
                     </div>
                     <button id="nextButton" type="button" class="btn btn-outline-secondary border-0" onclick="showNextCard()">▶</button>
@@ -198,8 +206,8 @@
 
         if (questionSection && answerSection) {
             const currentCardData = cards[currentIndex];
-            questionSection.innerHTML = `<pre>${currentCardData.memory_question}</pre>`;
-            answerSection.innerHTML = `<pre>${currentCardData.memory_answer}</pre>`;
+            questionSection.textContent = currentCardData.memory_question;
+            answerSection.textContent = currentCardData.memory_answer;
 
             if (currentIndex === 0) {
                 prevButton.style.display = "none";
